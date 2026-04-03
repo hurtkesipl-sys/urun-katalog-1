@@ -4,6 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-sans: "Inter", sans-serif;
+  --font-serif: "Playfair Display", serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -43,39 +45,39 @@
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-600);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
+  --primary: oklch(0.3 0.02 120); /* Koyu antrasit/yeşilimsi */
+  --primary-foreground: oklch(0.98 0 0);
+  --sidebar-primary: oklch(0.3 0.02 120);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --chart-1: var(--color-stone-300);
+  --chart-2: var(--color-stone-500);
+  --chart-3: var(--color-stone-600);
+  --chart-4: var(--color-stone-700);
+  --chart-5: var(--color-stone-800);
+  --radius: 0.25rem; /* Daha keskin köşeler */
+  --background: oklch(0.98 0.01 90); /* Kırık beyaz / krem */
+  --foreground: oklch(0.2 0.01 120); /* Koyu antrasit */
+  --card: oklch(1 0 0); /* Saf beyaz kartlar */
+  --card-foreground: oklch(0.2 0.01 120);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: oklch(0.98 0.001 286.375);
-  --secondary-foreground: oklch(0.4 0.015 65);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
+  --popover-foreground: oklch(0.2 0.01 120);
+  --secondary: oklch(0.95 0.01 90); /* Açık bej/gri */
+  --secondary-foreground: oklch(0.3 0.02 120);
+  --muted: oklch(0.95 0.01 90);
+  --muted-foreground: oklch(0.5 0.01 120);
+  --accent: oklch(0.92 0.02 120); /* Soluk adaçayı yeşili vurgu */
+  --accent-foreground: oklch(0.2 0.01 120);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
+  --border: oklch(0.9 0.01 90); /* İnce, zarif kenarlıklar */
+  --input: oklch(0.9 0.01 90);
+  --ring: oklch(0.3 0.02 120);
+  --sidebar: oklch(0.98 0.01 90);
+  --sidebar-foreground: oklch(0.2 0.01 120);
+  --sidebar-accent: oklch(0.95 0.01 90);
+  --sidebar-accent-foreground: oklch(0.2 0.01 120);
+  --sidebar-border: oklch(0.9 0.01 90);
+  --sidebar-ring: oklch(0.3 0.02 120);
 }
 
 .dark {
