@@ -10,8 +10,9 @@ import { PlusCircle } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Admin() {
-  const { products, addProduct, removeProduct } = useProductStore();
+  const { products, categories, addProduct, removeProduct, addCategory } = useProductStore();
   const [isAdding, setIsAdding] = useState(false);
+  const [newCategory, setNewCategory] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -19,12 +20,13 @@ export default function Admin() {
     priceEUR: "",
     priceTRY: "",
     imageUrl: "",
+    category: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.priceEUR || !formData.priceTRY || !formData.imageUrl) {
+    if (!formData.name || !formData.priceEUR || !formData.priceTRY || !formData.imageUrl || !formData.category) {
       toast.error("Lütfen zorunlu alanları doldurun.");
       return;
     }
@@ -35,11 +37,20 @@ export default function Admin() {
       priceEUR: parseFloat(formData.priceEUR),
       priceTRY: parseFloat(formData.priceTRY),
       imageUrl: formData.imageUrl,
+      category: formData.category,
     });
 
     toast.success("Ürün başarıyla eklendi.");
-    setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "" });
+    setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", category: "" });
     setIsAdding(false);
+  };
+
+  const handleAddCategory = () => {
+    if (!newCategory.trim()) return;
+    addCategory(newCategory.trim());
+    setFormData({ ...formData, category: newCategory.trim() });
+    setNewCategory("");
+    toast.success("Kategori eklendi.");
   };
 
   const handleDelete = (id: string) => {
@@ -103,6 +114,31 @@ export default function Admin() {
                     onChange={(e) => setFormData({ ...formData, priceTRY: e.target.value })}
                     placeholder="Örn: 4500.00"
                   />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="category">Kategori *</Label>
+                  <div className="flex gap-2">
+                    <select
+                      id="category"
+                      className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                      value={formData.category}
+                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    >
+                      <option value="" disabled>Kategori Seçin</option>
+                      {categories.map((cat) => (
+                        <option key={cat} value={cat}>{cat}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex gap-2 mt-2">
+                    <Input
+                      placeholder="Yeni kategori ekle"
+                      value={newCategory}
+                      onChange={(e) => setNewCategory(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddCategory())}
+                    />
+                    <Button type="button" variant="outline" onClick={handleAddCategory}>Ekle</Button>
+                  </div>
                 </div>
               </div>
               <div className="space-y-2">

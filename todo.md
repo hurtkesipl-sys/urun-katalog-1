@@ -1,0 +1,5 @@
+- [ ] `types.ts` dosyasına kategori alanını ekle
+- [ ] `store.ts` dosyasını kategori bilgisini içerecek şekilde güncelle
+- [ ] `Admin.tsx` sayfasına kategori seçimi/ekleme alanı ekle
+- [ ] `Home.tsx` sayfasına kategori filtreleme butonları ekle
+- [ ] Mevcut örnek ürünlere varsayılan kategoriler ata

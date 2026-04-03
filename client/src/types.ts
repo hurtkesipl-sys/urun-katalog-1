@@ -5,5 +5,6 @@ export interface Product {
   priceEUR: number;
   priceTRY: number;
   imageUrl: string;
+  category: string;
   createdAt: number;
 }
