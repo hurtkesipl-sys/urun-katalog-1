@@ -22,6 +22,25 @@ export default function Admin() {
     imageUrl: "",
     category: "",
   });
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("Dosya boyutu 5MB'dan küçük olmalıdır.");
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setImagePreview(base64String);
+        setFormData({ ...formData, imageUrl: base64String });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,6 +61,7 @@ export default function Admin() {
 
     toast.success("Ürün başarıyla eklendi.");
     setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", category: "" });
+    setImagePreview(null);
     setIsAdding(false);
   };
 
@@ -85,13 +105,25 @@ export default function Admin() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="imageUrl">Görsel URL *</Label>
-                  <Input
-                    id="imageUrl"
-                    value={formData.imageUrl}
-                    onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                    placeholder="https://example.com/image.jpg"
-                  />
+                  <Label htmlFor="imageFile">Ürün Görseli *</Label>
+                  <div className="flex flex-col gap-4">
+                    <Input
+                      id="imageFile"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="cursor-pointer"
+                    />
+                    {imagePreview && (
+                      <div className="relative w-full h-40 rounded-md overflow-hidden border border-border">
+                        <img 
+                          src={imagePreview} 
+                          alt="Önizleme" 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="priceEUR">Fiyat (EUR) *</Label>

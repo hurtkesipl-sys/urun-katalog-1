@@ -1,5 +1,3 @@
-- [ ] `types.ts` dosyasına kategori alanını ekle
-- [ ] `store.ts` dosyasını kategori bilgisini içerecek şekilde güncelle
-- [ ] `Admin.tsx` sayfasına kategori seçimi/ekleme alanı ekle
-- [ ] `Home.tsx` sayfasına kategori filtreleme butonları ekle
-- [ ] Mevcut örnek ürünlere varsayılan kategoriler ata
+- [ ] `Navbar.tsx` dosyasındaki `<Link>` içindeki `<a>` etiketlerini kaldır
+- [ ] `Admin.tsx` dosyasındaki resim URL alanını dosya yükleme alanına dönüştür
+- [ ] Dosya yükleme işlemi için FileReader kullanarak resmi base64 formatına çevir
