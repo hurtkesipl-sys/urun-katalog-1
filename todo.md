@@ -1,3 +1,6 @@
-- [ ] `Navbar.tsx` dosyasındaki `<Link>` içindeki `<a>` etiketlerini kaldır
-- [ ] `Admin.tsx` dosyasındaki resim URL alanını dosya yükleme alanına dönüştür
-- [ ] Dosya yükleme işlemi için FileReader kullanarak resmi base64 formatına çevir
+- [ ] `types.ts` dosyasında `category` alanını `mainCategory` (kumaş) ve `subCategory` (ürün tipi) olarak değiştir
+- [ ] `store.ts` dosyasını yeni kategori yapısına göre güncelle (İpek, Keten, Viskon, Pamuk / Elbise, Takım, Bluz, Gömlek, Etek, Pantolon)
+- [ ] `Navbar.tsx` ve `Home.tsx` dosyalarında site adını "Moda İtalya Toptan" olarak değiştir
+- [ ] `Admin.tsx` dosyasında ürün ekleme formunu ana ve alt kategori seçecek şekilde güncelle
+- [ ] `Home.tsx` dosyasında filtreleme sistemini ana ve alt kategoriye göre çalışacak şekilde güncelle
+- [ ] `App.tsx` dosyasındaki örnek verileri toptan giyim konseptine uygun olarak yenile
