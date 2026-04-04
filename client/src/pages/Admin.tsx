@@ -21,8 +21,10 @@ export default function Admin() {
     imageUrl: "",
     mainCategory: "",
     subCategory: "",
+    colors: [] as string[],
   });
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [newColor, setNewColor] = useState("#000000");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -58,12 +60,23 @@ export default function Admin() {
       imageUrl: formData.imageUrl,
       mainCategory: formData.mainCategory,
       subCategory: formData.subCategory,
+      colors: formData.colors,
     });
 
     toast.success("Ürün başarıyla eklendi.");
-    setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: "", subCategory: "" });
+    setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: "", subCategory: "", colors: [] });
     setImagePreview(null);
     setIsAdding(false);
+  };
+
+  const handleAddColor = () => {
+    if (!formData.colors.includes(newColor)) {
+      setFormData({ ...formData, colors: [...formData.colors, newColor] });
+    }
+  };
+
+  const handleRemoveColor = (colorToRemove: string) => {
+    setFormData({ ...formData, colors: formData.colors.filter(c => c !== colorToRemove) });
   };
 
   const handleDelete = (id: string) => {
@@ -175,9 +188,46 @@ export default function Admin() {
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="Ürün hakkında detaylı bilgi..."
+                  placeholder="Ürün detayları..."
                   rows={4}
                 />
+              </div>
+              <div className="space-y-2">
+                <Label>Renk Varyantları</Label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={newColor}
+                    onChange={(e) => setNewColor(e.target.value)}
+                    className="h-10 w-10 rounded cursor-pointer border-0 p-0"
+                  />
+                  <Button type="button" variant="outline" onClick={handleAddColor}>
+                    Renk Ekle
+                  </Button>
+                </div>
+                {formData.colors.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {formData.colors.map((color) => (
+                      <div 
+                        key={color} 
+                        className="flex items-center gap-1 bg-muted px-2 py-1 rounded-full border border-border"
+                      >
+                        <div 
+                          className="w-4 h-4 rounded-full border border-border/50" 
+                          style={{ backgroundColor: color }}
+                        />
+                        <span className="text-xs text-muted-foreground">{color}</span>
+                        <button 
+                          type="button" 
+                          onClick={() => handleRemoveColor(color)}
+                          className="text-muted-foreground hover:text-destructive ml-1"
+                        >
+                          &times;
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
               <Button type="submit" className="w-full md:w-auto">
                 Ürünü Kaydet

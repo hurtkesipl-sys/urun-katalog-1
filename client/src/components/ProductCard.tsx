@@ -2,6 +2,7 @@ import { Product } from "@/types";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
+import { Link } from "wouter";
 
 interface ProductCardProps {
   product: Product;
@@ -10,8 +11,8 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, isAdmin, onDelete }: ProductCardProps) {
-  return (
-    <Card className="overflow-hidden group border-border/50 hover:border-border transition-all duration-300 hover:shadow-md bg-card">
+  const cardContent = (
+    <Card className="overflow-hidden group border-border/50 hover:border-border transition-all duration-300 hover:shadow-md bg-card h-full flex flex-col cursor-pointer">
       <div className="aspect-square overflow-hidden bg-muted relative">
         <img
           src={product.imageUrl}
@@ -22,20 +23,51 @@ export default function ProductCard({ product, isAdmin, onDelete }: ProductCardP
           <Button
             variant="destructive"
             size="icon"
-            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-            onClick={() => onDelete(product.id)}
+            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onDelete(product.id);
+            }}
           >
             <Trash2 className="h-4 w-4" />
           </Button>
         )}
       </div>
-      <CardContent className="p-5">
+      <CardContent className="p-5 flex-1">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
+              {product.mainCategory}
+            </span>
+            <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+              {product.subCategory}
+            </span>
+          </div>
+          {product.colors && product.colors.length > 0 && (
+            <div className="flex -space-x-1">
+              {product.colors.slice(0, 3).map((color, i) => (
+                <div 
+                  key={i}
+                  className="w-3 h-3 rounded-full border border-border shadow-sm"
+                  style={{ backgroundColor: color }}
+                  title="Renk seçenekleri mevcut"
+                />
+              ))}
+              {product.colors.length > 3 && (
+                <div className="w-3 h-3 rounded-full bg-muted border border-border flex items-center justify-center text-[8px] font-bold z-10">
+                  +
+                </div>
+              )}
+            </div>
+          )}
+        </div>
         <h3 className="font-serif text-lg font-semibold mb-2 line-clamp-1">{product.name}</h3>
         <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
           {product.description}
         </p>
       </CardContent>
-      <CardFooter className="p-5 pt-0 flex items-center justify-between">
+      <CardFooter className="p-5 pt-0 flex items-center justify-between mt-auto">
         <div className="flex flex-col">
           <span className="text-lg font-medium text-foreground">
             €{product.priceEUR.toFixed(2)}
@@ -46,5 +78,11 @@ export default function ProductCard({ product, isAdmin, onDelete }: ProductCardP
         </div>
       </CardFooter>
     </Card>
+  );
+
+  return (
+    <Link href={`/product/${product.id}`}>
+      {cardContent}
+    </Link>
   );
 }

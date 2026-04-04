@@ -1,6 +1,7 @@
-- [ ] `types.ts` dosyasında `category` alanını `mainCategory` (kumaş) ve `subCategory` (ürün tipi) olarak değiştir
-- [ ] `store.ts` dosyasını yeni kategori yapısına göre güncelle (İpek, Keten, Viskon, Pamuk / Elbise, Takım, Bluz, Gömlek, Etek, Pantolon)
-- [ ] `Navbar.tsx` ve `Home.tsx` dosyalarında site adını "Moda İtalya Toptan" olarak değiştir
-- [ ] `Admin.tsx` dosyasında ürün ekleme formunu ana ve alt kategori seçecek şekilde güncelle
-- [ ] `Home.tsx` dosyasında filtreleme sistemini ana ve alt kategoriye göre çalışacak şekilde güncelle
-- [ ] `App.tsx` dosyasındaki örnek verileri toptan giyim konseptine uygun olarak yenile
+- [ ] `types.ts` dosyasında `Product` arayüzüne `colors` (renk kodları dizisi) alanını ekle
+- [ ] `store.ts` dosyasını renk varyantlarını destekleyecek şekilde güncelle
+- [ ] `Admin.tsx` dosyasında ürün ekleme formuna renk seçici (color picker) veya renk kodları girme alanı ekle
+- [ ] `ProductDetail.tsx` sayfası oluştur (sol taraf resim, sağ taraf açıklama ve renk ikonları)
+- [ ] `App.tsx` dosyasında `/product/:id` rotasını ekle
+- [ ] `ProductCard.tsx` bileşenini tıklandığında detay sayfasına gidecek şekilde güncelle ve renk varyantı varsa küçük bir işaret (örn. renkli noktalar) ekle
+- [ ] `App.tsx` dosyasındaki örnek verileri renk varyantları içerecek şekilde yenile
