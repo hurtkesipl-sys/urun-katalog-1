@@ -1,7 +1,5 @@
-- [ ] `types.ts` dosyasında `Product` arayüzüne `productCode` ve `colorCode` alanlarını ekle
-- [ ] `store.ts` dosyasında `addSubCategory` fonksiyonunu ekle
-- [ ] `Admin.tsx` dosyasında ürün ekleme formuna "Ürün Kodu" ve "Renk Kodu" alanlarını ekle
-- [ ] `Admin.tsx` dosyasında "Ürün Tipi" (subCategory) için yeni tip ekleme özelliği getir
-- [ ] `Home.tsx` dosyasında ürünleri `productCode`'a göre gruplandır ve her grubun ilk ürününü göster, diğer renkleri küçük ikonlar olarak ekle
-- [ ] `ProductDetail.tsx` sayfasında aynı `productCode`'a sahip diğer ürünleri (renk varyantlarını) göster ve tıklandığında o ürünün detayına git
-- [ ] `App.tsx` dosyasındaki örnek verileri yeni yapıya göre güncelle
+- [ ] `store.ts` dosyasına `isAdmin` durumu ve `setAdmin` fonksiyonu ekle
+- [ ] `Login.tsx` sayfası oluştur (basit bir şifre kontrolü ile)
+- [ ] `App.tsx` dosyasına `/login` rotasını ekle
+- [ ] `Navbar.tsx` dosyasında "Yönetim Paneli" butonunu sadece `isAdmin` true ise göster
+- [ ] `Admin.tsx` sayfasında, eğer `isAdmin` false ise kullanıcıyı `/login` sayfasına yönlendir

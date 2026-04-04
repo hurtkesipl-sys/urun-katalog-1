@@ -6,17 +6,20 @@ interface ProductStore {
   products: Product[];
   mainCategories: string[];
   subCategories: string[];
+  isAdmin: boolean;
   addProduct: (product: Omit<Product, 'id' | 'createdAt'>) => void;
   removeProduct: (id: string) => void;
   addSubCategory: (category: string) => void;
+  setAdmin: (status: boolean) => void;
 }
 
 export const useProductStore = create<ProductStore>()(
   persist(
     (set) => ({
       products: [],
-      mainCategories: ['İpek', 'Keten', 'Viskon', 'Pamuk'],
-      subCategories: ['Elbise', 'Takım', 'Bluz', 'Gömlek', 'Etek', 'Pantolon'],
+      mainCategories: ["İpek", "Keten", "Viskon", "Pamuk"],
+      subCategories: ["Elbise", "Takım", "Bluz", "Gömlek", "Etek", "Pantolon"],
+      isAdmin: false,
       addProduct: (product: Omit<Product, 'id' | 'createdAt'>) =>
         set((state: ProductStore) => ({
           products: [
@@ -37,6 +40,10 @@ export const useProductStore = create<ProductStore>()(
           subCategories: state.subCategories.includes(category) 
             ? state.subCategories 
             : [...state.subCategories, category],
+        })),
+      setAdmin: (status: boolean) =>
+        set(() => ({
+          isAdmin: status,
         })),
     }),
     {

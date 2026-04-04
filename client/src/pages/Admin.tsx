@@ -1,18 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import { useProductStore } from "@/store";
 import Navbar from "@/components/Navbar";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { PlusCircle } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Admin() {
-  const { products, mainCategories, subCategories, addProduct, removeProduct, addSubCategory } = useProductStore();
+  const { products, mainCategories, subCategories, addProduct, removeProduct, addSubCategory, isAdmin } = useProductStore();
   const [isAdding, setIsAdding] = useState(false);
+  const [, setLocation] = useLocation();
+
   const [newSubCategory, setNewSubCategory] = useState("");
+
+  useEffect(() => {
+    if (!isAdmin) {
+      setLocation("/login");
+    }
+  }, [isAdmin, setLocation]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -224,13 +233,13 @@ export default function Admin() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="description">Açıklama</Label>
-                <Textarea
-                  id="description"
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="Ürün detayları..."
-                  rows={4}
-                />
+                  <Textarea
+                    id="description"
+                    value={formData.description}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData({ ...formData, description: e.target.value })}
+                    placeholder="Ürün hakkında detaylı bilgi..."
+                    rows={3}
+                  />
               </div>
 
               <Button type="submit" className="w-full md:w-auto">
