@@ -8,6 +8,7 @@ interface ProductStore {
   subCategories: string[];
   addProduct: (product: Omit<Product, 'id' | 'createdAt'>) => void;
   removeProduct: (id: string) => void;
+  addSubCategory: (category: string) => void;
 }
 
 export const useProductStore = create<ProductStore>()(
@@ -30,6 +31,12 @@ export const useProductStore = create<ProductStore>()(
       removeProduct: (id: string) =>
         set((state: ProductStore) => ({
           products: state.products.filter((p: Product) => p.id !== id),
+        })),
+      addSubCategory: (category: string) =>
+        set((state: ProductStore) => ({
+          subCategories: state.subCategories.includes(category) 
+            ? state.subCategories 
+            : [...state.subCategories, category],
         })),
     }),
     {

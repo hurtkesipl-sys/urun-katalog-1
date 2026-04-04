@@ -9,6 +9,11 @@ export default function ProductDetail() {
   const { products } = useProductStore();
   
   const product = match ? products.find(p => p.id === params.id) : null;
+  
+  // Aynı ürün koduna sahip diğer renk varyantlarını bul
+  const colorVariants = product 
+    ? products.filter(p => p.productCode === product.productCode)
+    : [];
 
   if (!product) {
     return (
@@ -76,17 +81,20 @@ export default function ProductDetail() {
               </p>
             </div>
 
-            {product.colors && product.colors.length > 0 && (
+            {colorVariants.length > 0 && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold border-b border-border pb-2">Renk Seçenekleri</h3>
                 <div className="flex flex-wrap gap-3">
-                  {product.colors.map((color, index) => (
-                    <div 
-                      key={index}
-                      className="w-10 h-10 rounded-full border-2 border-border shadow-sm cursor-pointer hover:scale-110 transition-transform"
-                      style={{ backgroundColor: color }}
-                      title={color}
-                    />
+                  {colorVariants.map((variant) => (
+                    <Link key={variant.id} href={`/product/${variant.id}`}>
+                      <div 
+                        className={`w-10 h-10 rounded-full border-2 shadow-sm cursor-pointer hover:scale-110 transition-transform ${
+                          variant.id === product.id ? 'border-primary ring-2 ring-primary/20' : 'border-border'
+                        }`}
+                        style={{ backgroundColor: variant.colorCode || '#000000' }}
+                        title={variant.name}
+                      />
+                    </Link>
                   ))}
                 </div>
               </div>

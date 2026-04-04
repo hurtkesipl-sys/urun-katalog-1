@@ -7,6 +7,7 @@ export interface Product {
   imageUrl: string;
   mainCategory: string;
   subCategory: string;
-  colors?: string[];
+  productCode: string;
+  colorCode: string;
   createdAt: number;
 }

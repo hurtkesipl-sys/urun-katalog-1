@@ -1,7 +1,7 @@
-- [ ] `types.ts` dosyasında `Product` arayüzüne `colors` (renk kodları dizisi) alanını ekle
-- [ ] `store.ts` dosyasını renk varyantlarını destekleyecek şekilde güncelle
-- [ ] `Admin.tsx` dosyasında ürün ekleme formuna renk seçici (color picker) veya renk kodları girme alanı ekle
-- [ ] `ProductDetail.tsx` sayfası oluştur (sol taraf resim, sağ taraf açıklama ve renk ikonları)
-- [ ] `App.tsx` dosyasında `/product/:id` rotasını ekle
-- [ ] `ProductCard.tsx` bileşenini tıklandığında detay sayfasına gidecek şekilde güncelle ve renk varyantı varsa küçük bir işaret (örn. renkli noktalar) ekle
-- [ ] `App.tsx` dosyasındaki örnek verileri renk varyantları içerecek şekilde yenile
+- [ ] `types.ts` dosyasında `Product` arayüzüne `productCode` ve `colorCode` alanlarını ekle
+- [ ] `store.ts` dosyasında `addSubCategory` fonksiyonunu ekle
+- [ ] `Admin.tsx` dosyasında ürün ekleme formuna "Ürün Kodu" ve "Renk Kodu" alanlarını ekle
+- [ ] `Admin.tsx` dosyasında "Ürün Tipi" (subCategory) için yeni tip ekleme özelliği getir
+- [ ] `Home.tsx` dosyasında ürünleri `productCode`'a göre gruplandır ve her grubun ilk ürününü göster, diğer renkleri küçük ikonlar olarak ekle
+- [ ] `ProductDetail.tsx` sayfasında aynı `productCode`'a sahip diğer ürünleri (renk varyantlarını) göster ve tıklandığında o ürünün detayına git
+- [ ] `App.tsx` dosyasındaki örnek verileri yeni yapıya göre güncelle

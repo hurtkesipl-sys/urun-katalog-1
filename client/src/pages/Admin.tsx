@@ -10,8 +10,9 @@ import { PlusCircle } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Admin() {
-  const { products, mainCategories, subCategories, addProduct, removeProduct } = useProductStore();
+  const { products, mainCategories, subCategories, addProduct, removeProduct, addSubCategory } = useProductStore();
   const [isAdding, setIsAdding] = useState(false);
+  const [newSubCategory, setNewSubCategory] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -21,10 +22,10 @@ export default function Admin() {
     imageUrl: "",
     mainCategory: "",
     subCategory: "",
-    colors: [] as string[],
+    productCode: "",
+    colorCode: "",
   });
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [newColor, setNewColor] = useState("#000000");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -47,7 +48,7 @@ export default function Admin() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.priceEUR || !formData.priceTRY || !formData.imageUrl || !formData.mainCategory || !formData.subCategory) {
+    if (!formData.name || !formData.priceEUR || !formData.priceTRY || !formData.imageUrl || !formData.mainCategory || !formData.subCategory || !formData.productCode || !formData.colorCode) {
       toast.error("Lütfen zorunlu alanları doldurun.");
       return;
     }
@@ -60,23 +61,22 @@ export default function Admin() {
       imageUrl: formData.imageUrl,
       mainCategory: formData.mainCategory,
       subCategory: formData.subCategory,
-      colors: formData.colors,
+      productCode: formData.productCode,
+      colorCode: formData.colorCode,
     });
 
     toast.success("Ürün başarıyla eklendi.");
-    setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: "", subCategory: "", colors: [] });
+    setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: "", subCategory: "", productCode: "", colorCode: "" });
     setImagePreview(null);
     setIsAdding(false);
   };
 
-  const handleAddColor = () => {
-    if (!formData.colors.includes(newColor)) {
-      setFormData({ ...formData, colors: [...formData.colors, newColor] });
-    }
-  };
-
-  const handleRemoveColor = (colorToRemove: string) => {
-    setFormData({ ...formData, colors: formData.colors.filter(c => c !== colorToRemove) });
+  const handleAddSubCategory = () => {
+    if (!newSubCategory.trim()) return;
+    addSubCategory(newSubCategory.trim());
+    setFormData({ ...formData, subCategory: newSubCategory.trim() });
+    setNewSubCategory("");
+    toast.success("Ürün tipi eklendi.");
   };
 
   const handleDelete = (id: string) => {
@@ -107,8 +107,37 @@ export default function Admin() {
                     id="name"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="Örn: İskandinav Ahşap Sandalye"
+                    placeholder="Örn: İtalyan İpek Elbise"
                   />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="productCode">Ürün Kodu *</Label>
+                    <Input
+                      id="productCode"
+                      value={formData.productCode}
+                      onChange={(e) => setFormData({ ...formData, productCode: e.target.value })}
+                      placeholder="Örn: ELB-001"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="colorCode">Renk Kodu *</Label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="color"
+                        id="colorCode"
+                        value={formData.colorCode || "#000000"}
+                        onChange={(e) => setFormData({ ...formData, colorCode: e.target.value })}
+                        className="h-9 w-12 rounded cursor-pointer border-0 p-0"
+                      />
+                      <Input
+                        value={formData.colorCode}
+                        onChange={(e) => setFormData({ ...formData, colorCode: e.target.value })}
+                        placeholder="#000000"
+                        className="flex-1"
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="imageFile">Ürün Görseli *</Label>
@@ -169,17 +198,28 @@ export default function Admin() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="subCategory">Ürün Tipi *</Label>
-                  <select
-                    id="subCategory"
-                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                    value={formData.subCategory}
-                    onChange={(e) => setFormData({ ...formData, subCategory: e.target.value })}
-                  >
-                    <option value="" disabled>Ürün Tipi Seçin</option>
-                    {subCategories.map((cat) => (
-                      <option key={cat} value={cat}>{cat}</option>
-                    ))}
-                  </select>
+                  <div className="flex gap-2">
+                    <select
+                      id="subCategory"
+                      className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                      value={formData.subCategory}
+                      onChange={(e) => setFormData({ ...formData, subCategory: e.target.value })}
+                    >
+                      <option value="" disabled>Ürün Tipi Seçin</option>
+                      {subCategories.map((cat) => (
+                        <option key={cat} value={cat}>{cat}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex gap-2 mt-2">
+                    <Input
+                      placeholder="Yeni ürün tipi ekle"
+                      value={newSubCategory}
+                      onChange={(e) => setNewSubCategory(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddSubCategory())}
+                    />
+                    <Button type="button" variant="outline" onClick={handleAddSubCategory}>Ekle</Button>
+                  </div>
                 </div>
               </div>
               <div className="space-y-2">
@@ -192,43 +232,7 @@ export default function Admin() {
                   rows={4}
                 />
               </div>
-              <div className="space-y-2">
-                <Label>Renk Varyantları</Label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={newColor}
-                    onChange={(e) => setNewColor(e.target.value)}
-                    className="h-10 w-10 rounded cursor-pointer border-0 p-0"
-                  />
-                  <Button type="button" variant="outline" onClick={handleAddColor}>
-                    Renk Ekle
-                  </Button>
-                </div>
-                {formData.colors.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {formData.colors.map((color) => (
-                      <div 
-                        key={color} 
-                        className="flex items-center gap-1 bg-muted px-2 py-1 rounded-full border border-border"
-                      >
-                        <div 
-                          className="w-4 h-4 rounded-full border border-border/50" 
-                          style={{ backgroundColor: color }}
-                        />
-                        <span className="text-xs text-muted-foreground">{color}</span>
-                        <button 
-                          type="button" 
-                          onClick={() => handleRemoveColor(color)}
-                          className="text-muted-foreground hover:text-destructive ml-1"
-                        >
-                          &times;
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+
               <Button type="submit" className="w-full md:w-auto">
                 Ürünü Kaydet
               </Button>

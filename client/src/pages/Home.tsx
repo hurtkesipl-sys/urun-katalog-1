@@ -15,6 +15,25 @@ export default function Home() {
     return matchMain && matchSub;
   });
 
+  // Ürünleri productCode'a göre gruplandır
+  const groupedProducts = filteredProducts.reduce((acc, product) => {
+    if (!acc[product.productCode]) {
+      acc[product.productCode] = [];
+    }
+    acc[product.productCode].push(product);
+    return acc;
+  }, {} as Record<string, typeof products>);
+
+  // Her gruptan ilk ürünü al ve renk varyantlarını ekle
+  const displayProducts = Object.values(groupedProducts).map(group => {
+    const mainProduct = group[0];
+    const colors = group.map(p => p.colorCode).filter(Boolean);
+    return {
+      ...mainProduct,
+      colors: Array.from(new Set(colors)) // Benzersiz renkleri al
+    };
+  });
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
@@ -73,15 +92,14 @@ export default function Home() {
           </div>
         )}
 
-        {filteredProducts.length === 0 ? (
+        {displayProducts.length === 0 ? (
           <div className="text-center py-24 border border-dashed border-border rounded-lg bg-card/50">
             <p className="text-muted-foreground text-lg">Henüz ürün eklenmemiş.</p>
-            <p className="text-sm text-muted-foreground mt-2">Yönetim panelinden yeni ürünler ekleyebilirsiniz.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {displayProducts.map((product) => (
+              <ProductCard key={product.id} product={product as any} />
             ))}
           </div>
         )}
