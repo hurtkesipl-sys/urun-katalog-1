@@ -28,7 +28,7 @@ export default function ProductCard({ product, isAdmin, onDelete, onEdit }: Prod
         <img
           src={product.imageUrl}
           alt={product.name}
-          className="object-cover w-[70%] h-[70%] group-hover:scale-105 transition-transform duration-500"
+          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
         />
         <button 
           onClick={handleFavoriteClick}
@@ -88,7 +88,7 @@ export default function ProductCard({ product, isAdmin, onDelete, onEdit }: Prod
             </div>
           )}
         </div>
-        <h3 className="font-serif text-sm md:text-lg font-semibold mb-1 md:mb-2 line-clamp-1 md:line-clamp-2">{product.name}</h3>
+        <h3 className="font-serif text-sm md:text-lg font-semibold mb-1 md:mb-2 line-clamp-2">{product.name}</h3>
         <p className="hidden md:block text-sm text-muted-foreground line-clamp-2 mb-4">
           {product.description}
         </p>
