@@ -1,5 +1,6 @@
-- [ ] `store.ts` dosyasına `isAdmin` durumu ve `setAdmin` fonksiyonu ekle
-- [ ] `Login.tsx` sayfası oluştur (basit bir şifre kontrolü ile)
-- [ ] `App.tsx` dosyasına `/login` rotasını ekle
-- [ ] `Navbar.tsx` dosyasında "Yönetim Paneli" butonunu sadece `isAdmin` true ise göster
-- [ ] `Admin.tsx` sayfasında, eğer `isAdmin` false ise kullanıcıyı `/login` sayfasına yönlendir
+- [ ] `types.ts` dosyasına `Banner` tipi ekle
+- [ ] `store.ts` dosyasına `favorites` (string array), `banners` (Banner array) ve ilgili fonksiyonları ekle
+- [ ] `Navbar.tsx` dosyasını ortalanmış logo, İtalyan bayrağı, iki satırlı menü ve sağ üstte favoriler butonu olacak şekilde yeniden tasarla
+- [ ] `Home.tsx` dosyasına kayan banner bileşenini ekle (embla-carousel-react kullanılabilir)
+- [ ] `ProductCard.tsx` bileşenine kalp ikonu ekle ve favorilere ekleme/çıkarma işlevini bağla
+- [ ] `Admin.tsx` sayfasına banner yönetimi (ekleme/silme) bölümü ekle

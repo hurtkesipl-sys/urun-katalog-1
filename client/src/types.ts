@@ -11,3 +11,10 @@ export interface Product {
   colorCode: string;
   createdAt: number;
 }
+
+export interface Banner {
+  id: string;
+  imageUrl: string;
+  title?: string;
+  link?: string;
+}

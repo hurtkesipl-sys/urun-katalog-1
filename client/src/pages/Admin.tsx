@@ -7,12 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Admin() {
-  const { products, mainCategories, subCategories, addProduct, removeProduct, addSubCategory, isAdmin } = useProductStore();
+  const { products, mainCategories, subCategories, addProduct, removeProduct, addSubCategory, isAdmin, banners, addBanner, removeBanner } = useProductStore();
   const [isAdding, setIsAdding] = useState(false);
+  const [isAddingBanner, setIsAddingBanner] = useState(false);
   const [, setLocation] = useLocation();
 
   const [newSubCategory, setNewSubCategory] = useState("");
@@ -29,10 +30,15 @@ export default function Admin() {
     priceEUR: "",
     priceTRY: "",
     imageUrl: "",
-    mainCategory: "",
-    subCategory: "",
+    mainCategory: mainCategories[0],
+    subCategory: subCategories[0],
     productCode: "",
-    colorCode: "",
+    colorCode: "#000000",
+  });
+
+  const [bannerData, setBannerData] = useState({
+    imageUrl: "",
+    title: "",
   });
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -81,11 +87,29 @@ export default function Admin() {
   };
 
   const handleAddSubCategory = () => {
-    if (!newSubCategory.trim()) return;
-    addSubCategory(newSubCategory.trim());
-    setFormData({ ...formData, subCategory: newSubCategory.trim() });
-    setNewSubCategory("");
-    toast.success("Ürün tipi eklendi.");
+    if (newSubCategory.trim()) {
+      addSubCategory(newSubCategory.trim());
+      setFormData({ ...formData, subCategory: newSubCategory.trim() });
+      setNewSubCategory("");
+      toast.success("Yeni ürün tipi eklendi!");
+    }
+  };
+
+  const handleAddBanner = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (banners.length >= 3) {
+      toast.error("En fazla 3 banner ekleyebilirsiniz!");
+      return;
+    }
+    
+    addBanner({
+      imageUrl: bannerData.imageUrl,
+      title: bannerData.title || undefined,
+    });
+    
+    setBannerData({ imageUrl: "", title: "" });
+    setIsAddingBanner(false);
+    toast.success("Banner başarıyla eklendi!");
   };
 
   const handleDelete = (id: string) => {
@@ -96,14 +120,75 @@ export default function Admin() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
-      <main className="flex-1 container py-12">
+      <main className="flex-1 container py-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="font-serif text-3xl font-bold text-foreground">Yönetim Paneli</h1>
-          <Button onClick={() => setIsAdding(!isAdding)} className="gap-2">
-            <PlusCircle className="h-4 w-4" />
-            {isAdding ? "İptal" : "Yeni Ürün Ekle"}
-          </Button>
+          <h1 className="font-serif text-3xl font-bold">Yönetim Paneli</h1>
+          <div className="flex gap-4">
+            <Button variant="outline" onClick={() => setIsAddingBanner(!isAddingBanner)}>
+              <PlusCircle className="mr-2 h-4 w-4" />
+              {isAddingBanner ? "İptal" : "Banner Yönetimi"}
+            </Button>
+            <Button onClick={() => setIsAdding(!isAdding)}>
+              <PlusCircle className="mr-2 h-4 w-4" />
+              {isAdding ? "İptal" : "Yeni Ürün Ekle"}
+            </Button>
+          </div>
         </div>
+
+        {isAddingBanner && (
+          <div className="bg-card border border-border rounded-xl p-6 mb-8 shadow-sm">
+            <h2 className="font-serif text-xl font-semibold mb-6">Banner Yönetimi (Maksimum 3)</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              {banners.map((banner) => (
+                <div key={banner.id} className="relative rounded-lg overflow-hidden border border-border aspect-video">
+                  <img src={banner.imageUrl} alt={banner.title || "Banner"} className="w-full h-full object-cover" />
+                  {banner.title && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                      <span className="text-white font-bold text-center px-2">{banner.title}</span>
+                    </div>
+                  )}
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    className="absolute top-2 right-2"
+                    onClick={() => removeBanner(banner.id)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+
+            {banners.length < 3 && (
+              <form onSubmit={handleAddBanner} className="space-y-6 border-t border-border pt-6">
+                <h3 className="font-medium">Yeni Banner Ekle</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="bannerImage">Görsel URL</Label>
+                    <Input
+                      id="bannerImage"
+                      value={bannerData.imageUrl}
+                      onChange={(e) => setBannerData({ ...bannerData, imageUrl: e.target.value })}
+                      placeholder="https://example.com/image.jpg"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="bannerTitle">Başlık (İsteğe Bağlı)</Label>
+                    <Input
+                      id="bannerTitle"
+                      value={bannerData.title}
+                      onChange={(e) => setBannerData({ ...bannerData, title: e.target.value })}
+                      placeholder="Yeni Sezon Koleksiyonu"
+                    />
+                  </div>
+                </div>
+                <Button type="submit">Banner Ekle</Button>
+              </form>
+            )}
+          </div>
+        )}
 
         {isAdding && (
           <div className="bg-card border border-border rounded-lg p-6 mb-12 shadow-sm">

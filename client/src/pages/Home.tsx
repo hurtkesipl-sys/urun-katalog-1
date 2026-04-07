@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useProductStore } from "@/store";
-import ProductCard from "@/components/ProductCard";
 import Navbar from "@/components/Navbar";
+import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 
 export default function Home() {
-  const { products, mainCategories, subCategories } = useProductStore();
+  const { products, mainCategories, subCategories, banners } = useProductStore();
   const [selectedMainCategory, setSelectedMainCategory] = useState<string | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
+  
+  const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000 })]);
 
   const filteredProducts = products.filter((p) => {
     const matchMain = selectedMainCategory ? p.mainCategory === selectedMainCategory : true;
@@ -37,12 +41,35 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
-      <main className="flex-1 container py-12">
-        <div className="mb-12 text-center max-w-2xl mx-auto">
-          <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4 text-foreground">
-            Toptan Giyim Koleksiyonu
-          </h1>
-          <p className="text-muted-foreground text-lg">
+      
+      {/* Kayan Banner Alanı */}
+      {banners.length > 0 && (
+        <div className="w-full mt-4 mb-8 overflow-hidden" ref={emblaRef}>
+          <div className="flex">
+            {banners.map((banner) => (
+              <div key={banner.id} className="flex-[0_0_100%] min-w-0 relative h-[400px] md:h-[500px]">
+                <img 
+                  src={banner.imageUrl} 
+                  alt={banner.title || "Banner"} 
+                  className="w-full h-full object-cover"
+                />
+                {banner.title && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                    <h2 className="text-white font-serif text-4xl md:text-6xl font-bold text-center px-4 drop-shadow-lg">
+                      {banner.title}
+                    </h2>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      
+      <main className="flex-1 container py-8">
+        <div className="text-center mb-12">
+          <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4">Toptan Giyim Koleksiyonu</h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
             İtalya'dan özenle seçilmiş, yüksek kaliteli kumaşlarla üretilen toptan giyim ürünleri.
           </p>
         </div>

@@ -1,8 +1,9 @@
 import { Product } from "@/types";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Trash2, Heart } from "lucide-react";
 import { Link } from "wouter";
+import { useProductStore } from "@/store";
 
 interface ProductCardProps {
   product: Product;
@@ -11,14 +12,31 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, isAdmin, onDelete }: ProductCardProps) {
+  const { favorites, toggleFavorite } = useProductStore();
+  const isFavorite = favorites.includes(product.productCode);
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleFavorite(product.productCode);
+  };
+
   const cardContent = (
-    <Card className="overflow-hidden group border-border/50 hover:border-border transition-all duration-300 hover:shadow-md bg-card h-full flex flex-col cursor-pointer">
+    <Card className="overflow-hidden group border-border/50 hover:border-border transition-all duration-300 hover:shadow-md bg-card h-full flex flex-col cursor-pointer relative">
       <div className="aspect-square overflow-hidden bg-muted relative">
         <img
           src={product.imageUrl}
           alt={product.name}
           className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
         />
+        <button 
+          onClick={handleFavoriteClick}
+          className="absolute top-2 left-2 p-2 bg-background/80 backdrop-blur-sm rounded-full hover:bg-background transition-colors z-10"
+        >
+          <Heart 
+            className={`w-5 h-5 transition-colors ${isFavorite ? 'fill-red-500 text-red-500' : 'text-foreground'}`} 
+          />
+        </button>
         {isAdmin && onDelete && (
           <Button
             variant="destructive"
