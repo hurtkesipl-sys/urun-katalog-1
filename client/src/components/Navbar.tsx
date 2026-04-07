@@ -90,16 +90,7 @@ export default function Navbar() {
             <Link href="/?category=Etek" className="hover:text-primary transition-colors">ETEK</Link>
           </div>
           
-          {/* İnce Ayırıcı Çizgi */}
-          <div className="w-full max-w-3xl h-px bg-border/50 my-1"></div>
-          
-          {/* Alt Menü: Kumaş Tipleri */}
-          <div className="flex flex-wrap justify-center gap-8 text-xs font-medium text-muted-foreground tracking-wider">
-            <Link href="/?fabric=Keten" className="hover:text-foreground transition-colors">KETEN</Link>
-            <Link href="/?fabric=İpek" className="hover:text-foreground transition-colors">İPEK</Link>
-            <Link href="/?fabric=Pamuk" className="hover:text-foreground transition-colors">PAMUK</Link>
-            <Link href="/?fabric=Viskon" className="hover:text-foreground transition-colors">VİSKON</Link>
-          </div>
+
         </div>
 
         {/* Mobil Menü (Açılır Kapanır) */}
@@ -115,13 +106,7 @@ export default function Navbar() {
               <Link href="/?category=Gömlek" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">GÖMLEK</Link>
               <Link href="/?category=Pantolon" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">PANTOLON</Link>
               <Link href="/?category=Etek" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">ETEK</Link>
-              <div className="w-1/2 h-px bg-border/50 my-1"></div>
-              <div className="flex justify-center gap-6 text-xs text-muted-foreground w-full py-2">
-                <Link href="/?fabric=Keten" onClick={toggleMobileMenu}>KETEN</Link>
-                <Link href="/?fabric=İpek" onClick={toggleMobileMenu}>İPEK</Link>
-                <Link href="/?fabric=Pamuk" onClick={toggleMobileMenu}>PAMUK</Link>
-                <Link href="/?fabric=Viskon" onClick={toggleMobileMenu}>VİSKON</Link>
-              </div>
+
               <div className="w-1/2 h-px bg-border/50 my-1"></div>
               <div className="flex justify-center gap-6 text-sm font-medium w-full py-2">
                 <Link href="/about" onClick={toggleMobileMenu} className="hover:text-primary transition-colors">Hakkımızda</Link>
