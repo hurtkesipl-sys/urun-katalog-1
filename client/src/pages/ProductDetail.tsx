@@ -126,12 +126,13 @@ export default function ProductDetail() {
                   {colorVariants.map((variant) => (
                     <Link key={variant.id} href={`/product/${variant.id}`}>
                       <div 
-                        className={`w-10 h-10 rounded-full border-2 shadow-sm cursor-pointer hover:scale-110 transition-transform ${
+                        className={`w-12 h-16 rounded-md overflow-hidden border-2 shadow-sm cursor-pointer hover:scale-105 transition-transform ${
                           variant.id === product.id ? 'border-primary ring-2 ring-primary/20' : 'border-border'
                         }`}
-                        style={{ backgroundColor: variant.colorCode || '#000000' }}
-                        title={variant.name}
-                      />
+                        title={variant.colorCode || variant.name}
+                      >
+                        <img src={variant.imageUrl} alt={variant.colorCode || variant.name} className="w-full h-full object-cover" />
+                      </div>
                     </Link>
                   ))}
                 </div>

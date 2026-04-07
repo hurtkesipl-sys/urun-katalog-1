@@ -36,7 +36,7 @@ export default function Admin() {
     mainCategory: mainCategories[0],
     subCategory: subCategories[0],
     productCode: "",
-    colorCode: "#000000",
+    colorCode: "",
   });
 
   const [bannerData, setBannerData] = useState({
@@ -137,7 +137,7 @@ export default function Admin() {
       toast.success("Ürün başarıyla eklendi.");
     }
 
-    setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: mainCategories[0], subCategory: subCategories[0], productCode: "", colorCode: "#000000" });
+    setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: mainCategories[0], subCategory: subCategories[0], productCode: "", colorCode: "" });
     setImagePreview(null);
     setIsAdding(false);
     setEditingProductId(null);
@@ -155,7 +155,7 @@ export default function Admin() {
         mainCategory: productToEdit.mainCategory,
         subCategory: productToEdit.subCategory,
         productCode: productToEdit.productCode,
-        colorCode: productToEdit.colorCode || "#000000",
+        colorCode: productToEdit.colorCode || "",
       });
       setImagePreview(productToEdit.imageUrl);
       setEditingProductId(id);
@@ -216,7 +216,7 @@ export default function Admin() {
               if (isAdding) {
                 setIsAdding(false);
                 setEditingProductId(null);
-                setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: mainCategories[0], subCategory: subCategories[0], productCode: "", colorCode: "#000000" });
+                setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: mainCategories[0], subCategory: subCategories[0], productCode: "", colorCode: "" });
                 setImagePreview(null);
               } else {
                 setIsAdding(true);
@@ -419,22 +419,13 @@ export default function Admin() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="colorCode">Renk Kodu *</Label>
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="color"
-                        id="colorCode"
-                        value={formData.colorCode || "#000000"}
-                        onChange={(e) => setFormData({ ...formData, colorCode: e.target.value })}
-                        className="h-9 w-12 rounded cursor-pointer border-0 p-0"
-                      />
-                      <Input
-                        value={formData.colorCode}
-                        onChange={(e) => setFormData({ ...formData, colorCode: e.target.value })}
-                        placeholder="#000000"
-                        className="flex-1"
-                      />
-                    </div>
+                    <Label htmlFor="colorCode">Renk İsmi *</Label>
+                    <Input
+                      id="colorCode"
+                      value={formData.colorCode}
+                      onChange={(e) => setFormData({ ...formData, colorCode: e.target.value })}
+                      placeholder="Örn: Siyah, Kırmızı, Mavi"
+                    />
                   </div>
                 </div>
                 <div className="space-y-2">

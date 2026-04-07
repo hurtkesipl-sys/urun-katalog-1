@@ -79,21 +79,12 @@ export default function ProductCard({ product, isAdmin, onDelete, onEdit }: Prod
               {product.subCategory}
             </span>
           </div>
-          {(product as any).colors && (product as any).colors.length > 0 && (
-            <div className="flex -space-x-1">
-              {(product as any).colors.slice(0, 3).map((color: string, i: number) => (
-                <div 
-                  key={i}
-                  className="w-3 h-3 rounded-full border border-border shadow-sm"
-                  style={{ backgroundColor: color }}
-                  title="Renk seçenekleri mevcut"
-                />
-              ))}
-              {(product as any).colors.length > 3 && (
-                <div className="w-3 h-3 rounded-full bg-muted border border-border flex items-center justify-center text-[8px] font-bold z-10">
-                  +
-                </div>
-              )}
+          {product.colorCode && (
+            <div className="flex items-center gap-1">
+              <div className="w-4 h-4 rounded-full overflow-hidden border border-border">
+                <img src={product.imageUrl} alt={product.colorCode} className="w-full h-full object-cover" />
+              </div>
+              <span className="text-[10px] text-muted-foreground">{product.colorCode}</span>
             </div>
           )}
         </div>
