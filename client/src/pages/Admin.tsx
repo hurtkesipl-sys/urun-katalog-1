@@ -65,7 +65,19 @@ export default function Admin() {
 
   const handleUpdateContact = (e: React.FormEvent) => {
     e.preventDefault();
-    updateContactInfo(contactData);
+    
+    // Harita URL'sini kontrol et ve gerekirse iframe içinden src'yi çıkar
+    let finalMapUrl = contactData.mapUrl;
+    if (finalMapUrl.includes('<iframe') && finalMapUrl.includes('src="')) {
+      const srcMatch = finalMapUrl.match(/src="([^"]+)"/);
+      if (srcMatch && srcMatch[1]) {
+        finalMapUrl = srcMatch[1];
+      }
+    }
+    
+    const updatedContactData = { ...contactData, mapUrl: finalMapUrl };
+    updateContactInfo(updatedContactData);
+    setContactData(updatedContactData);
     setIsEditingContact(false);
     toast.success("İletişim bilgileri güncellendi!");
   };
@@ -238,11 +250,12 @@ export default function Admin() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="contactMap">Google Haritalar Embed URL</Label>
+                  <Label htmlFor="contactMap">Google Haritalar Embed Kodu veya URL'si</Label>
                   <Input
                     id="contactMap"
                     value={contactData.mapUrl}
                     onChange={(e) => setContactData({ ...contactData, mapUrl: e.target.value })}
+                    placeholder='<iframe src="..." veya sadece link'
                     required
                   />
                 </div>

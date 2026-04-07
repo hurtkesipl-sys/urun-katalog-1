@@ -1,2 +1,1 @@
-- [ ] `Admin.tsx` sayfasındaki İletişim formunda adres ve harita konumu (mapUrl) alanlarının doğru şekilde güncellendiğinden emin ol
-- [ ] `Contact.tsx` sayfasında harita iframe'inin doğru çalıştığını kontrol et
+- [ ] `Admin.tsx` sayfasındaki İletişim formunda `mapUrl` alanına girilen metni kontrol et. Eğer `<iframe` ile başlıyorsa içindeki `src` değerini otomatik olarak çıkarıp kaydet.
