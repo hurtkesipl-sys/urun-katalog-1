@@ -69,8 +69,8 @@ export default function ProductCard({ product, isAdmin, onDelete, onEdit }: Prod
           </div>
         )}
       </div>
-      <CardContent className="p-5 flex-1">
-        <div className="flex items-center justify-between mb-2">
+      <CardContent className="p-3 md:p-5 flex-1 flex flex-col justify-between">
+        <div className="hidden md:flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
               {product.mainCategory}
@@ -88,21 +88,19 @@ export default function ProductCard({ product, isAdmin, onDelete, onEdit }: Prod
             </div>
           )}
         </div>
-        <h3 className="font-serif text-lg font-semibold mb-2 line-clamp-1">{product.name}</h3>
-        <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+        <h3 className="font-serif text-sm md:text-lg font-semibold mb-1 md:mb-2 line-clamp-1 md:line-clamp-2">{product.name}</h3>
+        <p className="hidden md:block text-sm text-muted-foreground line-clamp-2 mb-4">
           {product.description}
         </p>
-      </CardContent>
-      <CardFooter className="p-5 pt-0 flex items-center justify-between mt-auto">
-        <div className="flex flex-col">
-          <span className="text-lg font-medium text-foreground">
+        <div className="flex flex-col mt-auto pt-2 md:pt-0">
+          <span className="text-base md:text-lg font-medium text-foreground">
             €{product.priceEUR.toFixed(2)}
           </span>
-          <span className="text-sm text-muted-foreground">
+          <span className="text-xs md:text-sm text-muted-foreground">
             ₺{product.priceTRY.toFixed(2)}
           </span>
         </div>
-      </CardFooter>
+      </CardContent>
     </Card>
   );
 
