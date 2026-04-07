@@ -56,7 +56,7 @@ export default function Navbar() {
             <a href={contactInfo.instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
               <Instagram className="w-4 h-4" />
             </a>
-            <a href={`https://api.whatsapp.com/send?phone=${contactInfo.whatsappNumber.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+            <a href={`https://wa.me/${contactInfo.whatsappNumber.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
               <SiWhatsapp className="w-4 h-4" />
             </a>
             <a href={contactInfo.telegramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
