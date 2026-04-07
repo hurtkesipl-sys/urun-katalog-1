@@ -40,13 +40,13 @@ export default function Navbar() {
 
   return (
     <nav className={`border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
-      <div className="container flex flex-col items-center py-4 relative">
+      <div className="container flex flex-col items-center py-2 md:py-4 relative">
         {/* Üst Kısım: Logo ve Sağ Üst Menü */}
-        <div className="w-full flex justify-between items-center mb-4">
+        <div className="w-full flex justify-between items-center mb-2 md:mb-4">
           {/* Mobil Menü Butonu (Sadece mobilde görünür) */}
-          <div className="w-24 flex md:hidden">
-            <button onClick={toggleMobileMenu} className="p-2 -ml-2 text-foreground">
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          <div className="w-auto md:w-24 flex md:hidden">
+            <button onClick={toggleMobileMenu} className="p-1 md:p-2 -ml-1 md:-ml-2 text-foreground">
+              {isMobileMenuOpen ? <X className="w-5 h-5 md:w-6 md:h-6" /> : <Menu className="w-5 h-5 md:w-6 md:h-6" />}
             </button>
           </div>
           
@@ -54,13 +54,13 @@ export default function Navbar() {
           <div className="w-24 hidden md:block"></div>
           
           {/* Logo ve İtalyan Bayrağı */}
-          <div className="flex flex-col items-center">
-            <Link href="/" className="flex items-center gap-2 mb-1">
-              <span className="font-serif text-3xl font-bold tracking-tight">Moda İtalya</span>
-              <span className="text-muted-foreground text-sm font-medium mt-2">Toptan</span>
+          <div className="flex flex-col items-start md:items-center ml-2 md:ml-0 flex-1 md:flex-none">
+            <Link href="/" className="flex items-baseline md:items-center gap-1 md:gap-2 mb-0.5 md:mb-1">
+              <span className="font-serif text-xl md:text-3xl font-bold tracking-tight whitespace-nowrap">Moda İtalya</span>
+              <span className="text-muted-foreground text-[10px] md:text-sm font-medium md:mt-2">Toptan</span>
             </Link>
             {/* İtalyan Bayrağı Çizgisi */}
-            <div className="flex w-16 h-1 rounded-full overflow-hidden">
+            <div className="flex w-12 md:w-16 h-0.5 md:h-1 rounded-full overflow-hidden">
               <div className="w-1/3 bg-green-600"></div>
               <div className="w-1/3 bg-white border-y border-gray-200"></div>
               <div className="w-1/3 bg-red-600"></div>
@@ -68,17 +68,17 @@ export default function Navbar() {
           </div>
 
           {/* Sağ Üst Menü (Favoriler, Hakkımızda, İletişim ve Admin) */}
-          <div className="flex items-center gap-4 w-24 justify-end">
-            <div className="flex flex-col items-end gap-2">
+          <div className="flex items-center gap-2 md:gap-4 w-auto md:w-24 justify-end">
+            <div className="flex flex-col items-end gap-1 md:gap-2">
               <Link href="/favorites" className="relative text-muted-foreground hover:text-foreground transition-colors self-end">
-                <Heart className="w-6 h-6" />
+                <Heart className="w-5 h-5 md:w-6 md:h-6" />
                 {favorites.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                  <span className="absolute -top-1.5 -right-1.5 md:-top-2 md:-right-2 bg-red-500 text-white text-[8px] md:text-[10px] font-bold w-3.5 h-3.5 md:w-4 md:h-4 rounded-full flex items-center justify-center">
                     {favorites.length}
                   </span>
                 )}
               </Link>
-              <div className="flex gap-3 text-[10px] md:text-xs font-medium text-muted-foreground">
+              <div className="hidden md:flex gap-3 text-xs font-medium text-muted-foreground">
                 <Link href="/about" className="hover:text-foreground transition-colors">Hakkımızda</Link>
                 <Link href="/contact" className="hover:text-foreground transition-colors">İletişim</Link>
               </div>
