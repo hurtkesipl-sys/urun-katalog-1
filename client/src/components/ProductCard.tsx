@@ -113,7 +113,7 @@ export default function ProductCard({ product, isAdmin, onDelete, onEdit }: Prod
           <a 
             href={getWhatsAppLink(
               contactInfo.whatsappNumber, 
-              encodeURIComponent(`Merhaba, bu ürünün stoğunu sormak istiyorum:\n\nÜrün Adı: ${product.name}\nÜrün Kodu: ${product.productCode}\nRenk: ${product.colorCode}\nFiyat: ₺${product.priceTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\n\nÜrün Görseli: ${product.imageUrl}\n\nBu ürün hakkında bilgi alabilir miyim?`)
+              encodeURIComponent(`${product.imageUrl}\n\nMerhaba, bu ürünün stoğunu sormak istiyorum:\n\nÜrün Adı: ${product.name}\nÜrün Kodu: ${product.productCode}\nRenk: ${product.colorCode}\nFiyat: ₺${product.priceTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`)
             )}
             target="_blank" 
             rel="noopener noreferrer"

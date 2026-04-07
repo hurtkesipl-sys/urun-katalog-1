@@ -23,8 +23,8 @@ export default function ProductDetail() {
   const getMessageText = () => {
     if (!product) return "";
     // iOS cihazlarda WhatsApp'ın linki önizlemeye çevirirken metni yutmasını engellemek için
-    // linkin altına ekstra bir metin ekliyoruz. Böylece link mesajın en sonunda kalmıyor.
-    return encodeURIComponent(`Merhaba, bu ürünün stoğunu sormak istiyorum:\n\nÜrün Adı: ${product.name}\nÜrün Kodu: ${product.productCode}\nRenk: ${product.colorCode}\nFiyat: ₺${product.priceTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\n\nÜrün Görseli: ${product.imageUrl}\n\nBu ürün hakkında bilgi alabilir miyim?`);
+    // görsel linkini mesajın en başına alıyoruz.
+    return encodeURIComponent(`${product.imageUrl}\n\nMerhaba, bu ürünün stoğunu sormak istiyorum:\n\nÜrün Adı: ${product.name}\nÜrün Kodu: ${product.productCode}\nRenk: ${product.colorCode}\nFiyat: ₺${product.priceTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
   };
 
   if (!product) {
