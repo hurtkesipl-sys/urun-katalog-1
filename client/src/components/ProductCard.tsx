@@ -2,8 +2,10 @@ import { Product } from "@/types";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trash2, Heart, Edit, PlayCircle } from "lucide-react";
+import { SiWhatsapp } from "@icons-pack/react-simple-icons";
 import { Link } from "wouter";
 import { useProductStore } from "@/store";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 
 interface ProductCardProps {
   product: Product;
@@ -13,7 +15,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, isAdmin, onDelete, onEdit }: ProductCardProps) {
-  const { favorites, toggleFavorite } = useProductStore();
+  const { favorites, toggleFavorite, contactInfo } = useProductStore();
   const isFavorite = favorites.includes(product.productCode);
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
@@ -104,6 +106,23 @@ export default function ProductCard({ product, isAdmin, onDelete, onEdit }: Prod
           <span className="text-[10px] md:text-xs text-muted-foreground mt-0">
             €{product.priceEUR.toFixed(2)}
           </span>
+        </div>
+        
+        {/* Stok Sor Butonu */}
+        <div className="mt-3 pt-2 border-t border-border/50">
+          <a 
+            href={getWhatsAppLink(
+              contactInfo.whatsappNumber, 
+              encodeURIComponent(`Merhaba, bu ürünün stoğunu sormak istiyorum:\n\nÜrün Adı: ${product.name}\nÜrün Kodu: ${product.productCode}\nRenk: ${product.colorCode}\nFiyat: ₺${product.priceTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\n\n${product.imageUrl}`)
+            )}
+            target="_blank" 
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center justify-center gap-1.5 w-full bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#128C7E] py-1.5 px-2 rounded transition-colors font-medium text-xs"
+          >
+            <SiWhatsapp className="w-3.5 h-3.5" />
+            Stok Sor
+          </a>
         </div>
       </CardContent>
     </Card>

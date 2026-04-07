@@ -1,14 +1,11 @@
 export const getWhatsAppLink = (phoneNumber: string, message?: string) => {
   const cleanPhone = phoneNumber.replace(/[^0-9]/g, '');
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   
-  if (isMobile) {
-    return message 
-      ? `whatsapp://send?phone=${cleanPhone}&text=${message}`
-      : `whatsapp://send?phone=${cleanPhone}`;
-  }
+  // En güvenilir ve tüm cihazlarda (iOS, Android, Masaüstü) çalışan yöntem wa.me kullanmaktır.
+  // wa.me, cihazın türüne göre otomatik olarak uygulamayı veya web sürümünü açar.
+  // whatsapp:// veya web.whatsapp.com doğrudan kullanıldığında bazı tarayıcılarda veya iOS'ta sorun çıkabiliyor.
   
   return message
-    ? `https://web.whatsapp.com/send?phone=${cleanPhone}&text=${message}`
-    : `https://web.whatsapp.com/send?phone=${cleanPhone}`;
+    ? `https://wa.me/${cleanPhone}?text=${message}`
+    : `https://wa.me/${cleanPhone}`;
 };

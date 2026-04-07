@@ -205,6 +205,20 @@ export default function ProductDetail() {
                 </div>
               </div>
             )}
+
+            {/* Masaüstü Stok Sor Butonu */}
+            <div className="hidden md:block pt-6 border-t border-border">
+              <h3 className="text-lg font-semibold mb-4">Bu Ürünle İlgileniyor Musunuz?</h3>
+              <a 
+                href={getWhatsAppLink(contactInfo.whatsappNumber, getMessageText())}
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white py-3 px-6 rounded-md transition-colors font-medium text-base w-full sm:w-auto"
+              >
+                <SiWhatsapp className="w-5 h-5" />
+                WhatsApp'tan Stok Sor
+              </a>
+            </div>
           </div>
         </div>
       </main>
