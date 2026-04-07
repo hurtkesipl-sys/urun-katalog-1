@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trash2, Heart, Edit, PlayCircle } from "lucide-react";
 import { SiWhatsapp } from "@icons-pack/react-simple-icons";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useProductStore } from "@/store";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
@@ -16,6 +16,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, isAdmin, onDelete, onEdit }: ProductCardProps) {
   const { favorites, toggleFavorite, contactInfo } = useProductStore();
+  const [, setLocation] = useLocation();
   const isFavorite = favorites.includes(product.productCode);
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
@@ -27,7 +28,7 @@ export default function ProductCard({ product, isAdmin, onDelete, onEdit }: Prod
   const cardContent = (
     <Card 
       className="overflow-hidden group border-border/50 hover:border-border transition-all duration-300 hover:shadow-md bg-card h-full flex flex-col cursor-pointer relative"
-      onClick={() => window.location.href = `/product/${product.id}`}
+      onClick={() => setLocation(`/product/${product.id}`)}
     >
       <div className="aspect-[3/4] overflow-hidden bg-muted relative flex items-center justify-center">
         <img
