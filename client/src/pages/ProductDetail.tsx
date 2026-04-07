@@ -42,9 +42,9 @@ export default function ProductDetail() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
           {/* Sol Taraf: Resim */}
-          <div className="rounded-xl overflow-hidden border border-border bg-card shadow-sm relative group flex items-center justify-center p-4 md:p-8">
+          <div className="relative group flex items-center justify-center">
             <div 
-              className="aspect-[3/4] relative w-full max-w-md cursor-zoom-in"
+              className="aspect-[3/4] relative w-full max-w-md cursor-zoom-in overflow-hidden rounded-xl"
               onClick={() => setIsZoomed(true)}
             >
               <img 
