@@ -104,10 +104,10 @@ export default function ProductDetail() {
               </h1>
               <div className="flex items-baseline gap-3">
                 <span className="text-xl md:text-2xl font-bold text-primary">
-                  €{product.priceEUR.toFixed(2)}
+                  ₺{product.priceTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </span>
                 <span className="text-base md:text-lg text-muted-foreground">
-                  (₺{product.priceTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })})
+                  (€{product.priceEUR.toFixed(2)})
                 </span>
               </div>
             </div>

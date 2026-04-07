@@ -94,10 +94,10 @@ export default function ProductCard({ product, isAdmin, onDelete, onEdit }: Prod
         </p>
         <div className="flex flex-col mt-auto">
           <span className="text-sm md:text-base font-medium text-foreground leading-none">
-            €{product.priceEUR.toFixed(2)}
+            ₺{product.priceTRY.toFixed(2)}
           </span>
           <span className="text-[10px] md:text-xs text-muted-foreground mt-0">
-            ₺{product.priceTRY.toFixed(2)}
+            €{product.priceEUR.toFixed(2)}
           </span>
         </div>
       </CardContent>
