@@ -22,7 +22,8 @@ export default function ProductDetail() {
 
   const getMessageText = () => {
     if (!product) return "";
-    return encodeURIComponent(`Merhaba, bu ürünün stoğunu sormak istiyorum:\n\nÜrün Adı: ${product.name}\nÜrün Kodu: ${product.productCode}\nRenk: ${product.colorCode}\nFiyat: ₺${product.priceTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\nGörsel: ${product.imageUrl}`);
+    // WhatsApp'ın görseli önizleme olarak algılayabilmesi için linkin mesajın en sonunda ve ayrı bir satırda olması önemlidir.
+    return encodeURIComponent(`Merhaba, bu ürünün stoğunu sormak istiyorum:\n\nÜrün Adı: ${product.name}\nÜrün Kodu: ${product.productCode}\nRenk: ${product.colorCode}\nFiyat: ₺${product.priceTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\n\n${product.imageUrl}`);
   };
 
   if (!product) {
