@@ -1,6 +1,20 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, StateStorage, createJSONStorage } from 'zustand/middleware';
+import { get, set, del } from 'idb-keyval';
 import { Product, Banner, AboutInfo, ContactInfo } from './types';
+
+// IndexedDB storage adapter for Zustand
+const storage: StateStorage = {
+  getItem: async (name: string): Promise<string | null> => {
+    return (await get(name)) || null;
+  },
+  setItem: async (name: string, value: string): Promise<void> => {
+    await set(name, value);
+  },
+  removeItem: async (name: string): Promise<void> => {
+    await del(name);
+  },
+};
 
 interface ProductStore {
   products: Product[];
@@ -120,6 +134,7 @@ export const useProductStore = create<ProductStore>()(
     }),
     {
       name: 'product-storage',
+      storage: createJSONStorage(() => storage),
     }
   )
 );
