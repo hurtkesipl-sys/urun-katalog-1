@@ -22,9 +22,10 @@ export default function ProductDetail() {
 
   const getMessageText = () => {
     if (!product) return "";
-    // iOS cihazlarda WhatsApp'ın linki önizlemeye çevirirken metni yutmasını engellemek için
-    // görsel linkini mesajın en başına alıyoruz.
-    return encodeURIComponent(`${product.imageUrl}\n\nMerhaba, bu ürünün stoğunu sormak istiyorum:\n\nÜrün Adı: ${product.name}\nÜrün Kodu: ${product.productCode}\nRenk: ${product.colorCode}\nFiyat: ₺${product.priceTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+    // iOS cihazlarda WhatsApp'ın görsel linkini önizlemeye çevirirken metni yutmasını engellemek için
+    // görsel linkini tamamen çıkarıp yerine ürünün web sayfasının linkini ekliyoruz.
+    const productUrl = `${window.location.origin}/product/${product.id}`;
+    return encodeURIComponent(`Merhaba, bu ürünün stoğunu sormak istiyorum:\n\nÜrün Adı: ${product.name}\nÜrün Kodu: ${product.productCode}\nRenk: ${product.colorCode}\nFiyat: ₺${product.priceTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\n\nÜrün Linki: ${productUrl}`);
   };
 
   if (!product) {
