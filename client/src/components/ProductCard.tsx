@@ -25,7 +25,10 @@ export default function ProductCard({ product, isAdmin, onDelete, onEdit }: Prod
   };
 
   const cardContent = (
-    <Card className="overflow-hidden group border-border/50 hover:border-border transition-all duration-300 hover:shadow-md bg-card h-full flex flex-col cursor-pointer relative">
+    <Card 
+      className="overflow-hidden group border-border/50 hover:border-border transition-all duration-300 hover:shadow-md bg-card h-full flex flex-col cursor-pointer relative"
+      onClick={() => window.location.href = `/product/${product.id}`}
+    >
       <div className="aspect-[3/4] overflow-hidden bg-muted relative flex items-center justify-center">
         <img
           src={product.imageUrl}
@@ -128,9 +131,5 @@ export default function ProductCard({ product, isAdmin, onDelete, onEdit }: Prod
     </Card>
   );
 
-  return (
-    <Link href={`/product/${product.id}`}>
-      {cardContent}
-    </Link>
-  );
+  return cardContent;
 }
