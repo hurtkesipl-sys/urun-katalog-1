@@ -3,12 +3,13 @@ import { useProductStore } from "@/store";
 import { useRoute, Link } from "wouter";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ZoomIn, X } from "lucide-react";
+import { ArrowLeft, ZoomIn, X, Send } from "lucide-react";
+import { SiWhatsapp } from "@icons-pack/react-simple-icons";
 
 export default function ProductDetail() {
   const [match, params] = useRoute("/product/:id");
   const [isZoomed, setIsZoomed] = useState(false);
-  const { products } = useProductStore();
+  const { products, contactInfo } = useProductStore();
   
   const product = match ? products.find(p => p.id === params.id) : null;
   
@@ -16,6 +17,11 @@ export default function ProductDetail() {
   const colorVariants = product 
     ? products.filter(p => p.productCode === product.productCode)
     : [];
+
+  const getMessageText = () => {
+    if (!product) return "";
+    return encodeURIComponent(`Merhaba, bu ürünün stoğunu sormak istiyorum:\n\nÜrün Adı: ${product.name}\nÜrün Kodu: ${product.productCode}\nRenk: ${product.colorCode}\nFiyat: ₺${product.priceTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\nGörsel: ${product.imageUrl}`);
+  };
 
   if (!product) {
     return (
@@ -141,6 +147,34 @@ export default function ProductDetail() {
           </div>
         </div>
       </main>
+
+      {/* Mobil Alt Bar (Stok Sor) */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 z-50 flex items-center justify-between gap-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+        <span className="font-semibold text-sm whitespace-nowrap">Stok Sor:</span>
+        <div className="flex gap-2 flex-1">
+          <a 
+            href={`https://wa.me/${contactInfo.whatsappNumber}?text=${getMessageText()}`}
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white py-2.5 px-4 rounded-md transition-colors font-medium text-sm"
+          >
+            <SiWhatsapp className="w-4 h-4" />
+            WhatsApp
+          </a>
+          <a 
+            href={`${contactInfo.telegramUrl}?text=${getMessageText()}`}
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex-1 flex items-center justify-center gap-2 bg-[#0088cc] hover:bg-[#0077b5] text-white py-2.5 px-4 rounded-md transition-colors font-medium text-sm"
+          >
+            <Send className="w-4 h-4" />
+            Telegram
+          </a>
+        </div>
+      </div>
+      
+      {/* Mobilde alt barın içeriği kapatmaması için boşluk */}
+      <div className="h-20 md:hidden"></div>
     </div>
   );
 }
