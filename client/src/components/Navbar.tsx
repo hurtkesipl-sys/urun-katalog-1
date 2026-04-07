@@ -1,17 +1,29 @@
+import { useState } from "react";
 import { Link } from "wouter";
 import { useProductStore } from "@/store";
 import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
+import { Heart, Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const { isAdmin, setAdmin, favorites } = useProductStore();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   return (
     <nav className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
       <div className="container flex flex-col items-center py-4 relative">
         {/* Üst Kısım: Logo ve Sağ Üst Menü */}
         <div className="w-full flex justify-between items-center mb-4">
-          <div className="w-24"></div> {/* Sol boşluk dengeleyici */}
+          {/* Mobil Menü Butonu (Sadece mobilde görünür) */}
+          <div className="w-24 flex md:hidden">
+            <button onClick={toggleMobileMenu} className="p-2 -ml-2 text-foreground">
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+          
+          {/* Sol boşluk dengeleyici (Sadece masaüstünde görünür) */}
+          <div className="w-24 hidden md:block"></div>
           
           {/* Logo ve İtalyan Bayrağı */}
           <div className="flex flex-col items-center">
@@ -58,8 +70,8 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Alt Kısım: İki Satırlı Menü */}
-        <div className="w-full flex flex-col items-center gap-2">
+        {/* Alt Kısım: İki Satırlı Menü (Masaüstü) */}
+        <div className="w-full hidden md:flex flex-col items-center gap-2">
           {/* Üst Menü: Ürün Tipleri */}
           <div className="flex flex-wrap justify-center gap-6 text-sm font-medium tracking-wide">
             <Link href="/?filter=yenilik" className="hover:text-primary transition-colors">YENİLİK</Link>
@@ -83,6 +95,30 @@ export default function Navbar() {
             <Link href="/?fabric=Viskon" className="hover:text-foreground transition-colors">VİSKON</Link>
           </div>
         </div>
+
+        {/* Mobil Menü (Açılır Kapanır) */}
+        {isMobileMenuOpen && (
+          <div className="w-full md:hidden flex flex-col items-center gap-4 pt-4 pb-2 border-t border-border mt-2 animate-in slide-in-from-top-2">
+            <div className="flex flex-col items-center gap-3 text-sm font-medium w-full">
+              <Link href="/?filter=yenilik" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors">YENİLİK</Link>
+              <Link href="/?filter=en-iyi-satanlar" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors">EN İYİ SATANLAR</Link>
+              <div className="w-1/2 h-px bg-border/50 my-1"></div>
+              <Link href="/?category=Elbise" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors">ELBİSE</Link>
+              <Link href="/?category=Takım" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors">TAKIM</Link>
+              <Link href="/?category=Bluz" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors">BLUZ</Link>
+              <Link href="/?category=Gömlek" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors">GÖMLEK</Link>
+              <Link href="/?category=Pantolon" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors">PANTOLON</Link>
+              <Link href="/?category=Etek" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors">ETEK</Link>
+              <div className="w-1/2 h-px bg-border/50 my-1"></div>
+              <div className="flex justify-center gap-6 text-xs text-muted-foreground w-full py-2">
+                <Link href="/?fabric=Keten" onClick={toggleMobileMenu}>KETEN</Link>
+                <Link href="/?fabric=İpek" onClick={toggleMobileMenu}>İPEK</Link>
+                <Link href="/?fabric=Pamuk" onClick={toggleMobileMenu}>PAMUK</Link>
+                <Link href="/?fabric=Viskon" onClick={toggleMobileMenu}>VİSKON</Link>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );

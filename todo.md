@@ -1,2 +1,4 @@
-- [ ] `Favorites.tsx` sayfasını oluştur
-- [ ] `App.tsx` dosyasına `/favorites` rotasını ekle
+- [ ] `Navbar.tsx` bileşenine mobil cihazlar için hamburger menü (Sheet/Drawer) ekle
+- [ ] `Home.tsx` sayfasındaki banner ve grid yapılarını mobil ekranlara göre optimize et
+- [ ] `ProductDetail.tsx` sayfasındaki görsel ve metin alanlarını mobilde alt alta gelecek şekilde düzenle
+- [ ] `Admin.tsx` sayfasındaki form alanlarını ve tabloları mobil uyumlu hale getir

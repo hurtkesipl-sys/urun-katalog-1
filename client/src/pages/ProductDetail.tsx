@@ -32,13 +32,13 @@ export default function ProductDetail() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
-      <main className="flex-1 container py-12">
-        <Link href="/" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground mb-8 transition-colors">
+      <main className="flex-1 container py-6 md:py-12">
+        <Link href="/" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground mb-6 md:mb-8 transition-colors">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Kataloğa Dön
         </Link>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
           {/* Sol Taraf: Resim */}
           <div className="rounded-xl overflow-hidden border border-border bg-card shadow-sm">
             <div className="aspect-[4/5] relative">
@@ -51,7 +51,7 @@ export default function ProductDetail() {
           </div>
 
           {/* Sağ Taraf: Detaylar */}
-          <div className="flex flex-col space-y-8">
+          <div className="flex flex-col space-y-6 md:space-y-8">
             <div>
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-secondary text-secondary-foreground">
@@ -61,14 +61,14 @@ export default function ProductDetail() {
                   {product.subCategory}
                 </span>
               </div>
-              <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-4">
+              <h1 className="font-serif text-2xl md:text-4xl font-bold text-foreground mb-3 md:mb-4">
                 {product.name}
               </h1>
               <div className="flex items-baseline gap-3">
-                <span className="text-2xl font-bold text-primary">
+                <span className="text-xl md:text-2xl font-bold text-primary">
                   €{product.priceEUR.toFixed(2)}
                 </span>
-                <span className="text-lg text-muted-foreground">
+                <span className="text-base md:text-lg text-muted-foreground">
                   (₺{product.priceTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })})
                 </span>
               </div>

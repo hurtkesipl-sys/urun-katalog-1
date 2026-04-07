@@ -76,58 +76,61 @@ export default function Home() {
 
         {products.length > 0 && (
           <div className="flex flex-col items-center gap-4 mb-12">
-            <div className="flex flex-wrap justify-center gap-2">
-              <Button
+            <div className="flex flex-wrap justify-center gap-2 px-4">
+              <Button 
                 variant={selectedMainCategory === null ? "default" : "outline"}
                 onClick={() => setSelectedMainCategory(null)}
-                className="rounded-full"
+                className="rounded-full text-xs md:text-sm h-8 md:h-10"
               >
-                Tüm Kumaşlar
+                Tümü
               </Button>
-              {mainCategories.map((category) => (
+              {mainCategories.map(category => (
                 <Button
                   key={category}
                   variant={selectedMainCategory === category ? "default" : "outline"}
                   onClick={() => setSelectedMainCategory(category)}
-                  className="rounded-full"
+                  className="rounded-full text-xs md:text-sm h-8 md:h-10"
                 >
                   {category}
                 </Button>
               ))}
             </div>
-            <div className="flex flex-wrap justify-center gap-2">
-              <Button
-                variant={selectedSubCategory === null ? "default" : "outline"}
-                onClick={() => setSelectedSubCategory(null)}
-                className="rounded-full"
-                size="sm"
-              >
-                Tüm Ürünler
-              </Button>
-              {subCategories.map((category) => (
-                <Button
-                  key={category}
-                  variant={selectedSubCategory === category ? "default" : "outline"}
-                  onClick={() => setSelectedSubCategory(category)}
-                  className="rounded-full"
+            
+            {selectedMainCategory && (
+              <div className="flex flex-wrap justify-center gap-2 mt-2 px-4">
+                <Button 
+                  variant={selectedSubCategory === null ? "secondary" : "outline"}
+                  onClick={() => setSelectedSubCategory(null)}
                   size="sm"
+                  className="rounded-full text-xs md:text-sm h-7 md:h-9"
                 >
-                  {category}
+                  Tüm {selectedMainCategory}
                 </Button>
-              ))}
-            </div>
+                {subCategories.map(category => (
+                  <Button
+                    key={category}
+                    variant={selectedSubCategory === category ? "secondary" : "outline"}
+                    onClick={() => setSelectedSubCategory(category)}
+                    size="sm"
+                    className="rounded-full text-xs md:text-sm h-7 md:h-9"
+                  >
+                    {category}
+                  </Button>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
-        {displayProducts.length === 0 ? (
-          <div className="text-center py-24 border border-dashed border-border rounded-lg bg-card/50">
-            <p className="text-muted-foreground text-lg">Henüz ürün eklenmemiş.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {displayProducts.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 px-2 md:px-0">
             {displayProducts.map((product) => (
               <ProductCard key={product.id} product={product as any} />
             ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">Bu kategoride ürün bulunamadı.</p>
           </div>
         )}
       </main>
