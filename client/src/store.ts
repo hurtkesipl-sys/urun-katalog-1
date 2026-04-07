@@ -48,10 +48,10 @@ export const useProductStore = create<ProductStore>()(
         imageUrl: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&q=80&w=2000"
       },
       contactInfo: {
-        address: "Moda Caddesi No:123, Şişli / İstanbul",
+        address: "Sanayi Mah, Şahlan Sk. no:6, 34165 Güngören/İstanbul, Türkiye",
         phone: "+90 555 123 45 67",
         email: "info@modaitalyatoptan.com",
-        mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.961315112214!2d28.9754823!3d41.0256429!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab9e7a7777c43%3A0x4c76cf3dce8b29!2sGalata%20Kulesi!5e0!3m2!1str!2str!4v1712496000000!5m2!1str!2str",
+        mapUrl: "https://www.google.com/maps?q=Sanayi+Mah,+Şahlan+Sk.+no:6,+34165+Güngören/İstanbul,+Türkiye&output=embed",
         instagramUrl: "https://instagram.com",
         whatsappNumber: "905551234567",
         telegramUrl: "https://t.me/modaitalya"

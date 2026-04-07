@@ -1,1 +1,1 @@
-- [ ] `store.ts` dosyasındaki `contactInfo.mapUrl` değerini kullanıcının verdiği konuma uygun bir embed URL ile değiştir.
+- [ ] `store.ts` dosyasındaki `contactInfo.address` ve `contactInfo.mapUrl` değerlerini "Sanayi Mah, Şahlan Sk. no:6, 34165 Güngören/İstanbul, Türkiye" adresine uygun olarak güncelle.
