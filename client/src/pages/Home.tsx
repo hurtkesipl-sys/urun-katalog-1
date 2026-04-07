@@ -15,6 +15,8 @@ export default function Home() {
   
   const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000 })]);
 
+  const [location] = useLocation();
+
   // URL parametrelerini oku
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -31,7 +33,7 @@ export default function Home() {
       setSelectedMainCategory(null);
       setSelectedSubCategory(null);
     }
-  }, [window.location.search]);
+  }, [location, window.location.search]);
 
   const filteredProducts = products.filter((p) => {
     const matchMain = selectedMainCategory ? p.mainCategory === selectedMainCategory : true;

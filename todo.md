@@ -1,1 +1,2 @@
-- [ ] `store.ts` dosyasındaki `contactInfo.mapUrl` değerini, Google Haritalar'ın iframe içinde çalışmasına izin verdiği doğru `embed` formatıyla (örneğin `https://www.google.com/maps/embed?pb=...`) değiştir.
+- [ ] `Navbar.tsx` bileşenindeki `<a>` etiketlerini `wouter` kütüphanesinin `Link` bileşeni ile değiştir.
+- [ ] `Home.tsx` sayfasında `window.location.search` yerine `wouter` kütüphanesinin `useLocation` hook'unu kullanarak filtreleme yap.
