@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ZoomIn, X, Send, PlayCircle } from "lucide-react";
 import { SiWhatsapp } from "@icons-pack/react-simple-icons";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 
 export default function ProductDetail() {
   const [match, params] = useRoute("/product/:id");
@@ -212,7 +213,7 @@ export default function ProductDetail() {
         <span className="font-semibold text-sm whitespace-nowrap">Stok Sor:</span>
         <div className="flex gap-2 flex-1">
           <a 
-            href={`https://api.whatsapp.com/send?phone=${contactInfo.whatsappNumber.replace(/[^0-9]/g, '')}&text=${getMessageText()}`}
+            href={getWhatsAppLink(contactInfo.whatsappNumber, getMessageText())}
             target="_blank" 
             rel="noopener noreferrer"
             className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white py-2.5 px-4 rounded-md transition-colors font-medium text-sm"

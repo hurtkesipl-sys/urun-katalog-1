@@ -1,5 +1,7 @@
-import { Instagram, Facebook, Send } from "lucide-react";
+import { Link } from "wouter";
+import { Instagram, Send, Facebook } from "lucide-react";
 import { SiWhatsapp } from "@icons-pack/react-simple-icons";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 
 import { useProductStore } from "@/store";
 
@@ -15,7 +17,7 @@ export default function Footer() {
             <a href={contactInfo.instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
               <Instagram className="w-6 h-6" />
             </a>
-            <a href={`https://api.whatsapp.com/send?phone=${contactInfo.whatsappNumber.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+            <a href={getWhatsAppLink(contactInfo.whatsappNumber)} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
               <SiWhatsapp className="w-6 h-6" />
             </a>
             <a href={contactInfo.telegramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">

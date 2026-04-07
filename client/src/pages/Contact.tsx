@@ -1,6 +1,7 @@
 import { useProductStore } from "@/store";
 import Navbar from "@/components/Navbar";
 import { MapPin, Phone, Mail, Instagram, MessageCircle, Send, Facebook } from "lucide-react";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 
 export default function Contact() {
   const { contactInfo } = useProductStore();
@@ -72,7 +73,7 @@ export default function Contact() {
                   </a>
                   
                   <a 
-                    href={`https://api.whatsapp.com/send?phone=${contactInfo.whatsappNumber.replace(/[^0-9]/g, '')}`} 
+                    href={getWhatsAppLink(contactInfo.whatsappNumber)} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 bg-[#25D366] text-white px-6 py-3 rounded-full hover:opacity-90 transition-opacity font-medium"

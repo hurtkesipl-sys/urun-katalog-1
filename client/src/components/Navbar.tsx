@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { Link } from "wouter";
 import { useProductStore } from "@/store";
-import { Button } from "@/components/ui/button";
-import { Heart, Menu, X, Instagram, Facebook, Send } from "lucide-react";
+import { Link } from "wouter";
+import { Menu, Search, ShoppingBag, User, X, Instagram, Send, Facebook, Heart } from "lucide-react";
 import { SiWhatsapp } from "@icons-pack/react-simple-icons";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 
 export default function Navbar() {
   const { isAdmin, setAdmin, favorites, contactInfo } = useProductStore();
@@ -56,7 +56,7 @@ export default function Navbar() {
             <a href={contactInfo.instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
               <Instagram className="w-4 h-4" />
             </a>
-            <a href={`https://api.whatsapp.com/send?phone=${contactInfo.whatsappNumber.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+            <a href={getWhatsAppLink(contactInfo.whatsappNumber)} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
               <SiWhatsapp className="w-4 h-4" />
             </a>
             <a href={contactInfo.telegramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
