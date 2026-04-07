@@ -1,7 +1,7 @@
 import { Product } from "@/types";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trash2, Heart, Edit } from "lucide-react";
+import { Trash2, Heart, Edit, PlayCircle } from "lucide-react";
 import { Link } from "wouter";
 import { useProductStore } from "@/store";
 
@@ -38,6 +38,11 @@ export default function ProductCard({ product, isAdmin, onDelete, onEdit }: Prod
             className={`w-5 h-5 transition-colors ${isFavorite ? 'fill-red-500 text-red-500' : 'text-foreground'}`} 
           />
         </button>
+        {product.videoUrl && (
+          <div className="absolute top-2 right-2 p-1.5 bg-background/80 backdrop-blur-sm rounded-full z-10">
+            <PlayCircle className="w-6 h-6 text-red-600 fill-red-600/20" />
+          </div>
+        )}
         {isAdmin && (
           <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
             {onEdit && (

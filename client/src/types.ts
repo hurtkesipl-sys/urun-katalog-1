@@ -9,6 +9,7 @@ export interface Product {
   subCategory: string;
   productCode: string;
   colorCode: string;
+  videoUrl?: string;
   createdAt: number;
 }
 

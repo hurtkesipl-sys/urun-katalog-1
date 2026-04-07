@@ -3,12 +3,13 @@ import { useProductStore } from "@/store";
 import { useRoute, Link } from "wouter";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ZoomIn, X, Send } from "lucide-react";
+import { ArrowLeft, ZoomIn, X, Send, PlayCircle } from "lucide-react";
 import { SiWhatsapp } from "@icons-pack/react-simple-icons";
 
 export default function ProductDetail() {
   const [match, params] = useRoute("/product/:id");
   const [isZoomed, setIsZoomed] = useState(false);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const { products, contactInfo } = useProductStore();
   
   const product = match ? products.find(p => p.id === params.id) : null;
@@ -48,7 +49,7 @@ export default function ProductDetail() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
           {/* Sol Taraf: Resim */}
-          <div className="relative group flex items-center justify-center">
+          <div className="relative group flex flex-col items-center justify-center gap-4">
             <div 
               className="aspect-[3/4] relative w-full max-w-md cursor-zoom-in overflow-hidden rounded-xl"
               onClick={() => setIsZoomed(true)}
@@ -64,6 +65,17 @@ export default function ProductDetail() {
                 </div>
               </div>
             </div>
+            
+            {product.videoUrl && (
+              <Button 
+                variant="outline" 
+                className="w-full max-w-md flex items-center justify-center gap-2 border-red-200 hover:bg-red-50 hover:text-red-600 text-red-500"
+                onClick={() => setIsVideoModalOpen(true)}
+              >
+                <PlayCircle className="w-5 h-5" />
+                Ürün Videosunu İzle
+              </Button>
+            )}
           </div>
 
           {/* Tam Ekran Resim Modalı */}
@@ -90,6 +102,53 @@ export default function ProductDetail() {
                   alt={product.name} 
                   className="max-w-full max-h-full object-contain rounded-md"
                 />
+              </div>
+            </div>
+          )}
+
+          {/* Video Modalı */}
+          {isVideoModalOpen && product.videoUrl && (
+            <div 
+              className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
+              onClick={() => setIsVideoModalOpen(false)}
+            >
+              <button 
+                className="absolute top-4 right-4 p-2 bg-background/50 hover:bg-background rounded-full transition-colors z-[101]"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsVideoModalOpen(false);
+                }}
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <div 
+                className="relative w-full max-w-4xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {product.videoUrl.includes('youtube.com') || product.videoUrl.includes('youtu.be') ? (
+                  <iframe 
+                    src={product.videoUrl.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')} 
+                    className="w-full h-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen
+                  ></iframe>
+                ) : product.videoUrl.includes('vimeo.com') ? (
+                  <iframe 
+                    src={product.videoUrl.replace('vimeo.com/', 'player.vimeo.com/video/')} 
+                    className="w-full h-full border-0"
+                    allow="autoplay; fullscreen; picture-in-picture" 
+                    allowFullScreen
+                  ></iframe>
+                ) : (
+                  <video 
+                    src={product.videoUrl} 
+                    controls 
+                    autoPlay 
+                    className="w-full h-full object-contain"
+                  >
+                    Tarayıcınız video etiketini desteklemiyor.
+                  </video>
+                )}
               </div>
             </div>
           )}

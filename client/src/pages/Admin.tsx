@@ -37,6 +37,7 @@ export default function Admin() {
     subCategory: subCategories[0],
     productCode: "",
     colorCode: "",
+    videoUrl: "",
   });
 
   const [bannerData, setBannerData] = useState({
@@ -120,6 +121,7 @@ export default function Admin() {
         subCategory: formData.subCategory,
         productCode: formData.productCode,
         colorCode: formData.colorCode,
+        videoUrl: formData.videoUrl || undefined,
       });
       toast.success("Ürün başarıyla güncellendi.");
     } else {
@@ -133,11 +135,12 @@ export default function Admin() {
         subCategory: formData.subCategory,
         productCode: formData.productCode,
         colorCode: formData.colorCode,
+        videoUrl: formData.videoUrl || undefined,
       });
       toast.success("Ürün başarıyla eklendi.");
     }
 
-    setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: mainCategories[0], subCategory: subCategories[0], productCode: "", colorCode: "" });
+    setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: mainCategories[0], subCategory: subCategories[0], productCode: "", colorCode: "", videoUrl: "" });
     setImagePreview(null);
     setIsAdding(false);
     setEditingProductId(null);
@@ -156,6 +159,7 @@ export default function Admin() {
         subCategory: productToEdit.subCategory,
         productCode: productToEdit.productCode,
         colorCode: productToEdit.colorCode || "",
+        videoUrl: productToEdit.videoUrl || "",
       });
       setImagePreview(productToEdit.imageUrl);
       setEditingProductId(id);
@@ -216,7 +220,7 @@ export default function Admin() {
               if (isAdding) {
                 setIsAdding(false);
                 setEditingProductId(null);
-                setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: mainCategories[0], subCategory: subCategories[0], productCode: "", colorCode: "" });
+                setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: mainCategories[0], subCategory: subCategories[0], productCode: "", colorCode: "", videoUrl: "" });
                 setImagePreview(null);
               } else {
                 setIsAdding(true);
@@ -519,6 +523,15 @@ export default function Admin() {
                     <Button type="button" variant="outline" onClick={handleAddSubCategory}>Ekle</Button>
                   </div>
                 </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="videoUrl">Video URL (İsteğe Bağlı)</Label>
+                <Input
+                  id="videoUrl"
+                  value={formData.videoUrl}
+                  onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
+                  placeholder="Örn: https://youtube.com/watch?v=... veya doğrudan video linki"
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="description">Açıklama</Label>
