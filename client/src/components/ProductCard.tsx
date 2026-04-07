@@ -23,7 +23,7 @@ export default function ProductCard({ product, isAdmin, onDelete }: ProductCardP
 
   const cardContent = (
     <Card className="overflow-hidden group border-border/50 hover:border-border transition-all duration-300 hover:shadow-md bg-card h-full flex flex-col cursor-pointer relative">
-      <div className="aspect-square overflow-hidden bg-muted relative">
+      <div className="aspect-[3/4] overflow-hidden bg-muted relative">
         <img
           src={product.imageUrl}
           alt={product.name}
