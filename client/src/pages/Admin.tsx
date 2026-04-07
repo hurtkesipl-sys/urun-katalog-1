@@ -528,7 +528,7 @@ export default function Admin() {
                 <Label htmlFor="videoUrl">Video URL (İsteğe Bağlı)</Label>
                 <Input
                   id="videoUrl"
-                  value={formData.videoUrl}
+                  value={formData.videoUrl || ""}
                   onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
                   placeholder="Örn: https://youtube.com/watch?v=... veya doğrudan video linki"
                 />
