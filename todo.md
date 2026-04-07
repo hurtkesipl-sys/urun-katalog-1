@@ -1,2 +1,2 @@
-- [ ] `Home.tsx` sayfasında URL'den gelen `fabric` ve `category` parametrelerini okuyarak ürünleri filtrele
-- [ ] `Navbar.tsx` bileşenindeki linklerin doğru URL parametrelerini (`/?fabric=Keten` vb.) gönderdiğinden emin ol
+- [ ] `Navbar.tsx` bileşenindeki `Link` etiketlerinin `href` özelliklerini kontrol et ve düzelt
+- [ ] `Home.tsx` sayfasında `useLocation` hook'unu kullanarak URL değişikliklerini dinle ve filtrelemeyi güncelle
