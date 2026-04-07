@@ -6,7 +6,7 @@ import { Heart, Menu, X, Instagram, Facebook, Send } from "lucide-react";
 import { SiWhatsapp } from "@icons-pack/react-simple-icons";
 
 export default function Navbar() {
-  const { isAdmin, setAdmin, favorites } = useProductStore();
+  const { isAdmin, setAdmin, favorites, contactInfo } = useProductStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -53,16 +53,16 @@ export default function Navbar() {
           
           {/* Sol boşluk dengeleyici ve Sosyal Medya İkonları (Sadece masaüstünde görünür) */}
           <div className="w-24 hidden md:flex items-center gap-3 text-muted-foreground">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+            <a href={contactInfo.instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
               <Instagram className="w-4 h-4" />
             </a>
-            <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+            <a href={`https://wa.me/${contactInfo.whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
               <SiWhatsapp className="w-4 h-4" />
             </a>
-            <a href="https://t.me/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+            <a href={contactInfo.telegramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
               <Send className="w-4 h-4" />
             </a>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+            <a href={contactInfo.facebookUrl} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
               <Facebook className="w-4 h-4" />
             </a>
           </div>

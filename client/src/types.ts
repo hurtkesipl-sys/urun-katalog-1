@@ -33,4 +33,5 @@ export interface ContactInfo {
   instagramUrl: string;
   whatsappNumber: string;
   telegramUrl: string;
+  facebookUrl: string;
 }

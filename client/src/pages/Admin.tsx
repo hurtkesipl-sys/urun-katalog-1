@@ -333,6 +333,15 @@ export default function Admin() {
                     required
                   />
                 </div>
+                <div className="space-y-2">
+                  <Label htmlFor="contactFacebook">Facebook URL</Label>
+                  <Input
+                    id="contactFacebook"
+                    value={contactData.facebookUrl}
+                    onChange={(e) => setContactData({ ...contactData, facebookUrl: e.target.value })}
+                    required
+                  />
+                </div>
               </div>
               <Button type="submit">Kaydet</Button>
             </form>
