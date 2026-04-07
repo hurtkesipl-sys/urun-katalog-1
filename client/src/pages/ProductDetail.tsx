@@ -40,12 +40,12 @@ export default function ProductDetail() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
           {/* Sol Taraf: Resim */}
-          <div className="rounded-xl overflow-hidden border border-border bg-card shadow-sm">
-            <div className="aspect-[4/5] relative">
+          <div className="rounded-xl overflow-hidden border border-border bg-card shadow-sm flex items-center justify-center p-4 md:p-8">
+            <div className="aspect-[3/4] relative w-full max-w-md">
               <img 
                 src={product.imageUrl} 
                 alt={product.name} 
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-contain"
               />
             </div>
           </div>
