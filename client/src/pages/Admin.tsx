@@ -102,6 +102,24 @@ export default function Admin() {
     }
   };
 
+  const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error("Video boyutu 10MB'dan küçük olmalıdır.");
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setFormData({ ...formData, videoUrl: base64String });
+        toast.success("Video başarıyla yüklendi.");
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -525,13 +543,30 @@ export default function Admin() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="videoUrl">Video URL (İsteğe Bağlı)</Label>
-                <Input
-                  id="videoUrl"
-                  value={formData.videoUrl || ""}
-                  onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
-                  placeholder="Örn: https://youtube.com/watch?v=... veya doğrudan video linki"
-                />
+                <Label htmlFor="videoUrl">Video URL veya Dosya (İsteğe Bağlı)</Label>
+                <div className="flex flex-col gap-2">
+                  <Input
+                    id="videoUrl"
+                    value={formData.videoUrl || ""}
+                    onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
+                    placeholder="Örn: https://youtube.com/watch?v=... veya doğrudan video linki"
+                  />
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">veya bilgisayardan yükle:</span>
+                    <Input
+                      id="videoFile"
+                      type="file"
+                      accept="video/*"
+                      onChange={handleVideoChange}
+                      className="cursor-pointer flex-1"
+                    />
+                  </div>
+                  {formData.videoUrl && formData.videoUrl.startsWith('data:video') && (
+                    <div className="text-xs text-green-600 font-medium">
+                      ✓ Video dosyası yüklendi
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="description">Açıklama</Label>
