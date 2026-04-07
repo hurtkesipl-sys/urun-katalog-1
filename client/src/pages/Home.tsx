@@ -33,7 +33,7 @@ export default function Home() {
       setSelectedMainCategory(null);
       setSelectedSubCategory(null);
     }
-  }, [location, window.location.search]);
+  }, [location]);
 
   const filteredProducts = products.filter((p) => {
     const matchMain = selectedMainCategory ? p.mainCategory === selectedMainCategory : true;
