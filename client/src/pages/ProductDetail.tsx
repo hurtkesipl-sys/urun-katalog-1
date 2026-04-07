@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { useProductStore } from "@/store";
 import { useRoute, Link } from "wouter";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ZoomIn, X } from "lucide-react";
 
 export default function ProductDetail() {
   const [match, params] = useRoute("/product/:id");
+  const [isZoomed, setIsZoomed] = useState(false);
   const { products } = useProductStore();
   
   const product = match ? products.find(p => p.id === params.id) : null;
@@ -40,15 +42,51 @@ export default function ProductDetail() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
           {/* Sol Taraf: Resim */}
-          <div className="rounded-xl overflow-hidden border border-border bg-card shadow-sm flex items-center justify-center p-4 md:p-8">
-            <div className="aspect-[3/4] relative w-full max-w-md">
+          <div className="rounded-xl overflow-hidden border border-border bg-card shadow-sm relative group">
+            <div 
+              className="aspect-[3/4] relative w-full cursor-zoom-in"
+              onClick={() => setIsZoomed(true)}
+            >
               <img 
                 src={product.imageUrl} 
                 alt={product.name} 
-                className="absolute inset-0 w-full h-full object-contain"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                <div className="bg-background/80 backdrop-blur-sm p-3 rounded-full text-foreground">
+                  <ZoomIn className="w-6 h-6" />
+                </div>
+              </div>
             </div>
           </div>
+
+          {/* Tam Ekran Resim Modalı */}
+          {isZoomed && (
+            <div 
+              className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
+              onClick={() => setIsZoomed(false)}
+            >
+              <button 
+                className="absolute top-4 right-4 p-2 bg-background/50 hover:bg-background rounded-full transition-colors z-[101]"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsZoomed(false);
+                }}
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <div 
+                className="relative w-full h-full max-w-5xl max-h-[90vh] flex items-center justify-center"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img 
+                  src={product.imageUrl} 
+                  alt={product.name} 
+                  className="max-w-full max-h-full object-contain rounded-md"
+                />
+              </div>
+            </div>
+          )}
 
           {/* Sağ Taraf: Detaylar */}
           <div className="flex flex-col space-y-6 md:space-y-8">
