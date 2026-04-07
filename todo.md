@@ -1,2 +1,2 @@
-- [ ] `Navbar.tsx` bileşenindeki `Link` etiketlerinin `href` özelliklerini kontrol et ve düzelt
-- [ ] `Home.tsx` sayfasında `useLocation` hook'unu kullanarak URL değişikliklerini dinle ve filtrelemeyi güncelle
+- [ ] `Admin.tsx` sayfasındaki İletişim formunda adres ve harita konumu (mapUrl) alanlarının doğru şekilde güncellendiğinden emin ol
+- [ ] `Contact.tsx` sayfasında harita iframe'inin doğru çalıştığını kontrol et

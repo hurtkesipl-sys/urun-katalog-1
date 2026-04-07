@@ -96,16 +96,22 @@ export default function Contact() {
 
             {/* Sağ Taraf: Harita */}
             <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm h-[400px] lg:h-auto min-h-[400px]">
-              <iframe 
-                src={contactInfo.mapUrl} 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen 
-                loading="lazy" 
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Google Maps Konumumuz"
-              ></iframe>
+              {contactInfo.mapUrl ? (
+                <iframe 
+                  src={contactInfo.mapUrl} 
+                  width="100%" 
+                  height="100%" 
+                  style={{ border: 0 }} 
+                  allowFullScreen 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Google Maps Konumumuz"
+                ></iframe>
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">
+                  Harita konumu eklenmemiş.
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -47,6 +47,15 @@ export default function Admin() {
   const [aboutData, setAboutData] = useState(aboutInfo);
   const [contactData, setContactData] = useState(contactInfo);
 
+  // Store'daki veriler değiştiğinde form verilerini güncelle
+  useEffect(() => {
+    setAboutData(aboutInfo);
+  }, [aboutInfo]);
+
+  useEffect(() => {
+    setContactData(contactInfo);
+  }, [contactInfo]);
+
   const handleUpdateAbout = (e: React.FormEvent) => {
     e.preventDefault();
     updateAboutInfo(aboutData);
