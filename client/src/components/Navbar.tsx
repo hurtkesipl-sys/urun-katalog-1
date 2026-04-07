@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { useProductStore } from "@/store";
 import { Button } from "@/components/ui/button";
-import { Heart, Menu, X } from "lucide-react";
+import { Heart, Menu, X, Instagram, Facebook, Send } from "lucide-react";
+import { SiWhatsapp } from "@icons-pack/react-simple-icons";
 
 export default function Navbar() {
   const { isAdmin, setAdmin, favorites } = useProductStore();
@@ -50,8 +51,21 @@ export default function Navbar() {
             </button>
           </div>
           
-          {/* Sol boşluk dengeleyici (Sadece masaüstünde görünür) */}
-          <div className="w-24 hidden md:block"></div>
+          {/* Sol boşluk dengeleyici ve Sosyal Medya İkonları (Sadece masaüstünde görünür) */}
+          <div className="w-24 hidden md:flex items-center gap-3 text-muted-foreground">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+              <Instagram className="w-4 h-4" />
+            </a>
+            <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+              <SiWhatsapp className="w-4 h-4" />
+            </a>
+            <a href="https://t.me/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+              <Send className="w-4 h-4" />
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+              <Facebook className="w-4 h-4" />
+            </a>
+          </div>
           
           {/* Logo ve İtalyan Bayrağı */}
           <div className="flex flex-col items-start md:items-center ml-2 md:ml-0 flex-1 md:flex-none">

@@ -1,6 +1,6 @@
 import { useProductStore } from "@/store";
 import Navbar from "@/components/Navbar";
-import { MapPin, Phone, Mail, Instagram, MessageCircle, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Instagram, MessageCircle, Send, Facebook } from "lucide-react";
 
 export default function Contact() {
   const { contactInfo } = useProductStore();
@@ -89,6 +89,16 @@ export default function Contact() {
                   >
                     <Send className="w-5 h-5" />
                     Telegram
+                  </a>
+                  
+                  <a 
+                    href="https://facebook.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 bg-[#1877F2] text-white px-6 py-3 rounded-full hover:opacity-90 transition-opacity font-medium"
+                  >
+                    <Facebook className="w-5 h-5" />
+                    Facebook
                   </a>
                 </div>
               </div>
