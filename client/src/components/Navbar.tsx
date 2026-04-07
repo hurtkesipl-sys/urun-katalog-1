@@ -52,18 +52,18 @@ export default function Navbar() {
           </div>
           
           {/* Sol boşluk dengeleyici ve Sosyal Medya İkonları (Sadece masaüstünde görünür) */}
-          <div className="w-24 hidden md:flex items-center gap-3 text-muted-foreground">
+          <div className="w-32 hidden md:flex items-center gap-4 text-muted-foreground">
             <a href={contactInfo.instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
-              <Instagram className="w-4 h-4" />
+              <Instagram className="w-5 h-5" />
             </a>
             <a href={getWhatsAppLink(contactInfo.whatsappNumber)} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
-              <SiWhatsapp className="w-4 h-4" />
+              <SiWhatsapp className="w-5 h-5" />
             </a>
             <a href={contactInfo.telegramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
-              <Send className="w-4 h-4" />
+              <Send className="w-5 h-5" />
             </a>
             <a href={contactInfo.facebookUrl} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
-              <Facebook className="w-4 h-4" />
+              <Facebook className="w-5 h-5" />
             </a>
           </div>
           
@@ -74,7 +74,7 @@ export default function Navbar() {
               <span className="text-muted-foreground text-[10px] md:text-sm font-medium md:mt-2">Toptan</span>
             </Link>
             {/* İtalyan Bayrağı Çizgisi */}
-            <div className="flex w-12 md:w-16 h-0.5 md:h-1 rounded-full overflow-hidden">
+            <div className="flex w-full h-1 md:h-1.5 rounded-full overflow-hidden mt-0.5">
               <div className="w-1/3 bg-green-600"></div>
               <div className="w-1/3 bg-white border-y border-gray-200"></div>
               <div className="w-1/3 bg-red-600"></div>
