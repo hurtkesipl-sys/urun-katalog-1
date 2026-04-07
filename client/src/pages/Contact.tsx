@@ -72,7 +72,7 @@ export default function Contact() {
                   </a>
                   
                   <a 
-                    href={`https://wa.me/${contactInfo.whatsappNumber.replace(/[^0-9]/g, '')}`} 
+                    href={`https://api.whatsapp.com/send?phone=${contactInfo.whatsappNumber.replace(/[^0-9]/g, '')}`} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 bg-[#25D366] text-white px-6 py-3 rounded-full hover:opacity-90 transition-opacity font-medium"
