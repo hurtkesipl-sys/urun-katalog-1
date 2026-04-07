@@ -6,13 +6,40 @@ import { Product, Banner, AboutInfo, ContactInfo } from './types';
 // IndexedDB storage adapter for Zustand
 const storage: StateStorage = {
   getItem: async (name: string): Promise<string | null> => {
-    return (await get(name)) || null;
+    // Önce IndexedDB'den almayı dene
+    const value = await get(name);
+    if (value) return value;
+    
+    // Eğer IndexedDB'de yoksa, localStorage'dan alıp IndexedDB'ye taşı (Migrasyon)
+    const localValue = localStorage.getItem(name);
+    if (localValue) {
+      try {
+        await set(name, localValue);
+        return localValue;
+      } catch (e) {
+        console.error("Migration failed:", e);
+        return localValue;
+      }
+    }
+    
+    return null;
   },
   setItem: async (name: string, value: string): Promise<void> => {
     await set(name, value);
+    // Yeni veriler IndexedDB'ye yazıldıkça localStorage'ı temizle (Quota hatasını önlemek için)
+    try {
+      localStorage.removeItem(name);
+    } catch (e) {
+      // Ignore
+    }
   },
   removeItem: async (name: string): Promise<void> => {
     await del(name);
+    try {
+      localStorage.removeItem(name);
+    } catch (e) {
+      // Ignore
+    }
   },
 };
 
