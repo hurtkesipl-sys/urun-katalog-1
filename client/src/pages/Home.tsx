@@ -6,12 +6,32 @@ import { Button } from "@/components/ui/button";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 
+import { useLocation } from "wouter";
+
 export default function Home() {
   const { products, mainCategories, subCategories, banners } = useProductStore();
   const [selectedMainCategory, setSelectedMainCategory] = useState<string | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
   
   const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000 })]);
+
+  // URL parametrelerini oku
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const fabric = searchParams.get("fabric");
+    const category = searchParams.get("category");
+    
+    if (fabric) {
+      setSelectedMainCategory(fabric);
+      setSelectedSubCategory(null);
+    } else if (category) {
+      setSelectedSubCategory(category);
+      setSelectedMainCategory(null);
+    } else {
+      setSelectedMainCategory(null);
+      setSelectedSubCategory(null);
+    }
+  }, [window.location.search]);
 
   const filteredProducts = products.filter((p) => {
     const matchMain = selectedMainCategory ? p.mainCategory === selectedMainCategory : true;

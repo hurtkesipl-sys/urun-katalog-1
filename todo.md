@@ -1,7 +1,2 @@
-- [ ] `types.ts` dosyasına `AboutInfo` ve `ContactInfo` tiplerini ekle
-- [ ] `store.ts` dosyasına `aboutInfo` ve `contactInfo` state'lerini ve güncelleme fonksiyonlarını ekle
-- [ ] `Admin.tsx` sayfasına Hakkımızda ve İletişim bilgilerini düzenleme formlarını ekle
-- [ ] `About.tsx` sayfasını oluştur
-- [ ] `Contact.tsx` sayfasını oluştur
-- [ ] `Navbar.tsx` bileşenine Hakkımızda ve İletişim linklerini ekle (sağ üstte, kalp ikonunun altında)
-- [ ] `App.tsx` dosyasına `/about` ve `/contact` rotalarını ekle
+- [ ] `Home.tsx` sayfasında URL'den gelen `fabric` ve `category` parametrelerini okuyarak ürünleri filtrele
+- [ ] `Navbar.tsx` bileşenindeki linklerin doğru URL parametrelerini (`/?fabric=Keten` vb.) gönderdiğinden emin ol
