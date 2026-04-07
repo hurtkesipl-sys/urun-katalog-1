@@ -51,7 +51,7 @@ export const useProductStore = create<ProductStore>()(
         address: "Sanayi Mah, Şahlan Sk. no:6, 34165 Güngören/İstanbul, Türkiye",
         phone: "+90 555 123 45 67",
         email: "info@modaitalyatoptan.com",
-        mapUrl: "https://www.google.com/maps?q=Sanayi+Mah,+Şahlan+Sk.+no:6,+34165+Güngören/İstanbul,+Türkiye&output=embed",
+        mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3010.244688285884!2d28.874148!3d41.020381!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cabb7151042571%3A0x6b1c2a0d1d4d0b1a!2sSanayi%2C%20%C5%9Eahlan%20Sk.%20No%3A6%2C%2034165%20G%C3%BCng%C3%B6ren%2F%C4%B0stanbul!5e0!3m2!1str!2str!4v1712496000000!5m2!1str!2str",
         instagramUrl: "https://instagram.com",
         whatsappNumber: "905551234567",
         telegramUrl: "https://t.me/modaitalya"

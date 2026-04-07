@@ -1,1 +1,1 @@
-- [ ] `store.ts` dosyasındaki `contactInfo.address` ve `contactInfo.mapUrl` değerlerini "Sanayi Mah, Şahlan Sk. no:6, 34165 Güngören/İstanbul, Türkiye" adresine uygun olarak güncelle.
+- [ ] `store.ts` dosyasındaki `contactInfo.mapUrl` değerini, Google Haritalar'ın iframe içinde çalışmasına izin verdiği doğru `embed` formatıyla (örneğin `https://www.google.com/maps/embed?pb=...`) değiştir.
