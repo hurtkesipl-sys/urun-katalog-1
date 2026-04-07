@@ -74,7 +74,7 @@ export default function Navbar() {
               <span className="text-muted-foreground text-[10px] md:text-sm font-medium md:mt-2">Toptan</span>
             </Link>
             {/* İtalyan Bayrağı Çizgisi */}
-            <div className="flex w-full h-1 md:h-1.5 rounded-full overflow-hidden mt-0.5">
+            <div className="flex w-24 md:w-full h-1.5 md:h-2 rounded-full overflow-hidden mt-0.5">
               <div className="w-1/3 bg-green-600"></div>
               <div className="w-1/3 bg-white border-y border-gray-200"></div>
               <div className="w-1/3 bg-red-600"></div>
