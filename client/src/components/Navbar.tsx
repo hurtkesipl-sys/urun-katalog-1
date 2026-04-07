@@ -80,14 +80,14 @@ export default function Navbar() {
         <div className="w-full hidden md:flex flex-col items-center gap-2">
           {/* Üst Menü: Ürün Tipleri */}
           <div className="flex flex-wrap justify-center gap-6 text-sm font-medium tracking-wide">
-            <Link href="/?filter=yenilik" className="hover:text-primary transition-colors">YENİLİK</Link>
-            <Link href="/?filter=en-iyi-satanlar" className="hover:text-primary transition-colors">EN İYİ SATANLAR</Link>
-            <Link href="/?category=Elbise" className="hover:text-primary transition-colors">ELBİSE</Link>
-            <Link href="/?category=Takım" className="hover:text-primary transition-colors">TAKIM</Link>
-            <Link href="/?category=Bluz" className="hover:text-primary transition-colors">BLUZ</Link>
-            <Link href="/?category=Gömlek" className="hover:text-primary transition-colors">GÖMLEK</Link>
-            <Link href="/?category=Pantolon" className="hover:text-primary transition-colors">PANTOLON</Link>
-            <Link href="/?category=Etek" className="hover:text-primary transition-colors">ETEK</Link>
+            <Link href="/category/yenilik" className="hover:text-primary transition-colors">YENİLİK</Link>
+            <Link href="/category/en-iyi-satanlar" className="hover:text-primary transition-colors">EN İYİ SATANLAR</Link>
+            <Link href="/category/Elbise" className="hover:text-primary transition-colors">ELBİSE</Link>
+            <Link href="/category/Takım" className="hover:text-primary transition-colors">TAKIM</Link>
+            <Link href="/category/Bluz" className="hover:text-primary transition-colors">BLUZ</Link>
+            <Link href="/category/Gömlek" className="hover:text-primary transition-colors">GÖMLEK</Link>
+            <Link href="/category/Pantolon" className="hover:text-primary transition-colors">PANTOLON</Link>
+            <Link href="/category/Etek" className="hover:text-primary transition-colors">ETEK</Link>
           </div>
           
 
@@ -97,15 +97,15 @@ export default function Navbar() {
         {isMobileMenuOpen && (
           <div className="w-full md:hidden flex flex-col items-center gap-4 pt-4 pb-2 border-t border-border mt-2 animate-in slide-in-from-top-2">
             <div className="flex flex-col items-center gap-3 text-sm font-medium w-full">
-              <Link href="/?filter=yenilik" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">YENİLİK</Link>
-              <Link href="/?filter=en-iyi-satanlar" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">EN İYİ SATANLAR</Link>
+              <Link href="/category/yenilik" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">YENİLİK</Link>
+              <Link href="/category/en-iyi-satanlar" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">EN İYİ SATANLAR</Link>
               <div className="w-1/2 h-px bg-border/50 my-1"></div>
-              <Link href="/?category=Elbise" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">ELBİSE</Link>
-              <Link href="/?category=Takım" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">TAKIM</Link>
-              <Link href="/?category=Bluz" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">BLUZ</Link>
-              <Link href="/?category=Gömlek" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">GÖMLEK</Link>
-              <Link href="/?category=Pantolon" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">PANTOLON</Link>
-              <Link href="/?category=Etek" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">ETEK</Link>
+              <Link href="/category/Elbise" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">ELBİSE</Link>
+              <Link href="/category/Takım" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">TAKIM</Link>
+              <Link href="/category/Bluz" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">BLUZ</Link>
+              <Link href="/category/Gömlek" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">GÖMLEK</Link>
+              <Link href="/category/Pantolon" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">PANTOLON</Link>
+              <Link href="/category/Etek" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">ETEK</Link>
 
               <div className="w-1/2 h-px bg-border/50 my-1"></div>
               <div className="flex justify-center gap-6 text-sm font-medium w-full py-2">
