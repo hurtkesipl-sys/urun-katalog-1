@@ -39,19 +39,25 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Sağ Üst Menü (Favoriler ve Admin) */}
+          {/* Sağ Üst Menü (Favoriler, Hakkımızda, İletişim ve Admin) */}
           <div className="flex items-center gap-4 w-24 justify-end">
-            <Link href="/favorites" className="relative text-muted-foreground hover:text-foreground transition-colors">
-              <Heart className="w-6 h-6" />
-              {favorites.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                  {favorites.length}
-                </span>
-              )}
-            </Link>
+            <div className="flex flex-col items-end gap-2">
+              <Link href="/favorites" className="relative text-muted-foreground hover:text-foreground transition-colors self-end">
+                <Heart className="w-6 h-6" />
+                {favorites.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                    {favorites.length}
+                  </span>
+                )}
+              </Link>
+              <div className="flex gap-3 text-[10px] md:text-xs font-medium text-muted-foreground">
+                <Link href="/about" className="hover:text-foreground transition-colors">Hakkımızda</Link>
+                <Link href="/contact" className="hover:text-foreground transition-colors">İletişim</Link>
+              </div>
+            </div>
             
             {isAdmin ? (
-              <div className="flex flex-col items-end gap-1">
+              <div className="flex flex-col items-end gap-1 ml-2">
                 <Link href="/admin" className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
                   Yönetim
                 </Link>
@@ -63,7 +69,7 @@ export default function Navbar() {
                 </button>
               </div>
             ) : (
-              <Link href="/login" className="text-xs font-medium text-muted-foreground opacity-0 hover:opacity-100 focus:opacity-100 transition-opacity">
+              <Link href="/login" className="text-xs font-medium text-muted-foreground opacity-0 hover:opacity-100 focus:opacity-100 transition-opacity ml-2">
                 Admin
               </Link>
             )}
@@ -115,6 +121,11 @@ export default function Navbar() {
                 <Link href="/?fabric=İpek" onClick={toggleMobileMenu}>İPEK</Link>
                 <Link href="/?fabric=Pamuk" onClick={toggleMobileMenu}>PAMUK</Link>
                 <Link href="/?fabric=Viskon" onClick={toggleMobileMenu}>VİSKON</Link>
+              </div>
+              <div className="w-1/2 h-px bg-border/50 my-1"></div>
+              <div className="flex justify-center gap-6 text-sm font-medium w-full py-2">
+                <Link href="/about" onClick={toggleMobileMenu} className="hover:text-primary transition-colors">Hakkımızda</Link>
+                <Link href="/contact" onClick={toggleMobileMenu} className="hover:text-primary transition-colors">İletişim</Link>
               </div>
             </div>
           </div>

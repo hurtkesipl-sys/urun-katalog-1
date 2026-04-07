@@ -18,3 +18,19 @@ export interface Banner {
   title?: string;
   link?: string;
 }
+
+export interface AboutInfo {
+  title: string;
+  content: string;
+  imageUrl?: string;
+}
+
+export interface ContactInfo {
+  address: string;
+  phone: string;
+  email: string;
+  mapUrl: string;
+  instagramUrl: string;
+  whatsappNumber: string;
+  telegramUrl: string;
+}

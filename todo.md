@@ -1,4 +1,7 @@
-- [ ] `Navbar.tsx` bileşenine mobil cihazlar için hamburger menü (Sheet/Drawer) ekle
-- [ ] `Home.tsx` sayfasındaki banner ve grid yapılarını mobil ekranlara göre optimize et
-- [ ] `ProductDetail.tsx` sayfasındaki görsel ve metin alanlarını mobilde alt alta gelecek şekilde düzenle
-- [ ] `Admin.tsx` sayfasındaki form alanlarını ve tabloları mobil uyumlu hale getir
+- [ ] `types.ts` dosyasına `AboutInfo` ve `ContactInfo` tiplerini ekle
+- [ ] `store.ts` dosyasına `aboutInfo` ve `contactInfo` state'lerini ve güncelleme fonksiyonlarını ekle
+- [ ] `Admin.tsx` sayfasına Hakkımızda ve İletişim bilgilerini düzenleme formlarını ekle
+- [ ] `About.tsx` sayfasını oluştur
+- [ ] `Contact.tsx` sayfasını oluştur
+- [ ] `Navbar.tsx` bileşenine Hakkımızda ve İletişim linklerini ekle (sağ üstte, kalp ikonunun altında)
+- [ ] `App.tsx` dosyasına `/about` ve `/contact` rotalarını ekle

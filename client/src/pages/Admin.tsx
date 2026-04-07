@@ -11,9 +11,11 @@ import { PlusCircle, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Admin() {
-  const { products, mainCategories, subCategories, addProduct, removeProduct, addSubCategory, isAdmin, banners, addBanner, removeBanner } = useProductStore();
+  const { products, mainCategories, subCategories, addProduct, removeProduct, addSubCategory, isAdmin, banners, addBanner, removeBanner, aboutInfo, contactInfo, updateAboutInfo, updateContactInfo } = useProductStore();
   const [isAdding, setIsAdding] = useState(false);
   const [isAddingBanner, setIsAddingBanner] = useState(false);
+  const [isEditingAbout, setIsEditingAbout] = useState(false);
+  const [isEditingContact, setIsEditingContact] = useState(false);
   const [, setLocation] = useLocation();
 
   const [newSubCategory, setNewSubCategory] = useState("");
@@ -41,6 +43,23 @@ export default function Admin() {
     title: "",
   });
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const [aboutData, setAboutData] = useState(aboutInfo);
+  const [contactData, setContactData] = useState(contactInfo);
+
+  const handleUpdateAbout = (e: React.FormEvent) => {
+    e.preventDefault();
+    updateAboutInfo(aboutData);
+    setIsEditingAbout(false);
+    toast.success("Hakkımızda bilgileri güncellendi!");
+  };
+
+  const handleUpdateContact = (e: React.FormEvent) => {
+    e.preventDefault();
+    updateContactInfo(contactData);
+    setIsEditingContact(false);
+    toast.success("İletişim bilgileri güncellendi!");
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -123,17 +142,133 @@ export default function Admin() {
       <main className="flex-1 container py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="font-serif text-3xl font-bold">Yönetim Paneli</h1>
-          <div className="flex gap-4">
-            <Button variant="outline" onClick={() => setIsAddingBanner(!isAddingBanner)}>
-              <PlusCircle className="mr-2 h-4 w-4" />
+          <div className="flex flex-wrap gap-2 md:gap-4">
+            <Button variant="outline" onClick={() => setIsEditingAbout(!isEditingAbout)} className="text-xs md:text-sm">
+              {isEditingAbout ? "İptal" : "Hakkımızda Düzenle"}
+            </Button>
+            <Button variant="outline" onClick={() => setIsEditingContact(!isEditingContact)} className="text-xs md:text-sm">
+              {isEditingContact ? "İptal" : "İletişim Düzenle"}
+            </Button>
+            <Button variant="outline" onClick={() => setIsAddingBanner(!isAddingBanner)} className="text-xs md:text-sm">
+              <PlusCircle className="mr-1 md:mr-2 h-4 w-4" />
               {isAddingBanner ? "İptal" : "Banner Yönetimi"}
             </Button>
-            <Button onClick={() => setIsAdding(!isAdding)}>
-              <PlusCircle className="mr-2 h-4 w-4" />
+            <Button onClick={() => setIsAdding(!isAdding)} className="text-xs md:text-sm">
+              <PlusCircle className="mr-1 md:mr-2 h-4 w-4" />
               {isAdding ? "İptal" : "Yeni Ürün Ekle"}
             </Button>
           </div>
         </div>
+
+        {isEditingAbout && (
+          <div className="bg-card border border-border rounded-xl p-6 mb-8 shadow-sm">
+            <h2 className="font-serif text-xl font-semibold mb-6">Hakkımızda Bilgilerini Düzenle</h2>
+            <form onSubmit={handleUpdateAbout} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="aboutTitle">Başlık</Label>
+                <Input
+                  id="aboutTitle"
+                  value={aboutData.title}
+                  onChange={(e) => setAboutData({ ...aboutData, title: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="aboutContent">İçerik</Label>
+                <Textarea
+                  id="aboutContent"
+                  value={aboutData.content}
+                  onChange={(e) => setAboutData({ ...aboutData, content: e.target.value })}
+                  rows={5}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="aboutImage">Görsel URL (İsteğe Bağlı)</Label>
+                <Input
+                  id="aboutImage"
+                  value={aboutData.imageUrl || ""}
+                  onChange={(e) => setAboutData({ ...aboutData, imageUrl: e.target.value })}
+                />
+              </div>
+              <Button type="submit">Kaydet</Button>
+            </form>
+          </div>
+        )}
+
+        {isEditingContact && (
+          <div className="bg-card border border-border rounded-xl p-6 mb-8 shadow-sm">
+            <h2 className="font-serif text-xl font-semibold mb-6">İletişim Bilgilerini Düzenle</h2>
+            <form onSubmit={handleUpdateContact} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="contactAddress">Adres</Label>
+                  <Input
+                    id="contactAddress"
+                    value={contactData.address}
+                    onChange={(e) => setContactData({ ...contactData, address: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="contactPhone">Telefon</Label>
+                  <Input
+                    id="contactPhone"
+                    value={contactData.phone}
+                    onChange={(e) => setContactData({ ...contactData, phone: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="contactEmail">E-posta</Label>
+                  <Input
+                    id="contactEmail"
+                    value={contactData.email}
+                    onChange={(e) => setContactData({ ...contactData, email: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="contactMap">Google Haritalar Embed URL</Label>
+                  <Input
+                    id="contactMap"
+                    value={contactData.mapUrl}
+                    onChange={(e) => setContactData({ ...contactData, mapUrl: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="contactInstagram">Instagram URL</Label>
+                  <Input
+                    id="contactInstagram"
+                    value={contactData.instagramUrl}
+                    onChange={(e) => setContactData({ ...contactData, instagramUrl: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="contactWhatsapp">WhatsApp Numarası (Örn: 905551234567)</Label>
+                  <Input
+                    id="contactWhatsapp"
+                    value={contactData.whatsappNumber}
+                    onChange={(e) => setContactData({ ...contactData, whatsappNumber: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="contactTelegram">Telegram URL</Label>
+                  <Input
+                    id="contactTelegram"
+                    value={contactData.telegramUrl}
+                    onChange={(e) => setContactData({ ...contactData, telegramUrl: e.target.value })}
+                    required
+                  />
+                </div>
+              </div>
+              <Button type="submit">Kaydet</Button>
+            </form>
+          </div>
+        )}
 
         {isAddingBanner && (
           <div className="bg-card border border-border rounded-xl p-6 mb-8 shadow-sm">

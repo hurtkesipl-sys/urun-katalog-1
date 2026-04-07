@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Product, Banner } from './types';
+import { Product, Banner, AboutInfo, ContactInfo } from './types';
 
 interface ProductStore {
   products: Product[];
@@ -9,6 +9,8 @@ interface ProductStore {
   isAdmin: boolean;
   favorites: string[];
   banners: Banner[];
+  aboutInfo: AboutInfo;
+  contactInfo: ContactInfo;
   addProduct: (product: Omit<Product, 'id' | 'createdAt'>) => void;
   removeProduct: (id: string) => void;
   addSubCategory: (category: string) => void;
@@ -16,6 +18,8 @@ interface ProductStore {
   toggleFavorite: (productCode: string) => void;
   addBanner: (banner: Omit<Banner, 'id'>) => void;
   removeBanner: (id: string) => void;
+  updateAboutInfo: (info: AboutInfo) => void;
+  updateContactInfo: (info: ContactInfo) => void;
 }
 
 export const useProductStore = create<ProductStore>()(
@@ -38,6 +42,20 @@ export const useProductStore = create<ProductStore>()(
           title: "Özel Keten Serisi"
         }
       ],
+      aboutInfo: {
+        title: "Hakkımızda",
+        content: "Moda İtalya Toptan olarak, İtalya'nın en seçkin kumaşlarını ve en yeni moda trendlerini sizlerle buluşturuyoruz. Yılların verdiği tecrübe ile toptan giyim sektöründe kalite ve güvenin adresi olmaya devam ediyoruz.",
+        imageUrl: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&q=80&w=2000"
+      },
+      contactInfo: {
+        address: "Moda Caddesi No:123, Şişli / İstanbul",
+        phone: "+90 555 123 45 67",
+        email: "info@modaitalyatoptan.com",
+        mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.6!2d28.9!3d41.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDAwJzAwLjAiTiAyOMKwNTQnMDAuMCJF!5e0!3m2!1str!2str!4v1620000000000!5m2!1str!2str",
+        instagramUrl: "https://instagram.com",
+        whatsappNumber: "905551234567",
+        telegramUrl: "https://t.me/modaitalya"
+      },
       addProduct: (product: Omit<Product, 'id' | 'createdAt'>) =>
         set((state: ProductStore) => ({
           products: [
@@ -82,6 +100,14 @@ export const useProductStore = create<ProductStore>()(
       removeBanner: (id: string) =>
         set((state: ProductStore) => ({
           banners: state.banners.filter((b: Banner) => b.id !== id),
+        })),
+      updateAboutInfo: (info: AboutInfo) =>
+        set(() => ({
+          aboutInfo: info,
+        })),
+      updateContactInfo: (info: ContactInfo) =>
+        set(() => ({
+          contactInfo: info,
         })),
     }),
     {
