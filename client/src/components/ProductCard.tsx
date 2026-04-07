@@ -23,11 +23,11 @@ export default function ProductCard({ product, isAdmin, onDelete }: ProductCardP
 
   const cardContent = (
     <Card className="overflow-hidden group border-border/50 hover:border-border transition-all duration-300 hover:shadow-md bg-card h-full flex flex-col cursor-pointer relative">
-      <div className="aspect-[3/4] overflow-hidden bg-muted relative flex items-center justify-center">
+      <div className="aspect-[3/4] overflow-hidden bg-muted relative">
         <img
           src={product.imageUrl}
           alt={product.name}
-          className="object-cover w-[75%] h-[75%] group-hover:scale-105 transition-transform duration-500"
+          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
         />
         <button 
           onClick={handleFavoriteClick}
