@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { useProductStore } from "@/store";
 import { Button } from "@/components/ui/button";
@@ -7,11 +7,39 @@ import { Heart, Menu, X } from "lucide-react";
 export default function Navbar() {
   const { isAdmin, setAdmin, favorites } = useProductStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Sadece mobilde çalışsın (md breakpoint altı)
+      if (window.innerWidth < 768) {
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+          // Aşağı kaydırırken gizle
+          setIsVisible(false);
+          setIsMobileMenuOpen(false); // Menü açıksa kapat
+        } else {
+          // Yukarı kaydırırken veya en üstteyken göster
+          setIsVisible(true);
+        }
+      } else {
+        // Masaüstünde her zaman görünür
+        setIsVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
   return (
-    <nav className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+    <nav className={`border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
       <div className="container flex flex-col items-center py-4 relative">
         {/* Üst Kısım: Logo ve Sağ Üst Menü */}
         <div className="w-full flex justify-between items-center mb-4">
