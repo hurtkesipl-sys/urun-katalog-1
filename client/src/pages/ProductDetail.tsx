@@ -161,15 +161,6 @@ export default function ProductDetail() {
             <SiWhatsapp className="w-4 h-4" />
             WhatsApp
           </a>
-          <a 
-            href={`${contactInfo.telegramUrl}?text=${getMessageText()}`}
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex-1 flex items-center justify-center gap-2 bg-[#0088cc] hover:bg-[#0077b5] text-white py-2.5 px-4 rounded-md transition-colors font-medium text-sm"
-          >
-            <Send className="w-4 h-4" />
-            Telegram
-          </a>
         </div>
       </div>
       
