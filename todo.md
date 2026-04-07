@@ -1,1 +1,1 @@
-- [ ] `Admin.tsx` sayfasındaki İletişim formunda `mapUrl` alanına girilen metni kontrol et. Eğer `<iframe` ile başlıyorsa içindeki `src` değerini otomatik olarak çıkarıp kaydet.
+- [ ] `store.ts` dosyasındaki `contactInfo.mapUrl` değerini kullanıcının verdiği konuma uygun bir embed URL ile değiştir.
