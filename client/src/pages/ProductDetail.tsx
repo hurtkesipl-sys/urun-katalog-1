@@ -214,7 +214,8 @@ export default function ProductDetail() {
                 href={getWhatsAppLink(contactInfo.whatsappNumber, getMessageText())}
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white py-3 px-6 rounded-md transition-colors font-medium text-base w-full sm:w-auto"
+                className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white py-3 px-6 rounded-md transition-colors font-medium text-base w-full sm:w-auto cursor-pointer"
+                style={{ pointerEvents: 'auto' }}
               >
                 <SiWhatsapp className="w-5 h-5" />
                 WhatsApp'tan Stok Sor
