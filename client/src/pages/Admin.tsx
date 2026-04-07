@@ -11,8 +11,9 @@ import { PlusCircle, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Admin() {
-  const { products, mainCategories, subCategories, addProduct, removeProduct, addSubCategory, isAdmin, banners, addBanner, removeBanner, aboutInfo, contactInfo, updateAboutInfo, updateContactInfo } = useProductStore();
+  const { products, mainCategories, subCategories, addProduct, updateProduct, removeProduct, addSubCategory, isAdmin, banners, addBanner, removeBanner, aboutInfo, contactInfo, updateAboutInfo, updateContactInfo } = useProductStore();
   const [isAdding, setIsAdding] = useState(false);
+  const [editingProductId, setEditingProductId] = useState<string | null>(null);
   const [isAddingBanner, setIsAddingBanner] = useState(false);
   const [isEditingAbout, setIsEditingAbout] = useState(false);
   const [isEditingContact, setIsEditingContact] = useState(false);
@@ -108,22 +109,59 @@ export default function Admin() {
       return;
     }
 
-    addProduct({
-      name: formData.name,
-      description: formData.description,
-      priceEUR: parseFloat(formData.priceEUR),
-      priceTRY: parseFloat(formData.priceTRY),
-      imageUrl: formData.imageUrl,
-      mainCategory: formData.mainCategory,
-      subCategory: formData.subCategory,
-      productCode: formData.productCode,
-      colorCode: formData.colorCode,
-    });
+    if (editingProductId) {
+      updateProduct(editingProductId, {
+        name: formData.name,
+        description: formData.description,
+        priceEUR: parseFloat(formData.priceEUR),
+        priceTRY: parseFloat(formData.priceTRY),
+        imageUrl: formData.imageUrl,
+        mainCategory: formData.mainCategory,
+        subCategory: formData.subCategory,
+        productCode: formData.productCode,
+        colorCode: formData.colorCode,
+      });
+      toast.success("Ürün başarıyla güncellendi.");
+    } else {
+      addProduct({
+        name: formData.name,
+        description: formData.description,
+        priceEUR: parseFloat(formData.priceEUR),
+        priceTRY: parseFloat(formData.priceTRY),
+        imageUrl: formData.imageUrl,
+        mainCategory: formData.mainCategory,
+        subCategory: formData.subCategory,
+        productCode: formData.productCode,
+        colorCode: formData.colorCode,
+      });
+      toast.success("Ürün başarıyla eklendi.");
+    }
 
-    toast.success("Ürün başarıyla eklendi.");
-    setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: "", subCategory: "", productCode: "", colorCode: "" });
+    setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: mainCategories[0], subCategory: subCategories[0], productCode: "", colorCode: "#000000" });
     setImagePreview(null);
     setIsAdding(false);
+    setEditingProductId(null);
+  };
+
+  const handleEdit = (id: string) => {
+    const productToEdit = products.find(p => p.id === id);
+    if (productToEdit) {
+      setFormData({
+        name: productToEdit.name,
+        description: productToEdit.description || "",
+        priceEUR: productToEdit.priceEUR.toString(),
+        priceTRY: productToEdit.priceTRY.toString(),
+        imageUrl: productToEdit.imageUrl,
+        mainCategory: productToEdit.mainCategory,
+        subCategory: productToEdit.subCategory,
+        productCode: productToEdit.productCode,
+        colorCode: productToEdit.colorCode || "#000000",
+      });
+      setImagePreview(productToEdit.imageUrl);
+      setEditingProductId(id);
+      setIsAdding(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const handleAddSubCategory = () => {
@@ -174,7 +212,16 @@ export default function Admin() {
               <PlusCircle className="mr-1 md:mr-2 h-4 w-4" />
               {isAddingBanner ? "İptal" : "Banner Yönetimi"}
             </Button>
-            <Button onClick={() => setIsAdding(!isAdding)} className="text-xs md:text-sm">
+            <Button onClick={() => {
+              if (isAdding) {
+                setIsAdding(false);
+                setEditingProductId(null);
+                setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: mainCategories[0], subCategory: subCategories[0], productCode: "", colorCode: "#000000" });
+                setImagePreview(null);
+              } else {
+                setIsAdding(true);
+              }
+            }} className="text-xs md:text-sm">
               <PlusCircle className="mr-1 md:mr-2 h-4 w-4" />
               {isAdding ? "İptal" : "Yeni Ürün Ekle"}
             </Button>
@@ -349,7 +396,7 @@ export default function Admin() {
 
         {isAdding && (
           <div className="bg-card border border-border rounded-lg p-6 mb-12 shadow-sm">
-            <h2 className="text-xl font-semibold mb-6">Yeni Ürün Detayları</h2>
+            <h2 className="text-xl font-semibold mb-6">{editingProductId ? "Ürünü Düzenle" : "Yeni Ürün Detayları"}</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
@@ -485,7 +532,7 @@ export default function Admin() {
               </div>
 
               <Button type="submit" className="w-full md:w-auto">
-                Ürünü Kaydet
+                {editingProductId ? "Değişiklikleri Kaydet" : "Ürünü Kaydet"}
               </Button>
             </form>
           </div>
@@ -503,6 +550,7 @@ export default function Admin() {
                   product={product}
                   isAdmin={true}
                   onDelete={handleDelete}
+                  onEdit={handleEdit}
                 />
               ))}
             </div>

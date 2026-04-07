@@ -12,6 +12,7 @@ interface ProductStore {
   aboutInfo: AboutInfo;
   contactInfo: ContactInfo;
   addProduct: (product: Omit<Product, 'id' | 'createdAt'>) => void;
+  updateProduct: (id: string, product: Partial<Omit<Product, 'id' | 'createdAt'>>) => void;
   removeProduct: (id: string) => void;
   addSubCategory: (category: string) => void;
   setAdmin: (status: boolean) => void;
@@ -66,6 +67,12 @@ export const useProductStore = create<ProductStore>()(
             },
             ...state.products,
           ],
+        })),
+      updateProduct: (id: string, updatedProduct: Partial<Omit<Product, 'id' | 'createdAt'>>) =>
+        set((state: ProductStore) => ({
+          products: state.products.map((p: Product) => 
+            p.id === id ? { ...p, ...updatedProduct } : p
+          ),
         })),
       removeProduct: (id: string) =>
         set((state: ProductStore) => ({

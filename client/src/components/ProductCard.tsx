@@ -1,7 +1,7 @@
 import { Product } from "@/types";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trash2, Heart } from "lucide-react";
+import { Trash2, Heart, Edit } from "lucide-react";
 import { Link } from "wouter";
 import { useProductStore } from "@/store";
 
@@ -9,9 +9,10 @@ interface ProductCardProps {
   product: Product;
   isAdmin?: boolean;
   onDelete?: (id: string) => void;
+  onEdit?: (id: string) => void;
 }
 
-export default function ProductCard({ product, isAdmin, onDelete }: ProductCardProps) {
+export default function ProductCard({ product, isAdmin, onDelete, onEdit }: ProductCardProps) {
   const { favorites, toggleFavorite } = useProductStore();
   const isFavorite = favorites.includes(product.productCode);
 
@@ -37,19 +38,35 @@ export default function ProductCard({ product, isAdmin, onDelete }: ProductCardP
             className={`w-5 h-5 transition-colors ${isFavorite ? 'fill-red-500 text-red-500' : 'text-foreground'}`} 
           />
         </button>
-        {isAdmin && onDelete && (
-          <Button
-            variant="destructive"
-            size="icon"
-            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              onDelete(product.id);
-            }}
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
+        {isAdmin && (
+          <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+            {onEdit && (
+              <Button
+                variant="secondary"
+                size="icon"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onEdit(product.id);
+                }}
+              >
+                <Edit className="h-4 w-4" />
+              </Button>
+            )}
+            {onDelete && (
+              <Button
+                variant="destructive"
+                size="icon"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onDelete(product.id);
+                }}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
         )}
       </div>
       <CardContent className="p-5 flex-1">
