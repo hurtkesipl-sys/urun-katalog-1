@@ -187,16 +187,30 @@
 }
 
 /* Üstteki Google Translate barını gizle */
-.goog-te-banner-frame {
+.goog-te-banner-frame,
+.skiptranslate > iframe.goog-te-banner-frame,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+div#goog-gt-,
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf-ti6hGc {
   display: none !important;
-}
-
-.skiptranslate > iframe.goog-te-banner-frame {
-  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  width: 0 !important;
+  position: absolute !important;
+  top: -9999px !important;
+  z-index: -9999 !important;
 }
 
 body {
   top: 0 !important; /* Bar gizlendiğinde sayfanın aşağı kaymasını engelle */
+  position: static !important;
+}
+
+html {
+  height: 100% !important;
 }
 
 /* Tooltip'leri gizle */
