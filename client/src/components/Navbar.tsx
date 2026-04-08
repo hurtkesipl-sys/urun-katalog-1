@@ -182,7 +182,7 @@ export default function Navbar() {
           </div>
 
           {/* Sağ Üst Menü (Favoriler, Hakkımızda, İletişim ve Admin) */}
-          <div className="flex flex-col items-end gap-1 w-auto md:w-24 justify-end shrink-0">
+          <div className="flex flex-col items-end gap-1 w-auto md:w-auto justify-end shrink-0">
             <div className="flex items-center gap-2 md:gap-4">
               {isTranslationEnabled && (
                 <div className="flex items-center gap-2 md:gap-2 mr-2 md:mr-4 relative z-50">
