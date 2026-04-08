@@ -1,6 +1,5 @@
 <!doctype html>
-<html lang="en">
-
+<html lang="tr">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -10,11 +9,31 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <!-- Google Translate gizleme stilleri -->
+    <style>
+      .goog-te-banner-frame { display: none !important; }
+      .skiptranslate { display: none !important; }
+      body { top: 0px !important; position: static !important; }
+      html { top: 0px !important; position: static !important; }
+      #goog-gt-tt { display: none !important; }
+      .goog-te-balloon-frame { display: none !important; }
+    </style>
+    <!-- Google Translate Widget -->
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+          pageLanguage: 'tr',
+          includedLanguages: 'tr,en,ar,ru',
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false
+        }, 'google_translate_element');
+      }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
   </head>
-
   <body>
+    <div id="google_translate_element" style="display:none"></div>
     <div id="root"></div>
-
     <script type="module" src="/src/main.tsx"></script>
     <script
       defer

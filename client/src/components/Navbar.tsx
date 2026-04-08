@@ -62,54 +62,8 @@ export default function Navbar() {
     }
   };
 
-  useEffect(() => {
-    if (isTranslationEnabled) {
-      // Script zaten eklenmiş mi kontrol et
-      if (!document.getElementById('google-translate-script')) {
-        const script = document.createElement('script');
-        script.id = 'google-translate-script';
-        script.type = 'text/javascript';
-        script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-        script.async = true; // Takılmayı önlemek için asenkron yükle
-        document.body.appendChild(script);
-
-        // Init fonksiyonunu global window objesine ekle
-        (window as any).googleTranslateElementInit = () => {
-          if (document.getElementById('google_translate_element')) {
-            // Önceki içeriği temizle (sayfa geçişlerinde çift yüklenmeyi önlemek için)
-            document.getElementById('google_translate_element')!.innerHTML = '';
-            new (window as any).google.translate.TranslateElement({
-              pageLanguage: 'tr',
-              includedLanguages: 'tr,en,ar,ru',
-              layout: (window as any).google.translate.TranslateElement.InlineLayout.SIMPLE,
-              autoDisplay: false
-            }, 'google_translate_element');
-          }
-        };
-      } else {
-        // Script zaten varsa ve sayfa değiştiyse, init fonksiyonunu tekrar çağır
-        if ((window as any).googleTranslateElementInit) {
-          // setTimeout yerine requestAnimationFrame kullanarak takılmayı önle
-          requestAnimationFrame(() => {
-            (window as any).googleTranslateElementInit();
-          });
-        }
-      }
-
-      // Google Translate şeridini (banner) gizlemek için sadece CSS kullan, JS döngülerini (setInterval) tamamen kaldır
-      if (!document.getElementById('google-translate-style')) {
-        const style = document.createElement('style');
-        style.id = 'google-translate-style';
-        style.innerHTML = `
-          .goog-te-banner-frame { display: none !important; }
-          .skiptranslate { display: none !important; }
-          body { top: 0px !important; position: static !important; }
-          html { top: 0px !important; position: static !important; }
-        `;
-        document.head.appendChild(style);
-      }
-    }
-  }, [isTranslationEnabled]);
+  // Google Translate artık index.html'de global olarak yükleniyor
+  // Bu useEffect'e gerek yok - script sayfa yüklenirken hazır olacak
 
   useEffect(() => {
     const handleScroll = () => {
@@ -184,7 +138,6 @@ export default function Navbar() {
             <div className="flex items-center gap-2 md:gap-4">
               {isTranslationEnabled && (
                 <div className="flex items-center gap-2 md:gap-2 mr-2 md:mr-4 relative z-50">
-                  <div id="google_translate_element" className="hidden"></div>
                   <button onClick={() => changeLanguage('tr')} className="w-8 h-8 md:w-9 md:h-9 hover:scale-110 transition-transform cursor-pointer flex items-center justify-center" title="Türkçe">
                     <img src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/1f1f9-1f1f7.svg" alt="Türkçe" className="w-full h-full object-contain drop-shadow-sm" />
                   </button>
