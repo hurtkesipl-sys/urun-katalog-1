@@ -1,4 +1,4 @@
-import { useProductStore } from "@/store";
+import { useProductStore } from "@/hooks/useStore";
 import Navbar from "@/components/Navbar";
 import ProductCard from "@/components/ProductCard";
 import { useRoute } from "wouter";

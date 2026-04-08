@@ -1,4 +1,4 @@
-import { useProductStore } from "@/store";
+import { useProductStore } from "@/hooks/useStore";
 import Navbar from "@/components/Navbar";
 import { MapPin, Phone, Mail, Instagram, MessageCircle, Send, Facebook } from "lucide-react";
 import { getWhatsAppLink } from "@/lib/whatsapp";

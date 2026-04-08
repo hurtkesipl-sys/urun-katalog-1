@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useProductStore } from "@/store";
+import { useProductStore } from "@/hooks/useStore";
 import { useRoute, Link } from "wouter";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";

@@ -1,29 +1,23 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { useLocation } from "wouter";
-import { useProductStore } from "@/store";
+import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
+import { getLoginUrl } from "@/const";
 
 export default function Login() {
-  const [password, setPassword] = useState("");
   const [, setLocation] = useLocation();
-  const { setAdmin } = useProductStore();
+  const { user, loading, isAuthenticated } = useAuth();
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Basit bir şifre kontrolü (Gerçek bir uygulamada backend'de yapılmalıdır)
-    if (password === "admin123") {
-      setAdmin(true);
-      toast.success("Giriş başarılı!");
+  useEffect(() => {
+    // Eğer kullanıcı giriş yapmışsa ve admin ise admin paneline yönlendir
+    if (!loading && isAuthenticated && user?.role === "admin") {
       setLocation("/admin");
-    } else {
-      toast.error("Hatalı şifre!");
-      setPassword("");
     }
+  }, [loading, isAuthenticated, user, setLocation]);
+
+  const handleLogin = () => {
+    window.location.href = getLoginUrl();
   };
 
   return (
@@ -34,30 +28,27 @@ export default function Login() {
           <div className="text-center mb-8">
             <h1 className="font-serif text-2xl font-bold mb-2">Yönetim Paneli Girişi</h1>
             <p className="text-muted-foreground text-sm">
-              Devam etmek için lütfen yönetici şifrenizi girin.
+              Devam etmek için Manus hesabınızla giriş yapın.
             </p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="password">Şifre</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Şifrenizi girin"
-                autoFocus
-              />
+          {loading ? (
+            <div className="flex justify-center py-4">
+              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
-            <Button type="submit" className="w-full">
-              Giriş Yap
+          ) : isAuthenticated ? (
+            <div className="text-center space-y-4">
+              {user?.role === "admin" ? (
+                <p className="text-green-600 font-medium">Admin olarak giriş yapıldı. Yönlendiriliyor...</p>
+              ) : (
+                <p className="text-destructive font-medium">Bu hesabın yönetici yetkisi bulunmuyor.</p>
+              )}
+            </div>
+          ) : (
+            <Button onClick={handleLogin} className="w-full">
+              Manus ile Giriş Yap
             </Button>
-          </form>
-          
-          <div className="mt-6 text-center text-xs text-muted-foreground">
-            <p>Not: Test için şifre "admin123" olarak belirlenmiştir.</p>
-          </div>
+          )}
         </div>
       </main>
     </div>

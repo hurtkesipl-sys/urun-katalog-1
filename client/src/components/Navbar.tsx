@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
-import { useProductStore } from "@/store";
+import { useProductStore } from "@/hooks/useStore";
+import { useAuth } from "@/_core/hooks/useAuth";
 import { Link } from "wouter";
 import { Menu, Search, ShoppingBag, User, X, Instagram, Send, Facebook, Heart } from "lucide-react";
 import { SiWhatsapp } from "@icons-pack/react-simple-icons";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
 export default function Navbar() {
-  const { isAdmin, setAdmin, favorites, contactInfo, subCategories, isTranslationEnabled } = useProductStore();
+  const { favorites, contactInfo, subCategories, isTranslationEnabled } = useProductStore();
+  const { user, isAuthenticated, logout } = useAuth();
+  const isAdmin = user?.role === "admin";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -217,7 +220,7 @@ export default function Navbar() {
               {isAdmin ? (
                 <div className="flex items-center gap-2 opacity-0 hover:opacity-100 transition-opacity text-[10px] text-muted-foreground">
                   <Link href="/admin" className="hover:text-foreground transition-colors">Yönetim</Link>
-                  <button onClick={() => setAdmin(false)} className="hover:text-destructive transition-colors">Çıkış</button>
+                  <button onClick={() => logout()} className="hover:text-destructive transition-colors">Çıkış</button>
                 </div>
               ) : (
                 <Link href="/login" className="opacity-0 hover:opacity-100 transition-opacity text-[10px] text-muted-foreground">Admin</Link>
@@ -264,7 +267,7 @@ export default function Navbar() {
                   {isAdmin ? (
                     <div className="flex items-center gap-4 opacity-0 hover:opacity-100 transition-opacity">
                       <Link href="/admin" onClick={toggleMobileMenu} className="hover:text-primary transition-colors">Yönetim</Link>
-                      <button onClick={() => { setAdmin(false); toggleMobileMenu(); }} className="hover:text-destructive transition-colors">Çıkış</button>
+                      <button onClick={() => { logout(); toggleMobileMenu(); }} className="hover:text-destructive transition-colors">Çıkış</button>
                     </div>
                   ) : (
                     <Link href="/login" onClick={toggleMobileMenu} className="opacity-0 hover:opacity-100 transition-opacity">Admin</Link>

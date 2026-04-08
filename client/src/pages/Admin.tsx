@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { useProductStore } from "@/store";
+import { useProductStore } from "@/hooks/useStore";
+import { useAuth } from "@/_core/hooks/useAuth";
 import Navbar from "@/components/Navbar";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,9 @@ import { PlusCircle, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Admin() {
-  const { products, mainCategories, subCategories, addProduct, updateProduct, removeProduct, addSubCategory, removeSubCategory, isAdmin, banners, addBanner, removeBanner, aboutInfo, contactInfo, updateAboutInfo, updateContactInfo, isTranslationEnabled, toggleTranslation } = useProductStore();
+  const { products, mainCategories, subCategories, addProduct, updateProduct, removeProduct, addSubCategory, removeSubCategory, banners, addBanner, removeBanner, aboutInfo, contactInfo, updateAboutInfo, updateContactInfo, isTranslationEnabled, toggleTranslation } = useProductStore();
+  const { user, loading: authLoading } = useAuth();
+  const isAdmin = user?.role === "admin";
   const [isAdding, setIsAdding] = useState(false);
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
   const [isAddingBanner, setIsAddingBanner] = useState(false);
@@ -23,10 +26,10 @@ export default function Admin() {
   const [newSubCategory, setNewSubCategory] = useState("");
 
   useEffect(() => {
-    if (!isAdmin) {
+    if (!authLoading && !isAdmin) {
       setLocation("/login");
     }
-  }, [isAdmin, setLocation]);
+  }, [authLoading, isAdmin, setLocation]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -60,14 +63,18 @@ export default function Admin() {
     setContactData(contactInfo);
   }, [contactInfo]);
 
-  const handleUpdateAbout = (e: React.FormEvent) => {
+  const handleUpdateAbout = async (e: React.FormEvent) => {
     e.preventDefault();
-    updateAboutInfo(aboutData);
-    setIsEditingAbout(false);
-    toast.success("Hakkımızda bilgileri güncellendi!");
+    try {
+      await updateAboutInfo(aboutData);
+      setIsEditingAbout(false);
+      toast.success("Hakkımızda bilgileri güncellendi!");
+    } catch (err) {
+      toast.error("Güncelleme sırasında hata oluştu.");
+    }
   };
 
-  const handleUpdateContact = (e: React.FormEvent) => {
+  const handleUpdateContact = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Harita URL'sini kontrol et ve gerekirse iframe içinden src'yi çıkar
@@ -80,10 +87,14 @@ export default function Admin() {
     }
     
     const updatedContactData = { ...contactData, mapUrl: finalMapUrl };
-    updateContactInfo(updatedContactData);
-    setContactData(updatedContactData);
-    setIsEditingContact(false);
-    toast.success("İletişim bilgileri güncellendi!");
+    try {
+      await updateContactInfo(updatedContactData);
+      setContactData(updatedContactData);
+      setIsEditingContact(false);
+      toast.success("İletişim bilgileri güncellendi!");
+    } catch (err) {
+      toast.error("Güncelleme sırasında hata oluştu.");
+    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -150,8 +161,8 @@ export default function Admin() {
           description: existingProduct.description || "",
           priceEUR: existingProduct.priceEUR.toString(),
           priceTRY: existingProduct.priceTRY.toString(),
-          mainCategory: existingProduct.mainCategory,
-          subCategory: existingProduct.subCategory,
+          mainCategory: existingProduct.mainCategory ?? "",
+          subCategory: existingProduct.subCategory ?? "",
           videoUrl: existingProduct.videoUrl || "",
           productCode: newCode
         }));
@@ -178,7 +189,7 @@ export default function Admin() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.name || !formData.priceEUR || !formData.priceTRY || !formData.imageUrl || !formData.mainCategory || !formData.subCategory || !formData.productCode || !formData.colorCode) {
@@ -186,42 +197,46 @@ export default function Admin() {
       return;
     }
 
-    if (editingProductId) {
-      updateProduct(editingProductId, {
-        name: formData.name,
-        description: formData.description,
-        priceEUR: parseFloat(formData.priceEUR),
-        priceTRY: parseFloat(formData.priceTRY),
-        imageUrl: formData.imageUrl,
-        imageUrls: formData.imageUrls,
-        mainCategory: formData.mainCategory,
-        subCategory: formData.subCategory,
-        productCode: formData.productCode,
-        colorCode: formData.colorCode,
-        videoUrl: formData.videoUrl || undefined,
-      });
-      toast.success("Ürün başarıyla güncellendi.");
-    } else {
-      addProduct({
-        name: formData.name,
-        description: formData.description,
-        priceEUR: parseFloat(formData.priceEUR),
-        priceTRY: parseFloat(formData.priceTRY),
-        imageUrl: formData.imageUrl,
-        imageUrls: formData.imageUrls,
-        mainCategory: formData.mainCategory,
-        subCategory: formData.subCategory,
-        productCode: formData.productCode,
-        colorCode: formData.colorCode,
-        videoUrl: formData.videoUrl || undefined,
-      });
-      toast.success("Ürün başarıyla eklendi.");
-    }
+    try {
+      if (editingProductId) {
+        await updateProduct(editingProductId, {
+          name: formData.name,
+          description: formData.description,
+          priceEUR: parseFloat(formData.priceEUR),
+          priceTRY: parseFloat(formData.priceTRY),
+          imageUrl: formData.imageUrl,
+          imageUrls: formData.imageUrls,
+          mainCategory: formData.mainCategory,
+          subCategory: formData.subCategory,
+          productCode: formData.productCode,
+          colorCode: formData.colorCode,
+          videoUrl: formData.videoUrl || undefined,
+        });
+        toast.success("Ürün başarıyla güncellendi.");
+      } else {
+        await addProduct({
+          name: formData.name,
+          description: formData.description,
+          priceEUR: parseFloat(formData.priceEUR),
+          priceTRY: parseFloat(formData.priceTRY),
+          imageUrl: formData.imageUrl,
+          imageUrls: formData.imageUrls,
+          mainCategory: formData.mainCategory,
+          subCategory: formData.subCategory,
+          productCode: formData.productCode,
+          colorCode: formData.colorCode,
+          videoUrl: formData.videoUrl || undefined,
+        });
+        toast.success("Ürün başarıyla eklendi.");
+      }
 
-    setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", imageUrls: [], mainCategory: mainCategories[0], subCategory: subCategories[0], productCode: "", colorCode: "", videoUrl: "" });
-    setImagePreviews([]);
-    setIsAdding(false);
-    setEditingProductId(null);
+      setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", imageUrls: [], mainCategory: mainCategories[0], subCategory: subCategories[0], productCode: "", colorCode: "", videoUrl: "" });
+      setImagePreviews([]);
+      setIsAdding(false);
+      setEditingProductId(null);
+    } catch (err) {
+      toast.error("İşlem sırasında bir hata oluştu. Lütfen tekrar deneyin.");
+    }
   };
 
   const handleEdit = (id: string) => {
@@ -232,16 +247,16 @@ export default function Admin() {
         description: productToEdit.description || "",
         priceEUR: productToEdit.priceEUR.toString(),
         priceTRY: productToEdit.priceTRY.toString(),
-        imageUrl: productToEdit.imageUrl,
+        imageUrl: productToEdit.imageUrl ?? "",
         imageUrls: productToEdit.imageUrls || [],
-        mainCategory: productToEdit.mainCategory,
-        subCategory: productToEdit.subCategory,
-        productCode: productToEdit.productCode,
+        mainCategory: productToEdit.mainCategory ?? "",
+        subCategory: productToEdit.subCategory ?? "",
+        productCode: productToEdit.productCode ?? "",
         colorCode: productToEdit.colorCode || "",
         videoUrl: productToEdit.videoUrl || "",
       });
       
-      const allImages = [productToEdit.imageUrl];
+      const allImages = [productToEdit.imageUrl ?? ""];
       if (productToEdit.imageUrls && productToEdit.imageUrls.length > 0) {
         allImages.push(...productToEdit.imageUrls);
       }
@@ -262,26 +277,33 @@ export default function Admin() {
     }
   };
 
-  const handleAddBanner = (e: React.FormEvent) => {
+  const handleAddBanner = async (e: React.FormEvent) => {
     e.preventDefault();
     if (banners.length >= 3) {
       toast.error("En fazla 3 banner ekleyebilirsiniz!");
       return;
     }
     
-    addBanner({
-      imageUrl: bannerData.imageUrl,
-      title: bannerData.title || undefined,
-    });
-    
-    setBannerData({ imageUrl: "", title: "" });
-    setIsAddingBanner(false);
-    toast.success("Banner başarıyla eklendi!");
+    try {
+      await addBanner({
+        imageUrl: bannerData.imageUrl,
+        title: bannerData.title || undefined,
+      });
+      setBannerData({ imageUrl: "", title: "" });
+      setIsAddingBanner(false);
+      toast.success("Banner başarıyla eklendi!");
+    } catch (err) {
+      toast.error("Banner eklenirken hata oluştu.");
+    }
   };
 
-  const handleDelete = (id: string) => {
-    removeProduct(id);
-    toast.success("Ürün silindi.");
+  const handleDelete = async (id: string) => {
+    try {
+      await removeProduct(id);
+      toast.success("Ürün silindi.");
+    } catch (err) {
+      toast.error("Ürün silinirken hata oluştu.");
+    }
   };
 
   return (

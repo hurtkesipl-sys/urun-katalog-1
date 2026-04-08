@@ -3,7 +3,7 @@ import { Instagram, Send, Facebook } from "lucide-react";
 import { SiWhatsapp } from "@icons-pack/react-simple-icons";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
-import { useProductStore } from "@/store";
+import { useProductStore } from "@/hooks/useStore";
 
 export default function Footer() {
   const { contactInfo } = useProductStore();

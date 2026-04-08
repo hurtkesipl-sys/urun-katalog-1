@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Trash2, Heart, Edit, PlayCircle } from "lucide-react";
 import { SiWhatsapp } from "@icons-pack/react-simple-icons";
 import { Link, useLocation } from "wouter";
-import { useProductStore } from "@/store";
+import { useProductStore } from "@/hooks/useStore";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
 interface ProductCardProps {
