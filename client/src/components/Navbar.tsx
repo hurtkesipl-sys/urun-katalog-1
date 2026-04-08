@@ -16,50 +16,60 @@ export default function Navbar() {
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
-  const changeLanguage = (langCode: string) => {
-    // Native Trigger Yöntemi: Google Translate'in kendi select elementini bul ve tetikle
-    const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
+  const clearGoogTransCookies = () => {
+    const h = window.location.hostname;
+    // Tüm olası domain kombinasyonlarını dene
+    const domains = [
+      '',
+      h,
+      '.' + h,
+      h.split('.').slice(1).join('.'),
+      '.' + h.split('.').slice(1).join('.'),
+      h.split('.').slice(2).join('.'),
+      '.' + h.split('.').slice(2).join('.'),
+    ].filter(Boolean);
     
-    if (select) {
-      // Seçimi yap ve change event'ini tetikle
-      select.value = langCode;
-      select.dispatchEvent(new Event('change'));
-      
-      // Eğer orijinal dile (Türkçe) dönülüyorsa, Google'ın iframe içindeki restore butonunu da tetikle
-      if (langCode === 'tr') {
-        const iframe = document.querySelector('iframe.goog-te-banner-frame') as HTMLIFrameElement;
-        if (iframe && iframe.contentWindow) {
-          const restoreBtn = iframe.contentWindow.document.getElementById(':1.restore') as HTMLButtonElement;
-          if (restoreBtn) {
-            restoreBtn.click();
-          }
-        }
-        
-        // Çerezleri de temizle (garanti olsun diye)
-        const domain = window.location.hostname;
-        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain};`;
-        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${domain};`;
-      }
+    domains.forEach(d => {
+      const domainPart = d ? `; domain=${d}` : '';
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/${domainPart}`;
+    });
+    // domain parametresiz de dene
+    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+  };
+
+  const setGoogTransCookie = (langCode: string) => {
+    const h = window.location.hostname;
+    const val = `/tr/${langCode}`;
+    const domains = [
+      '',
+      h,
+      '.' + h,
+      h.split('.').slice(1).join('.'),
+      '.' + h.split('.').slice(1).join('.'),
+    ].filter(Boolean);
+    
+    domains.forEach(d => {
+      const domainPart = d ? `; domain=${d}` : '';
+      document.cookie = `googtrans=${val}; path=/${domainPart}; SameSite=None; Secure`;
+    });
+    document.cookie = `googtrans=${val}; path=/; SameSite=None; Secure`;
+  };
+
+  const changeLanguage = (langCode: string) => {
+    // Her zaman cookie+reload yöntemi kullan - en güvenilir yöntem
+    if (langCode === 'tr') {
+      clearGoogTransCookies();
     } else {
-      // Eğer widget henüz yüklenmediyse, çerezi ayarlayıp sayfayı yenile (Fallback)
-      const domain = window.location.hostname;
-      if (langCode === 'tr') {
-        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain};`;
-        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${domain};`;
-      } else {
-        document.cookie = `googtrans=/tr/${langCode}; path=/; SameSite=None; Secure`;
-        document.cookie = `googtrans=/tr/${langCode}; path=/; domain=${domain}; SameSite=None; Secure`;
-        document.cookie = `googtrans=/tr/${langCode}; path=/; domain=.${domain}; SameSite=None; Secure`;
-      }
-      
-      document.body.style.opacity = '0';
-      document.body.style.transition = 'opacity 0.3s ease';
-      setTimeout(() => {
-        window.location.reload();
-      }, 300);
+      clearGoogTransCookies();
+      setGoogTransCookie(langCode);
     }
+    
+    // Geçiş animasyonu ile yenile
+    document.body.style.opacity = '0';
+    document.body.style.transition = 'opacity 0.3s ease';
+    setTimeout(() => {
+      window.location.reload();
+    }, 300);
   };
 
   // Google Translate artık index.html'de global olarak yükleniyor

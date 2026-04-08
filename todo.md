@@ -11,3 +11,4 @@
 - [x] Vitest tests written and passing (6/6)
 - [ ] `Navbar.tsx` bileşenindeki `<a>` etiketlerini `wouter` kütüphanesinin `Link` bileşeni ile değiştir.
 - [ ] `Home.tsx` sayfasında `window.location.search` yerine `wouter` kütüphanesinin `useLocation` hook'unu kullanarak filtreleme yap.
+- [ ] Dil geçişini köklü şekilde yeniden yaz - cookie+reload yöntemi ile güvenilir çalışsın
