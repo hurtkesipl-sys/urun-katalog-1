@@ -14,6 +14,40 @@ export default function Navbar() {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   useEffect(() => {
+    if (isTranslationEnabled) {
+      // Script zaten eklenmiş mi kontrol et
+      if (!document.getElementById('google-translate-script')) {
+        const script = document.createElement('script');
+        script.id = 'google-translate-script';
+        script.type = 'text/javascript';
+        script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+        document.body.appendChild(script);
+
+        // Init fonksiyonunu global window objesine ekle
+        (window as any).googleTranslateElementInit = () => {
+          if (document.getElementById('google_translate_element')) {
+            // Önceki içeriği temizle (sayfa geçişlerinde çift yüklenmeyi önlemek için)
+            document.getElementById('google_translate_element')!.innerHTML = '';
+            new (window as any).google.translate.TranslateElement({
+              pageLanguage: 'tr',
+              includedLanguages: 'tr,en,ar,ru',
+              layout: (window as any).google.translate.TranslateElement.InlineLayout.SIMPLE,
+              autoDisplay: false
+            }, 'google_translate_element');
+          }
+        };
+      } else {
+        // Script zaten varsa ve sayfa değiştiyse, init fonksiyonunu tekrar çağır
+        if ((window as any).googleTranslateElementInit) {
+          setTimeout(() => {
+            (window as any).googleTranslateElementInit();
+          }, 100);
+        }
+      }
+    }
+  }, [isTranslationEnabled]);
+
+  useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       
