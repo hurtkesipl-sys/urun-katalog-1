@@ -102,6 +102,30 @@ export default function Admin() {
     }
   };
 
+  const handleProductCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newCode = e.target.value;
+    setFormData({ ...formData, productCode: newCode });
+
+    // Eğer yeni ürün ekleniyorsa (düzenleme modunda değilse) ve girilen kodla eşleşen bir ürün varsa
+    if (!editingProductId && newCode.trim() !== "") {
+      const existingProduct = products.find(p => p.productCode === newCode.trim());
+      if (existingProduct) {
+        setFormData(prev => ({
+          ...prev,
+          name: existingProduct.name,
+          description: existingProduct.description || "",
+          priceEUR: existingProduct.priceEUR.toString(),
+          priceTRY: existingProduct.priceTRY.toString(),
+          mainCategory: existingProduct.mainCategory,
+          subCategory: existingProduct.subCategory,
+          videoUrl: existingProduct.videoUrl || "",
+          productCode: newCode
+        }));
+        toast.success("Mevcut ürün bilgileri otomatik dolduruldu. Lütfen yeni renk ismini ve görselini girin.");
+      }
+    }
+  };
+
   const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -445,7 +469,7 @@ export default function Admin() {
                     <Input
                       id="productCode"
                       value={formData.productCode}
-                      onChange={(e) => setFormData({ ...formData, productCode: e.target.value })}
+                      onChange={handleProductCodeChange}
                       placeholder="Örn: ELB-001"
                     />
                   </div>
