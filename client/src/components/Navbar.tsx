@@ -14,9 +14,13 @@ export default function Navbar() {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   const changeLanguage = (langCode: string) => {
-    // Google Translate çerezini doğrudan ayarla
-    document.cookie = `googtrans=/tr/${langCode}; path=/; domain=${window.location.hostname}`;
-    document.cookie = `googtrans=/tr/${langCode}; path=/; domain=.${window.location.hostname}`;
+    // Önce var olan tüm çeviri çerezlerini temizle
+    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}`;
+    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${window.location.hostname}`;
+
+    // Yeni çerezi sadece path=/ ile ayarla (domain belirtmeden, tarayıcının otomatik atamasına izin ver)
+    document.cookie = `googtrans=/tr/${langCode}; path=/;`;
     
     // Sayfayı yenile ki çeviri kesin olarak uygulansın
     window.location.reload();
