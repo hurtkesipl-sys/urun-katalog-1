@@ -22,15 +22,33 @@ export default function Navbar() {
       document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=None; Secure`;
       document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain}; SameSite=None; Secure`;
       document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${domain}; SameSite=None; Secure`;
+      
+      // Orijinal dile dönerken sayfa yenilemesi gerekir, beyaz patlamayı önlemek için body'i gizle
+      document.body.style.opacity = '0';
+      document.body.style.transition = 'opacity 0.3s ease';
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
     } else {
       // Diğer diller için çerezi ayarla (Masaüstü Chrome iframe engellemesini aşmak için SameSite=None; Secure)
       document.cookie = `googtrans=/tr/${langCode}; path=/; SameSite=None; Secure`;
       document.cookie = `googtrans=/tr/${langCode}; path=/; domain=${domain}; SameSite=None; Secure`;
       document.cookie = `googtrans=/tr/${langCode}; path=/; domain=.${domain}; SameSite=None; Secure`;
+      
+      // Sayfayı yenilemek yerine Google Translate widget'ını doğrudan tetikle (beyaz ekranı önler)
+      const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
+      if (select) {
+        select.value = langCode;
+        select.dispatchEvent(new Event('change'));
+      } else {
+        // Eğer widget henüz yüklenmediyse veya bulunamadıysa, yumuşak geçişle yenile
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
+      }
     }
-    
-    // Sayfayı yenile ki çeviri kesin olarak uygulansın
-    window.location.reload();
   };
 
   useEffect(() => {
