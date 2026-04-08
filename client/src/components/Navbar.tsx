@@ -53,6 +53,35 @@ export default function Navbar() {
           }, 100);
         }
       }
+
+      // İnatçı Google Translate şeridini (banner) DOM'dan zorla silmek için MutationObserver
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach(() => {
+          const banner = document.querySelector('.goog-te-banner-frame');
+          const skiptranslate = document.querySelector('.skiptranslate > iframe.goog-te-banner-frame');
+          const balloon = document.querySelector('.goog-te-balloon-frame');
+          const gtTt = document.getElementById('goog-gt-tt');
+          
+          if (banner) banner.remove();
+          if (skiptranslate) skiptranslate.remove();
+          if (balloon) balloon.remove();
+          if (gtTt) gtTt.remove();
+          
+          // Body'nin top değerini zorla sıfırla
+          if (document.body.style.top !== '0px' && document.body.style.top !== '') {
+            document.body.style.top = '0px';
+          }
+        });
+      });
+
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['style']
+      });
+
+      return () => observer.disconnect();
     }
   }, [isTranslationEnabled]);
 
