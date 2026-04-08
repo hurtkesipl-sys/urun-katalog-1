@@ -11,6 +11,7 @@ export default function ProductDetail() {
   const [match, params] = useRoute("/product/:id");
   const [isZoomed, setIsZoomed] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const { products, contactInfo } = useProductStore();
   
   const product = match ? products.find(p => p.id === params.id) : null;
@@ -19,6 +20,9 @@ export default function ProductDetail() {
   const colorVariants = product 
     ? products.filter(p => p.productCode === product.productCode)
     : [];
+
+  // Tüm görselleri birleştir (ana görsel + ek görseller)
+  const allImages = product ? [product.imageUrl, ...(product.imageUrls || [])] : [];
 
   const getMessageText = () => {
     if (!product) return "";
@@ -52,15 +56,16 @@ export default function ProductDetail() {
         </Link>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
-          {/* Sol Taraf: Resim */}
-          <div className="relative group flex flex-col items-center justify-center gap-4">
+          {/* Sol Taraf: Resim Galerisi */}
+          <div className="relative flex flex-col items-center justify-start gap-4">
+            {/* Ana Büyük Görsel */}
             <div 
-              className="aspect-[3/4] relative w-full max-w-md cursor-zoom-in overflow-hidden rounded-xl"
+              className="aspect-[3/4] relative w-full max-w-md cursor-zoom-in overflow-hidden rounded-xl group"
               onClick={() => setIsZoomed(true)}
             >
               <img 
-                src={product.imageUrl} 
-                alt={product.name} 
+                src={allImages[activeImageIndex]} 
+                alt={`${product.name} - Görsel ${activeImageIndex + 1}`} 
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
@@ -70,10 +75,33 @@ export default function ProductDetail() {
               </div>
             </div>
             
+            {/* Küçük Görseller (Thumbnails) */}
+            {allImages.length > 1 && (
+              <div className="flex gap-3 w-full max-w-md overflow-x-auto pb-2 snap-x">
+                {allImages.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveImageIndex(index)}
+                    className={`relative w-20 h-28 flex-shrink-0 rounded-md overflow-hidden border-2 transition-all snap-center ${
+                      activeImageIndex === index 
+                        ? 'border-primary ring-2 ring-primary/20 scale-105' 
+                        : 'border-transparent hover:border-border opacity-70 hover:opacity-100'
+                    }`}
+                  >
+                    <img 
+                      src={img} 
+                      alt={`${product.name} küçük görsel ${index + 1}`} 
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+            
             {product.videoUrl && (
               <Button 
                 variant="outline" 
-                className="w-full max-w-md flex items-center justify-center gap-2 border-red-200 hover:bg-red-50 hover:text-red-600 text-red-500"
+                className="w-full max-w-md flex items-center justify-center gap-2 border-red-200 hover:bg-red-50 hover:text-red-600 text-red-500 mt-2"
                 onClick={() => setIsVideoModalOpen(true)}
               >
                 <PlayCircle className="w-5 h-5" />
@@ -102,10 +130,34 @@ export default function ProductDetail() {
                 onClick={(e) => e.stopPropagation()}
               >
                 <img 
-                  src={product.imageUrl} 
+                  src={allImages[activeImageIndex]} 
                   alt={product.name} 
                   className="max-w-full max-h-full object-contain rounded-md"
                 />
+                
+                {/* Tam ekran modunda önceki/sonraki görsel butonları */}
+                {allImages.length > 1 && (
+                  <>
+                    <button 
+                      className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-background/50 hover:bg-background rounded-full transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveImageIndex((prev) => (prev === 0 ? allImages.length - 1 : prev - 1));
+                      }}
+                    >
+                      <ArrowLeft className="w-6 h-6" />
+                    </button>
+                    <button 
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-background/50 hover:bg-background rounded-full transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveImageIndex((prev) => (prev === allImages.length - 1 ? 0 : prev + 1));
+                      }}
+                    >
+                      <ArrowLeft className="w-6 h-6 rotate-180" />
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           )}

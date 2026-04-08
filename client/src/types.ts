@@ -4,7 +4,8 @@ export interface Product {
   description: string;
   priceEUR: number;
   priceTRY: number;
-  imageUrl: string;
+  imageUrl: string; // Ana görsel (ilk görsel)
+  imageUrls?: string[]; // Ek görseller (maksimum 4)
   mainCategory: string;
   subCategory: string;
   productCode: string;

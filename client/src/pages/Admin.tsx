@@ -34,6 +34,7 @@ export default function Admin() {
     priceEUR: "",
     priceTRY: "",
     imageUrl: "",
+    imageUrls: [] as string[],
     mainCategory: mainCategories[0],
     subCategory: subCategories[0],
     productCode: "",
@@ -45,7 +46,7 @@ export default function Admin() {
     imageUrl: "",
     title: "",
   });
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const [aboutData, setAboutData] = useState(aboutInfo);
   const [contactData, setContactData] = useState(contactInfo);
@@ -86,21 +87,53 @@ export default function Admin() {
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    // Maksimum 4 görsel kontrolü
+    if (imagePreviews.length + files.length > 4) {
+      toast.error("En fazla 4 görsel yükleyebilirsiniz.");
+      return;
+    }
+
+    const newPreviews: string[] = [];
+    let processedCount = 0;
+
+    files.forEach(file => {
       if (file.size > 5 * 1024 * 1024) {
-        toast.error("Dosya boyutu 5MB'dan küçük olmalıdır.");
+        toast.error(`${file.name} boyutu 5MB'dan küçük olmalıdır.`);
+        processedCount++;
         return;
       }
       
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result as string;
-        setImagePreview(base64String);
-        setFormData({ ...formData, imageUrl: base64String });
+        newPreviews.push(base64String);
+        processedCount++;
+
+        if (processedCount === files.length) {
+          const updatedPreviews = [...imagePreviews, ...newPreviews];
+          setImagePreviews(updatedPreviews);
+          setFormData({ 
+            ...formData, 
+            imageUrl: updatedPreviews[0] || "", // İlk görsel ana görsel
+            imageUrls: updatedPreviews.slice(1) // Geri kalanlar ek görseller
+          });
+        }
       };
       reader.readAsDataURL(file);
-    }
+    });
+  };
+
+  const removeImage = (index: number) => {
+    const updatedPreviews = imagePreviews.filter((_, i) => i !== index);
+    setImagePreviews(updatedPreviews);
+    setFormData({ 
+      ...formData, 
+      imageUrl: updatedPreviews[0] || "", 
+      imageUrls: updatedPreviews.slice(1) 
+    });
   };
 
   const handleProductCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -160,6 +193,7 @@ export default function Admin() {
         priceEUR: parseFloat(formData.priceEUR),
         priceTRY: parseFloat(formData.priceTRY),
         imageUrl: formData.imageUrl,
+        imageUrls: formData.imageUrls,
         mainCategory: formData.mainCategory,
         subCategory: formData.subCategory,
         productCode: formData.productCode,
@@ -174,6 +208,7 @@ export default function Admin() {
         priceEUR: parseFloat(formData.priceEUR),
         priceTRY: parseFloat(formData.priceTRY),
         imageUrl: formData.imageUrl,
+        imageUrls: formData.imageUrls,
         mainCategory: formData.mainCategory,
         subCategory: formData.subCategory,
         productCode: formData.productCode,
@@ -183,8 +218,8 @@ export default function Admin() {
       toast.success("Ürün başarıyla eklendi.");
     }
 
-    setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: mainCategories[0], subCategory: subCategories[0], productCode: "", colorCode: "", videoUrl: "" });
-    setImagePreview(null);
+    setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", imageUrls: [], mainCategory: mainCategories[0], subCategory: subCategories[0], productCode: "", colorCode: "", videoUrl: "" });
+    setImagePreviews([]);
     setIsAdding(false);
     setEditingProductId(null);
   };
@@ -198,13 +233,20 @@ export default function Admin() {
         priceEUR: productToEdit.priceEUR.toString(),
         priceTRY: productToEdit.priceTRY.toString(),
         imageUrl: productToEdit.imageUrl,
+        imageUrls: productToEdit.imageUrls || [],
         mainCategory: productToEdit.mainCategory,
         subCategory: productToEdit.subCategory,
         productCode: productToEdit.productCode,
         colorCode: productToEdit.colorCode || "",
         videoUrl: productToEdit.videoUrl || "",
       });
-      setImagePreview(productToEdit.imageUrl);
+      
+      const allImages = [productToEdit.imageUrl];
+      if (productToEdit.imageUrls && productToEdit.imageUrls.length > 0) {
+        allImages.push(...productToEdit.imageUrls);
+      }
+      setImagePreviews(allImages);
+      
       setEditingProductId(id);
       setIsAdding(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -266,8 +308,8 @@ export default function Admin() {
               if (isAdding) {
                 setIsAdding(false);
                 setEditingProductId(null);
-                setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", mainCategory: mainCategories[0], subCategory: subCategories[0], productCode: "", colorCode: "", videoUrl: "" });
-                setImagePreview(null);
+                setFormData({ name: "", description: "", priceEUR: "", priceTRY: "", imageUrl: "", imageUrls: [], mainCategory: mainCategories[0], subCategory: subCategories[0], productCode: "", colorCode: "", videoUrl: "" });
+                setImagePreviews([]);
               } else {
                 setIsAdding(true);
               }
@@ -543,22 +585,40 @@ export default function Admin() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="imageFile">Ürün Görseli *</Label>
+                  <Label htmlFor="imageFile">Ürün Görselleri (Maksimum 4) *</Label>
                   <div className="flex flex-col gap-4">
                     <Input
                       id="imageFile"
                       type="file"
                       accept="image/*"
+                      multiple
                       onChange={handleImageChange}
                       className="cursor-pointer"
+                      disabled={imagePreviews.length >= 4}
                     />
-                    {imagePreview && (
-                      <div className="relative w-full h-40 rounded-md overflow-hidden border border-border">
-                        <img 
-                          src={imagePreview} 
-                          alt="Önizleme" 
-                          className="w-full h-full object-cover"
-                        />
+                    {imagePreviews.length > 0 && (
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {imagePreviews.map((preview, index) => (
+                          <div key={index} className="relative w-full aspect-square rounded-md overflow-hidden border border-border group">
+                            <img 
+                              src={preview} 
+                              alt={`Önizleme ${index + 1}`} 
+                              className="w-full h-full object-cover"
+                            />
+                            {index === 0 && (
+                              <div className="absolute top-1 left-1 bg-primary text-primary-foreground text-[10px] px-1.5 py-0.5 rounded">
+                                Ana Görsel
+                              </div>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => removeImage(index)}
+                              className="absolute top-1 right-1 bg-destructive text-destructive-foreground p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ))}
                       </div>
                     )}
                   </div>
