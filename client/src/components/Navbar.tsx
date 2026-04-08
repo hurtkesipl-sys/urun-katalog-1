@@ -18,8 +18,15 @@ export default function Navbar() {
     document.cookie = `googtrans=/tr/${langCode}; path=/; domain=${window.location.hostname}`;
     document.cookie = `googtrans=/tr/${langCode}; path=/; domain=.${window.location.hostname}`;
     
-    // Sayfayı yenile ki çeviri uygulansın
-    window.location.reload();
+    // Google Translate'in kendi select elementini bul ve değiştir
+    const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
+    if (select) {
+      select.value = langCode;
+      select.dispatchEvent(new Event('change'));
+    } else {
+      // Eğer select henüz yüklenmediyse sayfayı yenile
+      window.location.reload();
+    }
   };
 
   useEffect(() => {
@@ -54,61 +61,28 @@ export default function Navbar() {
         }
       }
 
-      // İnatçı Google Translate şeridini (banner) DOM'dan zorla silmek için DAHA AGRESİF MutationObserver
-      const observer = new MutationObserver((mutations) => {
-        mutations.forEach(() => {
-          // Tüm olası şerit öğelerini bul ve sil
-          const elementsToRemove = [
-            '.goog-te-banner-frame',
-            '.skiptranslate > iframe.goog-te-banner-frame',
-            '.goog-te-balloon-frame',
-            '#goog-gt-tt',
-            'iframe[name="google_translate_banner_frame"]'
-          ];
-          
-          elementsToRemove.forEach(selector => {
-            const elements = document.querySelectorAll(selector);
-            elements.forEach(el => el.remove());
-          });
-          
-          // Body ve HTML'in top, padding ve margin değerlerini zorla sıfırla
-          const resetStyles = (el: HTMLElement) => {
-            if (el.style.top !== '0px' && el.style.top !== '') el.style.top = '0px';
-            if (el.style.marginTop !== '0px' && el.style.marginTop !== '') el.style.marginTop = '0px';
-            if (el.style.paddingTop !== '0px' && el.style.paddingTop !== '') el.style.paddingTop = '0px';
-          };
-          
-          resetStyles(document.body);
-          resetStyles(document.documentElement);
-          
-          // Google'ın eklediği skiptranslate sınıfını body'den kaldır (boşluk yapmasını engeller)
-          if (document.body.classList.contains('skiptranslate')) {
-            document.body.classList.remove('skiptranslate');
-          }
-        });
-      });
+      // Google Translate şeridini (banner) gizlemek için daha hafif ve performanslı bir yöntem
+      const style = document.createElement('style');
+      style.innerHTML = `
+        .goog-te-banner-frame { display: none !important; }
+        .skiptranslate { display: none !important; }
+        body { top: 0px !important; }
+        html { top: 0px !important; }
+      `;
+      document.head.appendChild(style);
 
-      // Sadece body'yi değil, tüm HTML'i (documentElement) gözlemle
-      observer.observe(document.documentElement, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['style', 'class']
-      });
-
-      // Ayrıca düzenli aralıklarla kontrol et (Observer'ın kaçırdığı durumlar için)
+      // Sadece belirli aralıklarla body top değerini sıfırla (MutationObserver yerine)
       const intervalId = setInterval(() => {
-        const banner = document.querySelector('.goog-te-banner-frame');
-        if (banner) banner.remove();
-        
         if (document.body.style.top !== '0px' && document.body.style.top !== '') {
           document.body.style.top = '0px';
         }
-      }, 500);
+      }, 1000);
 
       return () => {
-        observer.disconnect();
         clearInterval(intervalId);
+        if (document.head.contains(style)) {
+          document.head.removeChild(style);
+        }
       };
     }
   }, [isTranslationEnabled]);
