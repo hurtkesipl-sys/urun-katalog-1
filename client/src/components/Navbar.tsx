@@ -140,16 +140,16 @@ export default function Navbar() {
           
           {/* Sol boşluk dengeleyici ve Sosyal Medya İkonları (Sadece masaüstünde görünür) */}
           <div className="w-32 hidden md:flex items-center gap-4 text-muted-foreground">
-            <a href={contactInfo.instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+            <a href={contactInfo.instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#E1306C] transition-colors" title="Instagram">
               <Instagram className="w-5 h-5" />
             </a>
-            <a href={getWhatsAppLink(contactInfo.whatsappNumber)} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+            <a href={getWhatsAppLink(contactInfo.whatsappNumber)} target="_blank" rel="noopener noreferrer" className="hover:text-[#25D366] transition-colors" title="WhatsApp">
               <SiWhatsapp className="w-5 h-5" />
             </a>
-            <a href={contactInfo.telegramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+            <a href={contactInfo.telegramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#0088cc] transition-colors" title="Telegram">
               <Send className="w-5 h-5" />
             </a>
-            <a href={contactInfo.facebookUrl} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+            <a href={contactInfo.facebookUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#1877F2] transition-colors" title="Facebook">
               <Facebook className="w-5 h-5" />
             </a>
           </div>
