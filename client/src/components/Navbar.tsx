@@ -84,7 +84,7 @@ export default function Navbar() {
           {/* Sağ Üst Menü (Favoriler, Hakkımızda, İletişim ve Admin) */}
           <div className="flex items-center gap-2 md:gap-4 w-auto md:w-24 justify-end">
             {isTranslationEnabled && (
-              <div className="hidden md:block mr-2" id="google_translate_element"></div>
+              <div className="mr-1 md:mr-2" id="google_translate_element"></div>
             )}
             <div className="flex flex-col items-end gap-1 md:gap-2">
               <Link href="/favorites" className="relative text-muted-foreground hover:text-foreground transition-colors self-end">
@@ -140,9 +140,6 @@ export default function Navbar() {
         {/* Mobil Menü (Açılır Kapanır) */}
         {isMobileMenuOpen && (
           <div className="w-full md:hidden flex flex-col items-center gap-4 pt-4 pb-2 border-t border-border mt-2 animate-in slide-in-from-top-2">
-            {isTranslationEnabled && (
-              <div className="w-full flex justify-center mb-2" id="google_translate_element_mobile"></div>
-            )}
             <div className="flex flex-col items-center gap-3 text-sm font-medium w-full">
               <Link href="/category/yenilik" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">YENİLİK</Link>
               <Link href="/category/en-iyi-satanlar" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">EN İYİ SATANLAR</Link>

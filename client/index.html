@@ -16,7 +16,6 @@
     <div id="root"></div>
     <script type="text/javascript">
       function googleTranslateElementInit() {
-        // Masaüstü için
         if (document.getElementById('google_translate_element')) {
           new google.translate.TranslateElement({
             pageLanguage: 'tr',
@@ -24,15 +23,6 @@
             layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
             autoDisplay: false
           }, 'google_translate_element');
-        }
-        // Mobil için
-        if (document.getElementById('google_translate_element_mobile')) {
-          new google.translate.TranslateElement({
-            pageLanguage: 'tr',
-            includedLanguages: 'tr,en,ar,ru',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-            autoDisplay: false
-          }, 'google_translate_element_mobile');
         }
       }
     </script>
