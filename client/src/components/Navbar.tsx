@@ -14,11 +14,12 @@ export default function Navbar() {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   const changeLanguage = (langCode: string) => {
-    const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
-    if (select) {
-      select.value = langCode;
-      select.dispatchEvent(new Event('change'));
-    }
+    // Google Translate çerezini doğrudan ayarla
+    document.cookie = `googtrans=/tr/${langCode}; path=/; domain=${window.location.hostname}`;
+    document.cookie = `googtrans=/tr/${langCode}; path=/; domain=.${window.location.hostname}`;
+    
+    // Sayfayı yenile ki çeviri uygulansın
+    window.location.reload();
   };
 
   useEffect(() => {
