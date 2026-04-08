@@ -11,12 +11,13 @@ import { PlusCircle, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Admin() {
-  const { products, mainCategories, subCategories, addProduct, updateProduct, removeProduct, addSubCategory, isAdmin, banners, addBanner, removeBanner, aboutInfo, contactInfo, updateAboutInfo, updateContactInfo } = useProductStore();
+  const { products, mainCategories, subCategories, addProduct, updateProduct, removeProduct, addSubCategory, removeSubCategory, isAdmin, banners, addBanner, removeBanner, aboutInfo, contactInfo, updateAboutInfo, updateContactInfo, isTranslationEnabled, toggleTranslation } = useProductStore();
   const [isAdding, setIsAdding] = useState(false);
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
   const [isAddingBanner, setIsAddingBanner] = useState(false);
   const [isEditingAbout, setIsEditingAbout] = useState(false);
   const [isEditingContact, setIsEditingContact] = useState(false);
+  const [isManagingCategories, setIsManagingCategories] = useState(false);
   const [, setLocation] = useLocation();
 
   const [newSubCategory, setNewSubCategory] = useState("");
@@ -254,6 +255,9 @@ export default function Admin() {
             <Button variant="outline" onClick={() => setIsEditingContact(!isEditingContact)} className="text-xs md:text-sm">
               {isEditingContact ? "İptal" : "İletişim Düzenle"}
             </Button>
+            <Button variant="outline" onClick={() => setIsManagingCategories(!isManagingCategories)} className="text-xs md:text-sm">
+              {isManagingCategories ? "İptal" : "Kategori Yönetimi"}
+            </Button>
             <Button variant="outline" onClick={() => setIsAddingBanner(!isAddingBanner)} className="text-xs md:text-sm">
               <PlusCircle className="mr-1 md:mr-2 h-4 w-4" />
               {isAddingBanner ? "İptal" : "Banner Yönetimi"}
@@ -273,6 +277,61 @@ export default function Admin() {
             </Button>
           </div>
         </div>
+
+        {isManagingCategories && (
+          <div className="bg-card border border-border rounded-xl p-6 mb-8 shadow-sm">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="font-serif text-xl font-semibold">Kategori ve Dil Yönetimi</h2>
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium">Otomatik Çeviri (Google Translate):</span>
+                <Button 
+                  variant={isTranslationEnabled ? "default" : "outline"} 
+                  onClick={toggleTranslation}
+                  className={isTranslationEnabled ? "bg-green-600 hover:bg-green-700" : ""}
+                >
+                  {isTranslationEnabled ? "Açık" : "Kapalı"}
+                </Button>
+              </div>
+            </div>
+            
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-medium mb-4">Mevcut Ürün Tipleri (Kategoriler)</h3>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {subCategories.map((category) => (
+                    <div key={category} className="flex items-center gap-1 bg-secondary text-secondary-foreground px-3 py-1.5 rounded-full text-sm">
+                      <span>{category}</span>
+                      <button 
+                        onClick={() => {
+                          removeSubCategory(category);
+                          toast.success(`${category} kategorisi silindi.`);
+                        }}
+                        className="ml-1 text-muted-foreground hover:text-destructive transition-colors"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="flex gap-2 max-w-md">
+                  <Input
+                    value={newSubCategory}
+                    onChange={(e) => setNewSubCategory(e.target.value)}
+                    placeholder="Yeni ürün tipi (Örn: Ceket)"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleAddSubCategory();
+                      }
+                    }}
+                  />
+                  <Button onClick={handleAddSubCategory} type="button">Ekle</Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {isEditingAbout && (
           <div className="bg-card border border-border rounded-xl p-6 mb-8 shadow-sm">

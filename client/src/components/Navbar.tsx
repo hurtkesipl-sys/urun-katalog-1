@@ -6,7 +6,7 @@ import { SiWhatsapp } from "@icons-pack/react-simple-icons";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
 export default function Navbar() {
-  const { isAdmin, setAdmin, favorites, contactInfo } = useProductStore();
+  const { isAdmin, setAdmin, favorites, contactInfo, subCategories, isTranslationEnabled } = useProductStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -83,6 +83,9 @@ export default function Navbar() {
 
           {/* Sağ Üst Menü (Favoriler, Hakkımızda, İletişim ve Admin) */}
           <div className="flex items-center gap-2 md:gap-4 w-auto md:w-24 justify-end">
+            {isTranslationEnabled && (
+              <div className="hidden md:block mr-2" id="google_translate_element"></div>
+            )}
             <div className="flex flex-col items-end gap-1 md:gap-2">
               <Link href="/favorites" className="relative text-muted-foreground hover:text-foreground transition-colors self-end">
                 <Heart className="w-5 h-5 md:w-6 md:h-6" />
@@ -124,12 +127,11 @@ export default function Navbar() {
           <div className="flex flex-wrap justify-center gap-6 text-sm font-medium tracking-wide">
             <Link href="/category/yenilik" className="hover:text-primary transition-colors">YENİLİK</Link>
             <Link href="/category/en-iyi-satanlar" className="hover:text-primary transition-colors">EN İYİ SATANLAR</Link>
-            <Link href="/category/Elbise" className="hover:text-primary transition-colors">ELBİSE</Link>
-            <Link href="/category/Takım" className="hover:text-primary transition-colors">TAKIM</Link>
-            <Link href="/category/Bluz" className="hover:text-primary transition-colors">BLUZ</Link>
-            <Link href="/category/Gömlek" className="hover:text-primary transition-colors">GÖMLEK</Link>
-            <Link href="/category/Pantolon" className="hover:text-primary transition-colors">PANTOLON</Link>
-            <Link href="/category/Etek" className="hover:text-primary transition-colors">ETEK</Link>
+            {subCategories.map((category) => (
+              <Link key={category} href={`/category/${category}`} className="hover:text-primary transition-colors uppercase">
+                {category}
+              </Link>
+            ))}
           </div>
           
 
@@ -138,16 +140,18 @@ export default function Navbar() {
         {/* Mobil Menü (Açılır Kapanır) */}
         {isMobileMenuOpen && (
           <div className="w-full md:hidden flex flex-col items-center gap-4 pt-4 pb-2 border-t border-border mt-2 animate-in slide-in-from-top-2">
+            {isTranslationEnabled && (
+              <div className="w-full flex justify-center mb-2" id="google_translate_element_mobile"></div>
+            )}
             <div className="flex flex-col items-center gap-3 text-sm font-medium w-full">
               <Link href="/category/yenilik" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">YENİLİK</Link>
               <Link href="/category/en-iyi-satanlar" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">EN İYİ SATANLAR</Link>
               <div className="w-1/2 h-px bg-border/50 my-1"></div>
-              <Link href="/category/Elbise" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">ELBİSE</Link>
-              <Link href="/category/Takım" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">TAKIM</Link>
-              <Link href="/category/Bluz" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">BLUZ</Link>
-              <Link href="/category/Gömlek" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">GÖMLEK</Link>
-              <Link href="/category/Pantolon" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">PANTOLON</Link>
-              <Link href="/category/Etek" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">ETEK</Link>
+              {subCategories.map((category) => (
+                <Link key={category} href={`/category/${category}`} onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block uppercase">
+                  {category}
+                </Link>
+              ))}
 
               <div className="w-1/2 h-px bg-border/50 my-1"></div>
               <div className="flex justify-center gap-6 text-sm font-medium w-full py-2">

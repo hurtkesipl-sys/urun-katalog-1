@@ -62,6 +62,9 @@ interface ProductStore {
   removeBanner: (id: string) => void;
   updateAboutInfo: (info: AboutInfo) => void;
   updateContactInfo: (info: ContactInfo) => void;
+  removeSubCategory: (category: string) => void;
+  isTranslationEnabled: boolean;
+  toggleTranslation: () => void;
 }
 
 export const useProductStore = create<ProductStore>()(
@@ -71,6 +74,7 @@ export const useProductStore = create<ProductStore>()(
       mainCategories: ["İpek", "Keten", "Viskon", "Pamuk"],
       subCategories: ["Elbise", "Takım", "Bluz", "Gömlek", "Etek", "Pantolon"],
       isAdmin: false,
+      isTranslationEnabled: true,
       favorites: [],
       banners: [
         {
@@ -125,6 +129,14 @@ export const useProductStore = create<ProductStore>()(
           subCategories: state.subCategories.includes(category) 
             ? state.subCategories 
             : [...state.subCategories, category],
+        })),
+      removeSubCategory: (category: string) =>
+        set((state: ProductStore) => ({
+          subCategories: state.subCategories.filter(c => c !== category),
+        })),
+      toggleTranslation: () =>
+        set((state: ProductStore) => ({
+          isTranslationEnabled: !state.isTranslationEnabled,
         })),
       setAdmin: (status: boolean) =>
         set(() => ({
