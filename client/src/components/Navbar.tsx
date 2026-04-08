@@ -187,10 +187,18 @@ export default function Navbar() {
               {isTranslationEnabled && (
                 <div className="flex items-center gap-1 md:gap-2 mr-1 md:mr-4 relative z-50">
                   <div id="google_translate_element" className="hidden"></div>
-                  <button onClick={() => changeLanguage('tr')} className="text-2xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="Türkçe">🇹🇷</button>
-                  <button onClick={() => changeLanguage('en')} className="text-2xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="English">🇬🇧</button>
-                  <button onClick={() => changeLanguage('ar')} className="text-2xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="العربية">🇸🇦</button>
-                  <button onClick={() => changeLanguage('ru')} className="text-2xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="Русский">🇷🇺</button>
+                  <button onClick={() => changeLanguage('tr')} className="w-6 h-6 md:w-8 md:h-8 hover:scale-110 transition-transform cursor-pointer overflow-hidden rounded-sm" title="Türkçe">
+                    <img src="https://flagcdn.com/w40/tr.png" alt="Türkçe" className="w-full h-full object-cover" />
+                  </button>
+                  <button onClick={() => changeLanguage('en')} className="w-6 h-6 md:w-8 md:h-8 hover:scale-110 transition-transform cursor-pointer overflow-hidden rounded-sm" title="English">
+                    <img src="https://flagcdn.com/w40/gb.png" alt="English" className="w-full h-full object-cover" />
+                  </button>
+                  <button onClick={() => changeLanguage('ar')} className="w-6 h-6 md:w-8 md:h-8 hover:scale-110 transition-transform cursor-pointer overflow-hidden rounded-sm" title="العربية">
+                    <img src="https://flagcdn.com/w40/sa.png" alt="العربية" className="w-full h-full object-cover" />
+                  </button>
+                  <button onClick={() => changeLanguage('ru')} className="w-6 h-6 md:w-8 md:h-8 hover:scale-110 transition-transform cursor-pointer overflow-hidden rounded-sm" title="Русский">
+                    <img src="https://flagcdn.com/w40/ru.png" alt="Русский" className="w-full h-full object-cover" />
+                  </button>
                 </div>
               )}
               <div className="flex flex-col items-end gap-1 md:gap-2">
