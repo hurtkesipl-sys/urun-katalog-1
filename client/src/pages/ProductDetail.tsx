@@ -165,12 +165,13 @@ export default function ProductDetail() {
           {/* Video Modalı */}
           {isVideoModalOpen && product.videoUrl && (
             <div 
-              className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
+              className="fixed inset-0 z-[9999] bg-background/95 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
               onClick={() => setIsVideoModalOpen(false)}
             >
               <button 
-                className="absolute top-4 right-4 p-2 bg-background/50 hover:bg-background rounded-full transition-colors z-[101]"
+                className="absolute top-4 right-4 p-2 bg-background/50 hover:bg-background rounded-full transition-colors z-[10000]"
                 onClick={(e) => {
+                  e.preventDefault();
                   e.stopPropagation();
                   setIsVideoModalOpen(false);
                 }}
@@ -178,8 +179,11 @@ export default function ProductDetail() {
                 <X className="w-6 h-6" />
               </button>
               <div 
-                className="relative w-full max-w-4xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl"
-                onClick={(e) => e.stopPropagation()}
+                className="relative w-full max-w-4xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl z-[10000]"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
               >
                 {product.videoUrl.includes('youtube.com') || product.videoUrl.includes('youtu.be') ? (
                   <iframe 
