@@ -23,25 +23,12 @@ export default function Navbar() {
       document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain}; SameSite=None; Secure`;
       document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${domain}; SameSite=None; Secure`;
       
-      // Orijinal dile dönerken Google Translate widget'ını doğrudan tetikle (sayfa yenilemeyi kaldır)
-      const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
-      if (select) {
-        select.value = 'tr';
-        select.dispatchEvent(new Event('change'));
-      } else {
-        // Eğer widget bulunamazsa, iframe içindeki orijinal metinleri geri yükle
-        const iframe = document.querySelector('iframe.goog-te-banner-frame') as HTMLIFrameElement;
-        if (iframe && iframe.contentWindow) {
-          const restoreBtn = iframe.contentWindow.document.getElementById(':1.restore') as HTMLButtonElement;
-          if (restoreBtn) {
-            restoreBtn.click();
-          } else {
-            window.location.reload();
-          }
-        } else {
-          window.location.reload();
-        }
-      }
+      // Orijinal dile dönerken sayfa yenilemesi gerekir, beyaz patlamayı önlemek için body'i gizle
+      document.body.style.opacity = '0';
+      document.body.style.transition = 'opacity 0.3s ease';
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
     } else {
       // Diğer diller için çerezi ayarla (Masaüstü Chrome iframe engellemesini aşmak için SameSite=None; Secure)
       document.cookie = `googtrans=/tr/${langCode}; path=/; SameSite=None; Secure`;
@@ -54,18 +41,12 @@ export default function Navbar() {
         select.value = langCode;
         select.dispatchEvent(new Event('change'));
       } else {
-        // Eğer widget henüz yüklenmediyse, sadece çerezi ayarlayıp bekleyelim, sayfa yenileme yapmayalım
-        // Google Translate scripti yüklendiğinde otomatik olarak çerezi okuyup çevirecektir.
-        if (!(window as any).googleTranslateElementInit) {
-          // Script henüz yüklenmemişse, yüklenmesini bekle
-          setTimeout(() => {
-            const newSelect = document.querySelector('.goog-te-combo') as HTMLSelectElement;
-            if (newSelect) {
-              newSelect.value = langCode;
-              newSelect.dispatchEvent(new Event('change'));
-            }
-          }, 1000);
-        }
+        // Eğer widget henüz yüklenmediyse veya bulunamadıysa, yumuşak geçişle yenile
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
       }
     }
   };
