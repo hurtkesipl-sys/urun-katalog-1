@@ -18,15 +18,8 @@ export default function Navbar() {
     document.cookie = `googtrans=/tr/${langCode}; path=/; domain=${window.location.hostname}`;
     document.cookie = `googtrans=/tr/${langCode}; path=/; domain=.${window.location.hostname}`;
     
-    // Google Translate'in kendi select elementini bul ve değiştir
-    const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
-    if (select) {
-      select.value = langCode;
-      select.dispatchEvent(new Event('change'));
-    } else {
-      // Eğer select henüz yüklenmediyse sayfayı yenile
-      window.location.reload();
-    }
+    // Sayfayı yenile ki çeviri kesin olarak uygulansın
+    window.location.reload();
   };
 
   useEffect(() => {
