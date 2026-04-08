@@ -14,40 +14,48 @@ export default function Navbar() {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   const changeLanguage = (langCode: string) => {
-    // Masaüstü Chrome'da iframe içinde (Manus paneli) çalışması için SameSite=None ve Secure ZORUNLUDUR
-    const domain = window.location.hostname;
+    // Native Trigger Yöntemi: Google Translate'in kendi select elementini bul ve tetikle
+    const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
     
-    if (langCode === 'tr') {
-      // Türkçe seçildiğinde çerezi temizle
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=None; Secure`;
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain}; SameSite=None; Secure`;
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${domain}; SameSite=None; Secure`;
+    if (select) {
+      // Seçimi yap ve change event'ini tetikle
+      select.value = langCode;
+      select.dispatchEvent(new Event('change'));
       
-      // Orijinal dile dönerken sayfa yenilemesi gerekir, beyaz patlamayı önlemek için body'i gizle
+      // Eğer orijinal dile (Türkçe) dönülüyorsa, Google'ın iframe içindeki restore butonunu da tetikle
+      if (langCode === 'tr') {
+        const iframe = document.querySelector('iframe.goog-te-banner-frame') as HTMLIFrameElement;
+        if (iframe && iframe.contentWindow) {
+          const restoreBtn = iframe.contentWindow.document.getElementById(':1.restore') as HTMLButtonElement;
+          if (restoreBtn) {
+            restoreBtn.click();
+          }
+        }
+        
+        // Çerezleri de temizle (garanti olsun diye)
+        const domain = window.location.hostname;
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain};`;
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${domain};`;
+      }
+    } else {
+      // Eğer widget henüz yüklenmediyse, çerezi ayarlayıp sayfayı yenile (Fallback)
+      const domain = window.location.hostname;
+      if (langCode === 'tr') {
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain};`;
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${domain};`;
+      } else {
+        document.cookie = `googtrans=/tr/${langCode}; path=/; SameSite=None; Secure`;
+        document.cookie = `googtrans=/tr/${langCode}; path=/; domain=${domain}; SameSite=None; Secure`;
+        document.cookie = `googtrans=/tr/${langCode}; path=/; domain=.${domain}; SameSite=None; Secure`;
+      }
+      
       document.body.style.opacity = '0';
       document.body.style.transition = 'opacity 0.3s ease';
       setTimeout(() => {
         window.location.reload();
       }, 300);
-    } else {
-      // Diğer diller için çerezi ayarla (Masaüstü Chrome iframe engellemesini aşmak için SameSite=None; Secure)
-      document.cookie = `googtrans=/tr/${langCode}; path=/; SameSite=None; Secure`;
-      document.cookie = `googtrans=/tr/${langCode}; path=/; domain=${domain}; SameSite=None; Secure`;
-      document.cookie = `googtrans=/tr/${langCode}; path=/; domain=.${domain}; SameSite=None; Secure`;
-      
-      // Sayfayı yenilemek yerine Google Translate widget'ını doğrudan tetikle (beyaz ekranı önler)
-      const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
-      if (select) {
-        select.value = langCode;
-        select.dispatchEvent(new Event('change'));
-      } else {
-        // Eğer widget henüz yüklenmediyse veya bulunamadıysa, yumuşak geçişle yenile
-        document.body.style.opacity = '0';
-        document.body.style.transition = 'opacity 0.3s ease';
-        setTimeout(() => {
-          window.location.reload();
-        }, 300);
-      }
     }
   };
 
