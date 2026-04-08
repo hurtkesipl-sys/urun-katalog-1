@@ -182,15 +182,15 @@ export default function Navbar() {
           </div>
 
           {/* Sağ Üst Menü (Favoriler, Hakkımızda, İletişim ve Admin) */}
-          <div className="flex flex-col items-end gap-1 w-auto justify-end shrink-0">
-            <div className="flex items-center gap-1 md:gap-4">
+          <div className="flex flex-col items-end gap-1 w-auto md:w-24 justify-end shrink-0">
+            <div className="flex items-center gap-2 md:gap-4">
               {isTranslationEnabled && (
-                <div className="flex items-center gap-1 md:gap-2 mr-1 md:mr-4 relative z-50">
+                <div className="flex items-center gap-2 md:gap-2 mr-2 md:mr-4 relative z-50">
                   <div id="google_translate_element" className="hidden"></div>
-                  <button onClick={() => changeLanguage('tr')} className="text-2xl md:text-3xl hover:scale-110 transition-transform cursor-pointer inline-block" style={{ fontFamily: '"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", emoji' }} title="Türkçe">🇹🇷</button>
-                  <button onClick={() => changeLanguage('en')} className="text-2xl md:text-3xl hover:scale-110 transition-transform cursor-pointer inline-block" style={{ fontFamily: '"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", emoji' }} title="English">🇬🇧</button>
-                  <button onClick={() => changeLanguage('ar')} className="text-2xl md:text-3xl hover:scale-110 transition-transform cursor-pointer inline-block" style={{ fontFamily: '"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", emoji' }} title="العربية">🇸🇦</button>
-                  <button onClick={() => changeLanguage('ru')} className="text-2xl md:text-3xl hover:scale-110 transition-transform cursor-pointer inline-block" style={{ fontFamily: '"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", emoji' }} title="Русский">🇷🇺</button>
+                  <button onClick={() => changeLanguage('tr')} className="text-3xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="Türkçe">🇹🇷</button>
+                  <button onClick={() => changeLanguage('en')} className="text-3xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="English">🇬🇧</button>
+                  <button onClick={() => changeLanguage('ar')} className="text-3xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="العربية">🇸🇦</button>
+                  <button onClick={() => changeLanguage('ru')} className="text-3xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="Русский">🇷🇺</button>
                 </div>
               )}
               <div className="flex flex-col items-end gap-1 md:gap-2">
