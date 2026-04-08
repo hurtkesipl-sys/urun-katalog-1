@@ -15,8 +15,8 @@ export default function Category() {
     
     const searchCategory = categoryId.toLowerCase();
     
-    // Yenilik ve En İyi Satanlar özel filtreleri
-    if (searchCategory === "yenilik") {
+    // Yeniler ve En İyi Satanlar özel filtreleri
+    if (searchCategory === "yeniler") {
       // Son 7 gün içinde eklenen ürünler (örnek mantık)
       const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
       return p.createdAt > oneWeekAgo;
@@ -53,7 +53,7 @@ export default function Category() {
 
   // Kategori başlığını formatla
   const formatCategoryTitle = (id: string) => {
-    if (id === "yenilik") return "Yenilikler";
+    if (id === "yeniler") return "Yeniler";
     if (id === "en-iyi-satanlar") return "En İyi Satanlar";
     return id.charAt(0).toUpperCase() + id.slice(1);
   };

@@ -234,7 +234,7 @@ export default function Navbar() {
         <div className="w-full hidden md:flex flex-col items-center gap-2">
           {/* Üst Menü: Ürün Tipleri */}
           <div className="flex flex-wrap justify-center gap-6 text-sm font-medium tracking-wide">
-            <Link href="/category/yenilik" className="hover:text-primary transition-colors">YENİLİK</Link>
+            <Link href="/category/yeniler" className="hover:text-primary transition-colors">YENİLER</Link>
             <Link href="/category/en-iyi-satanlar" className="hover:text-primary transition-colors">EN İYİ SATANLAR</Link>
             {subCategories.map((category) => (
               <Link key={category} href={`/category/${category}`} className="hover:text-primary transition-colors uppercase">
@@ -250,7 +250,7 @@ export default function Navbar() {
         {isMobileMenuOpen && (
           <div className="w-full md:hidden flex flex-col items-center gap-4 pt-4 pb-2 border-t border-border mt-2 animate-in slide-in-from-top-2">
             <div className="flex flex-col items-center gap-3 text-sm font-medium w-full">
-              <Link href="/category/yenilik" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">YENİLİK</Link>
+              <Link href="/category/yeniler" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">YENİLER</Link>
               <Link href="/category/en-iyi-satanlar" onClick={toggleMobileMenu} className="w-full text-center py-2 hover:bg-muted transition-colors block">EN İYİ SATANLAR</Link>
               <div className="w-1/2 h-px bg-border/50 my-1"></div>
               {subCategories.map((category) => (
