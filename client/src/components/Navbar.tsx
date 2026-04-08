@@ -14,13 +14,9 @@ export default function Navbar() {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   const changeLanguage = (langCode: string) => {
-    // Önce var olan tüm çeviri çerezlerini temizle
-    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}`;
-    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${window.location.hostname}`;
-
-    // Yeni çerezi sadece path=/ ile ayarla (domain belirtmeden, tarayıcının otomatik atamasına izin ver)
-    document.cookie = `googtrans=/tr/${langCode}; path=/;`;
+    // Google Translate çerezini doğrudan ayarla
+    document.cookie = `googtrans=/tr/${langCode}; path=/; domain=${window.location.hostname}`;
+    document.cookie = `googtrans=/tr/${langCode}; path=/; domain=.${window.location.hostname}`;
     
     // Sayfayı yenile ki çeviri kesin olarak uygulansın
     window.location.reload();
@@ -34,7 +30,6 @@ export default function Navbar() {
         script.id = 'google-translate-script';
         script.type = 'text/javascript';
         script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-        script.async = true; // Asenkron yükle, tarayıcıyı dondurmasın
         document.body.appendChild(script);
 
         // Init fonksiyonunu global window objesine ekle
@@ -53,25 +48,35 @@ export default function Navbar() {
       } else {
         // Script zaten varsa ve sayfa değiştiyse, init fonksiyonunu tekrar çağır
         if ((window as any).googleTranslateElementInit) {
-          // setTimeout yerine requestAnimationFrame kullanarak daha performanslı bir tetikleme yap
-          requestAnimationFrame(() => {
+          setTimeout(() => {
             (window as any).googleTranslateElementInit();
-          });
+          }, 100);
         }
       }
 
-      // Google Translate şeridini (banner) gizlemek için sadece CSS kullan, JS döngülerini (setInterval) tamamen kaldır
-      if (!document.getElementById('google-translate-style')) {
-        const style = document.createElement('style');
-        style.id = 'google-translate-style';
-        style.innerHTML = `
-          .goog-te-banner-frame { display: none !important; }
-          .skiptranslate { display: none !important; }
-          body { top: 0px !important; position: static !important; }
-          html { top: 0px !important; position: static !important; }
-        `;
-        document.head.appendChild(style);
-      }
+      // Google Translate şeridini (banner) gizlemek için daha hafif ve performanslı bir yöntem
+      const style = document.createElement('style');
+      style.innerHTML = `
+        .goog-te-banner-frame { display: none !important; }
+        .skiptranslate { display: none !important; }
+        body { top: 0px !important; }
+        html { top: 0px !important; }
+      `;
+      document.head.appendChild(style);
+
+      // Sadece belirli aralıklarla body top değerini sıfırla (MutationObserver yerine)
+      const intervalId = setInterval(() => {
+        if (document.body.style.top !== '0px' && document.body.style.top !== '') {
+          document.body.style.top = '0px';
+        }
+      }, 1000);
+
+      return () => {
+        clearInterval(intervalId);
+        if (document.head.contains(style)) {
+          document.head.removeChild(style);
+        }
+      };
     }
   }, [isTranslationEnabled]);
 
