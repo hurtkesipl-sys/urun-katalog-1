@@ -14,15 +14,31 @@ export default function Navbar() {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   const changeLanguage = (langCode: string) => {
-    // Masaüstü Chrome'un katı çerez politikalarını aşmak için SameSite=Lax ve Secure ekle
-    // Ayrıca domain parametresini kaldırarak tarayıcının en uygun domaini atamasını sağla
-    document.cookie = `googtrans=/tr/${langCode}; path=/; SameSite=Lax; Secure`;
+    // 1. Önce var olan tüm olası googtrans çerezlerini ZORLA SİL
+    // (Farklı domain ve path kombinasyonlarıyla birikmiş çerezleri temizlemek için)
+    const domain = window.location.hostname;
+    const domains = [domain, `.${domain}`];
+    const paths = ['/', '/tr'];
     
-    // Alternatif olarak, eski çerezleri temizleyip tekrar ayarla (çakışmaları önlemek için)
-    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}`;
-    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${window.location.hostname}`;
-    document.cookie = `googtrans=/tr/${langCode}; path=/; domain=${window.location.hostname}; SameSite=Lax; Secure`;
-    document.cookie = `googtrans=/tr/${langCode}; path=/; domain=.${window.location.hostname}; SameSite=Lax; Secure`;
+    domains.forEach(d => {
+      paths.forEach(p => {
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; domain=${d}`;
+      });
+    });
+    // Domain belirtmeden de sil
+    paths.forEach(p => {
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}`;
+    });
+
+    // 2. Eğer seçilen dil Türkçe (orijinal dil) ise, çerezi sildik, sadece sayfayı yenile
+    if (langCode === 'tr') {
+      window.location.reload();
+      return;
+    }
+
+    // 3. Diğer diller için YENİ çerezi TEK BİR KERE ve GÜVENLİ şekilde ayarla
+    // Chrome masaüstü için SameSite=Lax ve Secure eklendi
+    document.cookie = `googtrans=/tr/${langCode}; path=/; domain=${domain}; SameSite=Lax; Secure`;
     
     // Sayfayı yenile ki çeviri kesin olarak uygulansın
     window.location.reload();
