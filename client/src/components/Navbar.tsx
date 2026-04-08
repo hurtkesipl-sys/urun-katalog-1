@@ -217,15 +217,15 @@ export default function Navbar() {
               </div>
             </div>
             
-            {/* Masaüstü Admin Butonları (Gizli - En Sağda) */}
-            <div className="hidden md:flex absolute right-0 top-0 h-full items-center px-2">
+            {/* Masaüstü Admin Butonları (Gizli - İletişim Altında) */}
+            <div className="hidden md:flex justify-end w-full mt-1">
               {isAdmin ? (
-                <div className="flex items-center gap-2 opacity-0 hover:opacity-100 transition-opacity text-xs text-muted-foreground">
+                <div className="flex items-center gap-2 opacity-0 hover:opacity-100 transition-opacity text-[10px] text-muted-foreground">
                   <Link href="/admin" className="hover:text-foreground transition-colors">Yönetim</Link>
                   <button onClick={() => setAdmin(false)} className="hover:text-destructive transition-colors">Çıkış</button>
                 </div>
               ) : (
-                <Link href="/login" className="opacity-0 hover:opacity-100 transition-opacity text-xs text-muted-foreground">Admin</Link>
+                <Link href="/login" className="opacity-0 hover:opacity-100 transition-opacity text-[10px] text-muted-foreground">Admin</Link>
               )}
             </div>
           </div>
