@@ -168,10 +168,10 @@ export default function Navbar() {
           </div>
           
           {/* Logo ve İtalyan Bayrağı */}
-          <div className="flex flex-col items-start md:items-center ml-2 md:ml-0 flex-1 md:flex-none">
+          <div className="flex flex-col items-start md:items-center ml-2 md:ml-0 flex-1 md:flex-none overflow-hidden">
             <Link href="/" className="flex items-baseline md:items-center gap-1 md:gap-2 mb-0.5 md:mb-1">
-              <span className="font-serif text-xl md:text-3xl font-bold tracking-tight whitespace-nowrap">Moda İtalya</span>
-              <span className="text-muted-foreground text-[10px] md:text-sm font-medium md:mt-2">Toptan</span>
+              <span className="font-serif text-xl md:text-3xl font-bold tracking-tight whitespace-nowrap" translate="no">Moda İtalya</span>
+              <span className="text-muted-foreground text-[10px] md:text-sm font-medium md:mt-2 truncate">Toptan</span>
             </Link>
             {/* İtalyan Bayrağı Çizgisi */}
             <div className="flex w-24 md:w-full h-1.5 md:h-2 rounded-full overflow-hidden mt-0.5">
@@ -182,14 +182,14 @@ export default function Navbar() {
           </div>
 
           {/* Sağ Üst Menü (Favoriler, Hakkımızda, İletişim ve Admin) */}
-          <div className="flex items-center gap-2 md:gap-4 w-auto md:w-24 justify-end">
+          <div className="flex items-center gap-1.5 md:gap-4 w-auto md:w-24 justify-end shrink-0">
             {isTranslationEnabled && (
-              <div className="flex items-center gap-2 mr-2 md:mr-4 relative z-50">
+              <div className="flex items-center gap-1 md:gap-2 mr-1 md:mr-4 relative z-50">
                 <div id="google_translate_element" className="hidden"></div>
-                <button onClick={() => changeLanguage('tr')} className="text-2xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="Türkçe">🇹🇷</button>
-                <button onClick={() => changeLanguage('en')} className="text-2xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="English">🇬🇧</button>
-                <button onClick={() => changeLanguage('ar')} className="text-2xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="العربية">🇸🇦</button>
-                <button onClick={() => changeLanguage('ru')} className="text-2xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="Русский">🇷🇺</button>
+                <button onClick={() => changeLanguage('tr')} className="text-xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="Türkçe">🇹🇷</button>
+                <button onClick={() => changeLanguage('en')} className="text-xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="English">🇬🇧</button>
+                <button onClick={() => changeLanguage('ar')} className="text-xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="العربية">🇸🇦</button>
+                <button onClick={() => changeLanguage('ru')} className="text-xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="Русский">🇷🇺</button>
               </div>
             )}
             <div className="flex flex-col items-end gap-1 md:gap-2">
