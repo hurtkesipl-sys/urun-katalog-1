@@ -54,34 +54,62 @@ export default function Navbar() {
         }
       }
 
-      // İnatçı Google Translate şeridini (banner) DOM'dan zorla silmek için MutationObserver
+      // İnatçı Google Translate şeridini (banner) DOM'dan zorla silmek için DAHA AGRESİF MutationObserver
       const observer = new MutationObserver((mutations) => {
         mutations.forEach(() => {
-          const banner = document.querySelector('.goog-te-banner-frame');
-          const skiptranslate = document.querySelector('.skiptranslate > iframe.goog-te-banner-frame');
-          const balloon = document.querySelector('.goog-te-balloon-frame');
-          const gtTt = document.getElementById('goog-gt-tt');
+          // Tüm olası şerit öğelerini bul ve sil
+          const elementsToRemove = [
+            '.goog-te-banner-frame',
+            '.skiptranslate > iframe.goog-te-banner-frame',
+            '.goog-te-balloon-frame',
+            '#goog-gt-tt',
+            'iframe[name="google_translate_banner_frame"]'
+          ];
           
-          if (banner) banner.remove();
-          if (skiptranslate) skiptranslate.remove();
-          if (balloon) balloon.remove();
-          if (gtTt) gtTt.remove();
+          elementsToRemove.forEach(selector => {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach(el => el.remove());
+          });
           
-          // Body'nin top değerini zorla sıfırla
-          if (document.body.style.top !== '0px' && document.body.style.top !== '') {
-            document.body.style.top = '0px';
+          // Body ve HTML'in top, padding ve margin değerlerini zorla sıfırla
+          const resetStyles = (el: HTMLElement) => {
+            if (el.style.top !== '0px' && el.style.top !== '') el.style.top = '0px';
+            if (el.style.marginTop !== '0px' && el.style.marginTop !== '') el.style.marginTop = '0px';
+            if (el.style.paddingTop !== '0px' && el.style.paddingTop !== '') el.style.paddingTop = '0px';
+          };
+          
+          resetStyles(document.body);
+          resetStyles(document.documentElement);
+          
+          // Google'ın eklediği skiptranslate sınıfını body'den kaldır (boşluk yapmasını engeller)
+          if (document.body.classList.contains('skiptranslate')) {
+            document.body.classList.remove('skiptranslate');
           }
         });
       });
 
-      observer.observe(document.body, {
+      // Sadece body'yi değil, tüm HTML'i (documentElement) gözlemle
+      observer.observe(document.documentElement, {
         childList: true,
         subtree: true,
         attributes: true,
-        attributeFilter: ['style']
+        attributeFilter: ['style', 'class']
       });
 
-      return () => observer.disconnect();
+      // Ayrıca düzenli aralıklarla kontrol et (Observer'ın kaçırdığı durumlar için)
+      const intervalId = setInterval(() => {
+        const banner = document.querySelector('.goog-te-banner-frame');
+        if (banner) banner.remove();
+        
+        if (document.body.style.top !== '0px' && document.body.style.top !== '') {
+          document.body.style.top = '0px';
+        }
+      }, 500);
+
+      return () => {
+        observer.disconnect();
+        clearInterval(intervalId);
+      };
     }
   }, [isTranslationEnabled]);
 

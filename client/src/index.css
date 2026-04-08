@@ -186,14 +186,16 @@
   display: none !important;
 }
 
-/* Üstteki Google Translate barını gizle */
+/* Üstteki Google Translate barını gizle - DAHA AGRESİF */
 .goog-te-banner-frame,
 .skiptranslate > iframe.goog-te-banner-frame,
 #goog-gt-tt,
 .goog-te-balloon-frame,
 div#goog-gt-,
 .VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
-.VIpgJd-ZVi9od-aZ2wEe-wOHMyf-ti6hGc {
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf-ti6hGc,
+iframe[name="google_translate_banner_frame"],
+.skiptranslate {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -202,15 +204,28 @@ div#goog-gt-,
   position: absolute !important;
   top: -9999px !important;
   z-index: -9999 !important;
+  pointer-events: none !important;
 }
 
+/* Google Translate'in body'ye eklediği boşlukları ve stilleri zorla sıfırla */
 body {
-  top: 0 !important; /* Bar gizlendiğinde sayfanın aşağı kaymasını engelle */
+  top: 0px !important;
   position: static !important;
+  min-height: 100vh !important;
+}
+
+/* Sadece skiptranslate sınıfına sahip body için ekstra koruma */
+body.skiptranslate {
+  top: 0px !important;
+  padding-top: 0px !important;
+  margin-top: 0px !important;
 }
 
 html {
   height: 100% !important;
+  top: 0px !important;
+  padding-top: 0px !important;
+  margin-top: 0px !important;
 }
 
 /* Tooltip'leri gizle */
