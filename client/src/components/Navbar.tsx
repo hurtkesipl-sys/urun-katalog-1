@@ -202,31 +202,23 @@ export default function Navbar() {
                     </span>
                   )}
                 </Link>
-                <div className="hidden md:flex gap-3 text-xs font-medium text-muted-foreground">
+                <div className="hidden md:flex gap-3 text-xs font-medium text-muted-foreground items-center">
                   <Link href="/about" className="hover:text-foreground transition-colors">Hakkımızda</Link>
                   <Link href="/contact" className="hover:text-foreground transition-colors">İletişim</Link>
+                  {/* Masaüstü Admin Butonları (Gizli) */}
+                  {isAdmin ? (
+                    <div className="flex items-center gap-2 opacity-0 hover:opacity-100 transition-opacity">
+                      <Link href="/admin" className="hover:text-foreground transition-colors">Yönetim</Link>
+                      <button onClick={() => setAdmin(false)} className="hover:text-destructive transition-colors">Çıkış</button>
+                    </div>
+                  ) : (
+                    <Link href="/login" className="opacity-0 hover:opacity-100 transition-opacity">Admin</Link>
+                  )}
                 </div>
               </div>
             </div>
             
-            {/* Yönetim ve Çıkış butonları alt satırda */}
-            {isAdmin ? (
-              <div className="flex items-center gap-2 mt-1">
-                <Link href="/admin" className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
-                  Yönetim
-                </Link>
-                <button 
-                  onClick={() => setAdmin(false)}
-                  className="text-[10px] text-muted-foreground hover:text-destructive transition-colors"
-                >
-                  Çıkış
-                </button>
-              </div>
-            ) : (
-              <Link href="/login" className="text-[10px] font-medium text-muted-foreground opacity-0 hover:opacity-100 focus:opacity-100 transition-opacity mt-1">
-                Admin
-              </Link>
-            )}
+            {/* Admin butonları buradan kaldırıldı ve İletişim yanına taşındı */}
           </div>
         </div>
 
@@ -260,9 +252,18 @@ export default function Navbar() {
               ))}
 
               <div className="w-1/2 h-px bg-border/50 my-1"></div>
-              <div className="flex justify-center gap-6 text-sm font-medium w-full py-2">
+              <div className="flex justify-center items-center gap-6 text-sm font-medium w-full py-2">
                 <Link href="/about" onClick={toggleMobileMenu} className="hover:text-primary transition-colors">Hakkımızda</Link>
                 <Link href="/contact" onClick={toggleMobileMenu} className="hover:text-primary transition-colors">İletişim</Link>
+                {/* Mobil Admin Butonları (Gizli) */}
+                {isAdmin ? (
+                  <div className="flex items-center gap-4 opacity-0 hover:opacity-100 transition-opacity">
+                    <Link href="/admin" onClick={toggleMobileMenu} className="hover:text-primary transition-colors">Yönetim</Link>
+                    <button onClick={() => { setAdmin(false); toggleMobileMenu(); }} className="hover:text-destructive transition-colors">Çıkış</button>
+                  </div>
+                ) : (
+                  <Link href="/login" onClick={toggleMobileMenu} className="opacity-0 hover:opacity-100 transition-opacity">Admin</Link>
+                )}
               </div>
             </div>
           </div>
