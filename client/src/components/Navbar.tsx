@@ -14,9 +14,15 @@ export default function Navbar() {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   const changeLanguage = (langCode: string) => {
-    // Google Translate çerezini doğrudan ayarla
-    document.cookie = `googtrans=/tr/${langCode}; path=/; domain=${window.location.hostname}`;
-    document.cookie = `googtrans=/tr/${langCode}; path=/; domain=.${window.location.hostname}`;
+    // Masaüstü Chrome'un katı çerez politikalarını aşmak için SameSite=Lax ve Secure ekle
+    // Ayrıca domain parametresini kaldırarak tarayıcının en uygun domaini atamasını sağla
+    document.cookie = `googtrans=/tr/${langCode}; path=/; SameSite=Lax; Secure`;
+    
+    // Alternatif olarak, eski çerezleri temizleyip tekrar ayarla (çakışmaları önlemek için)
+    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}`;
+    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${window.location.hostname}`;
+    document.cookie = `googtrans=/tr/${langCode}; path=/; domain=${window.location.hostname}; SameSite=Lax; Secure`;
+    document.cookie = `googtrans=/tr/${langCode}; path=/; domain=.${window.location.hostname}; SameSite=Lax; Secure`;
     
     // Sayfayı yenile ki çeviri kesin olarak uygulansın
     window.location.reload();
