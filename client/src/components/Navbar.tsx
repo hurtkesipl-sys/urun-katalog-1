@@ -205,20 +205,21 @@ export default function Navbar() {
                 <div className="hidden md:flex gap-3 text-xs font-medium text-muted-foreground items-center">
                   <Link href="/about" className="hover:text-foreground transition-colors">Hakkımızda</Link>
                   <Link href="/contact" className="hover:text-foreground transition-colors">İletişim</Link>
-                  {/* Masaüstü Admin Butonları (Gizli) */}
-                  {isAdmin ? (
-                    <div className="flex items-center gap-2 opacity-0 hover:opacity-100 transition-opacity">
-                      <Link href="/admin" className="hover:text-foreground transition-colors">Yönetim</Link>
-                      <button onClick={() => setAdmin(false)} className="hover:text-destructive transition-colors">Çıkış</button>
-                    </div>
-                  ) : (
-                    <Link href="/login" className="opacity-0 hover:opacity-100 transition-opacity">Admin</Link>
-                  )}
                 </div>
               </div>
             </div>
             
-            {/* Admin butonları buradan kaldırıldı ve İletişim yanına taşındı */}
+            {/* Masaüstü Admin Butonları (Gizli - En Sağda) */}
+            <div className="hidden md:flex absolute right-0 top-0 h-full items-center px-2">
+              {isAdmin ? (
+                <div className="flex items-center gap-2 opacity-0 hover:opacity-100 transition-opacity text-xs text-muted-foreground">
+                  <Link href="/admin" className="hover:text-foreground transition-colors">Yönetim</Link>
+                  <button onClick={() => setAdmin(false)} className="hover:text-destructive transition-colors">Çıkış</button>
+                </div>
+              ) : (
+                <Link href="/login" className="opacity-0 hover:opacity-100 transition-opacity text-xs text-muted-foreground">Admin</Link>
+              )}
+            </div>
           </div>
         </div>
 
@@ -252,18 +253,20 @@ export default function Navbar() {
               ))}
 
               <div className="w-1/2 h-px bg-border/50 my-1"></div>
-              <div className="flex justify-center items-center gap-6 text-sm font-medium w-full py-2">
+              <div className="flex justify-center items-center gap-6 text-sm font-medium w-full py-2 relative">
                 <Link href="/about" onClick={toggleMobileMenu} className="hover:text-primary transition-colors">Hakkımızda</Link>
                 <Link href="/contact" onClick={toggleMobileMenu} className="hover:text-primary transition-colors">İletişim</Link>
-                {/* Mobil Admin Butonları (Gizli) */}
-                {isAdmin ? (
-                  <div className="flex items-center gap-4 opacity-0 hover:opacity-100 transition-opacity">
-                    <Link href="/admin" onClick={toggleMobileMenu} className="hover:text-primary transition-colors">Yönetim</Link>
-                    <button onClick={() => { setAdmin(false); toggleMobileMenu(); }} className="hover:text-destructive transition-colors">Çıkış</button>
-                  </div>
-                ) : (
-                  <Link href="/login" onClick={toggleMobileMenu} className="opacity-0 hover:opacity-100 transition-opacity">Admin</Link>
-                )}
+                {/* Mobil Admin Butonları (Gizli - En Sağda) */}
+                <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                  {isAdmin ? (
+                    <div className="flex items-center gap-4 opacity-0 hover:opacity-100 transition-opacity">
+                      <Link href="/admin" onClick={toggleMobileMenu} className="hover:text-primary transition-colors">Yönetim</Link>
+                      <button onClick={() => { setAdmin(false); toggleMobileMenu(); }} className="hover:text-destructive transition-colors">Çıkış</button>
+                    </div>
+                  ) : (
+                    <Link href="/login" onClick={toggleMobileMenu} className="opacity-0 hover:opacity-100 transition-opacity">Admin</Link>
+                  )}
+                </div>
               </div>
             </div>
           </div>
