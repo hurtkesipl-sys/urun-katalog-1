@@ -185,17 +185,17 @@ export default function Navbar() {
           <div className="flex flex-col items-end gap-1 w-auto md:w-24 justify-end shrink-0">
             <div className="flex items-center gap-2 md:gap-4">
               {isTranslationEnabled && (
-                <div className="flex items-center gap-1.5 md:gap-2 mr-1 md:mr-4 relative z-50">
+                <div className="flex items-center gap-2 md:gap-2 mr-2 md:mr-4 relative z-50">
                   <div id="google_translate_element" className="hidden"></div>
-                  <button onClick={() => changeLanguage('tr')} className="text-2xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="Türkçe">🇹🇷</button>
-                  <button onClick={() => changeLanguage('en')} className="text-2xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="English">🇬🇧</button>
-                  <button onClick={() => changeLanguage('ar')} className="text-2xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="العربية">🇸🇦</button>
-                  <button onClick={() => changeLanguage('ru')} className="text-2xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="Русский">🇷🇺</button>
+                  <button onClick={() => changeLanguage('tr')} className="text-3xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="Türkçe">🇹🇷</button>
+                  <button onClick={() => changeLanguage('en')} className="text-3xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="English">🇬🇧</button>
+                  <button onClick={() => changeLanguage('ar')} className="text-3xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="العربية">🇸🇦</button>
+                  <button onClick={() => changeLanguage('ru')} className="text-3xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="Русский">🇷🇺</button>
                 </div>
               )}
               <div className="flex flex-col items-end gap-1 md:gap-2">
                 <Link href="/favorites" className="relative text-muted-foreground hover:text-foreground transition-colors self-end">
-                  <Heart className="w-6 h-6 md:w-6 md:h-6" />
+                  <Heart className="w-7 h-7 md:w-6 md:h-6" />
                   {favorites.length > 0 && (
                     <span className="absolute -top-1.5 -right-1.5 md:-top-2 md:-right-2 bg-red-500 text-white text-[8px] md:text-[10px] font-bold w-3.5 h-3.5 md:w-4 md:h-4 rounded-full flex items-center justify-center">
                       {favorites.length}
