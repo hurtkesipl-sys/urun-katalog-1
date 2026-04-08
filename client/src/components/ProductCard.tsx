@@ -103,7 +103,7 @@ export default function ProductCard({ product, isAdmin, onDelete, onEdit }: Prod
         <p className="hidden md:block text-[10px] md:text-xs text-muted-foreground line-clamp-1 mb-0.5">
           {product.description}
         </p>
-        <div className="flex flex-col mt-auto">
+        <div className="flex flex-col mt-auto" translate="no">
           <span className="text-sm md:text-base font-medium text-foreground leading-none">
             ₺{product.priceTRY.toFixed(2)}
           </span>

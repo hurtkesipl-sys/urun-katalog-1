@@ -191,6 +191,10 @@
   display: none !important;
 }
 
+.skiptranslate > iframe.goog-te-banner-frame {
+  display: none !important;
+}
+
 body {
   top: 0 !important; /* Bar gizlendiğinde sayfanın aşağı kaymasını engelle */
 }

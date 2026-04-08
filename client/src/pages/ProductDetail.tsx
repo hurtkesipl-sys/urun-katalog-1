@@ -171,7 +171,7 @@ export default function ProductDetail() {
               <h1 className="font-serif text-2xl md:text-4xl font-bold text-foreground mb-3 md:mb-4">
                 {product.name}
               </h1>
-              <div className="flex items-baseline gap-3">
+              <div className="flex items-baseline gap-3" translate="no">
                 <span className="text-xl md:text-2xl font-bold text-primary">
                   ₺{product.priceTRY.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </span>
