@@ -147,7 +147,7 @@ export default function Navbar() {
           {/* Mobil Menü Butonu (Sadece mobilde görünür) */}
           <div className="w-auto md:w-24 flex md:hidden">
             <button onClick={toggleMobileMenu} className="p-1 md:p-2 -ml-1 md:-ml-2 text-foreground">
-              {isMobileMenuOpen ? <X className="w-5 h-5 md:w-6 md:h-6" /> : <Menu className="w-5 h-5 md:w-6 md:h-6" />}
+              {isMobileMenuOpen ? <X className="w-7 h-7 md:w-6 md:h-6" /> : <Menu className="w-7 h-7 md:w-6 md:h-6" />}
             </button>
           </div>
           
@@ -168,17 +168,17 @@ export default function Navbar() {
           </div>
           
           {/* Logo ve İtalyan Bayrağı */}
-          <div className="flex flex-col items-start md:items-center ml-2 md:ml-0 flex-1 md:flex-none overflow-hidden">
-            <Link href="/" className="flex items-baseline md:items-center gap-1 md:gap-2 mb-0.5 md:mb-1">
-              <span className="font-serif text-xl md:text-3xl font-bold tracking-tight whitespace-nowrap" translate="no">Moda İtalya</span>
-              <span className="text-muted-foreground text-[10px] md:text-sm font-medium md:mt-2 truncate">Toptan</span>
+          <div className="flex flex-col items-center ml-2 md:ml-0 flex-1 md:flex-none overflow-hidden">
+            <Link href="/" className="flex flex-col items-center mb-0.5 md:mb-1">
+              <span className="font-serif text-2xl md:text-3xl font-bold tracking-tight whitespace-nowrap" translate="no">Moda İtalya</span>
+              {/* İtalyan Bayrağı Çizgisi */}
+              <div className="flex w-28 md:w-full h-1.5 md:h-2 rounded-full overflow-hidden mt-0.5 mb-0.5">
+                <div className="w-1/3 bg-green-600"></div>
+                <div className="w-1/3 bg-white border-y border-gray-200"></div>
+                <div className="w-1/3 bg-red-600"></div>
+              </div>
+              <span className="text-muted-foreground text-[11px] md:text-sm font-medium truncate">Toptan</span>
             </Link>
-            {/* İtalyan Bayrağı Çizgisi */}
-            <div className="flex w-24 md:w-full h-1.5 md:h-2 rounded-full overflow-hidden mt-0.5">
-              <div className="w-1/3 bg-green-600"></div>
-              <div className="w-1/3 bg-white border-y border-gray-200"></div>
-              <div className="w-1/3 bg-red-600"></div>
-            </div>
           </div>
 
           {/* Sağ Üst Menü (Favoriler, Hakkımızda, İletişim ve Admin) */}
