@@ -187,10 +187,18 @@ export default function Navbar() {
               {isTranslationEnabled && (
                 <div className="flex items-center gap-2 md:gap-2 mr-2 md:mr-4 relative z-50">
                   <div id="google_translate_element" className="hidden"></div>
-                  <button onClick={() => changeLanguage('tr')} className="text-3xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="Türkçe">🇹🇷</button>
-                  <button onClick={() => changeLanguage('en')} className="text-3xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="English">🇬🇧</button>
-                  <button onClick={() => changeLanguage('ar')} className="text-3xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="العربية">🇸🇦</button>
-                  <button onClick={() => changeLanguage('ru')} className="text-3xl md:text-3xl hover:scale-110 transition-transform cursor-pointer" title="Русский">🇷🇺</button>
+                  <button onClick={() => changeLanguage('tr')} className="w-8 h-8 md:w-9 md:h-9 hover:scale-110 transition-transform cursor-pointer flex items-center justify-center" title="Türkçe">
+                    <img src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/1f1f9-1f1f7.svg" alt="Türkçe" className="w-full h-full object-contain drop-shadow-sm" />
+                  </button>
+                  <button onClick={() => changeLanguage('en')} className="w-8 h-8 md:w-9 md:h-9 hover:scale-110 transition-transform cursor-pointer flex items-center justify-center" title="English">
+                    <img src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/1f1ec-1f1e7.svg" alt="English" className="w-full h-full object-contain drop-shadow-sm" />
+                  </button>
+                  <button onClick={() => changeLanguage('ar')} className="w-8 h-8 md:w-9 md:h-9 hover:scale-110 transition-transform cursor-pointer flex items-center justify-center" title="العربية">
+                    <img src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/1f1f8-1f1e6.svg" alt="العربية" className="w-full h-full object-contain drop-shadow-sm" />
+                  </button>
+                  <button onClick={() => changeLanguage('ru')} className="w-8 h-8 md:w-9 md:h-9 hover:scale-110 transition-transform cursor-pointer flex items-center justify-center" title="Русский">
+                    <img src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/1f1f7-1f1fa.svg" alt="Русский" className="w-full h-full object-contain drop-shadow-sm" />
+                  </button>
                 </div>
               )}
               <div className="flex flex-col items-end gap-1 md:gap-2">
