@@ -14,19 +14,19 @@ export default function Navbar() {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   const changeLanguage = (langCode: string) => {
-    // Masaüstü Chrome'da çalışması için çerezi hem noktalı hem noktasız domain ile ayarla
+    // Masaüstü Chrome'da iframe içinde (Manus paneli) çalışması için SameSite=None ve Secure ZORUNLUDUR
     const domain = window.location.hostname;
     
     if (langCode === 'tr') {
       // Türkçe seçildiğinde çerezi temizle
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain}`;
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${domain}`;
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=None; Secure`;
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain}; SameSite=None; Secure`;
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${domain}; SameSite=None; Secure`;
     } else {
-      // Diğer diller için çerezi ayarla (Masaüstü Chrome için tüm domain varyasyonları)
-      document.cookie = `googtrans=/tr/${langCode}; path=/;`;
-      document.cookie = `googtrans=/tr/${langCode}; path=/; domain=${domain}`;
-      document.cookie = `googtrans=/tr/${langCode}; path=/; domain=.${domain}`;
+      // Diğer diller için çerezi ayarla (Masaüstü Chrome iframe engellemesini aşmak için SameSite=None; Secure)
+      document.cookie = `googtrans=/tr/${langCode}; path=/; SameSite=None; Secure`;
+      document.cookie = `googtrans=/tr/${langCode}; path=/; domain=${domain}; SameSite=None; Secure`;
+      document.cookie = `googtrans=/tr/${langCode}; path=/; domain=.${domain}; SameSite=None; Secure`;
     }
     
     // Sayfayı yenile ki çeviri kesin olarak uygulansın
