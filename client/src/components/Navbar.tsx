@@ -14,31 +14,16 @@ export default function Navbar() {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   const changeLanguage = (langCode: string) => {
-    // 1. Önce var olan tüm olası googtrans çerezlerini ZORLA SİL
-    // (Farklı domain ve path kombinasyonlarıyla birikmiş çerezleri temizlemek için)
-    const domain = window.location.hostname;
-    const domains = [domain, `.${domain}`];
-    const paths = ['/', '/tr'];
-    
-    domains.forEach(d => {
-      paths.forEach(p => {
-        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}; domain=${d}`;
-      });
-    });
-    // Domain belirtmeden de sil
-    paths.forEach(p => {
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${p}`;
-    });
-
-    // 2. Eğer seçilen dil Türkçe (orijinal dil) ise, çerezi sildik, sadece sayfayı yenile
+    // En basit ve sorunsuz çerez ayarlama mantığı
     if (langCode === 'tr') {
-      window.location.reload();
-      return;
+      // Türkçe seçildiğinde çerezi temizle
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}`;
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${window.location.hostname}`;
+    } else {
+      // Diğer diller için çerezi ayarla (domain belirtmeden, tarayıcının atamasına izin ver)
+      document.cookie = `googtrans=/tr/${langCode}; path=/;`;
     }
-
-    // 3. Diğer diller için YENİ çerezi TEK BİR KERE ve GÜVENLİ şekilde ayarla
-    // Chrome masaüstü için SameSite=Lax ve Secure eklendi
-    document.cookie = `googtrans=/tr/${langCode}; path=/; domain=${domain}; SameSite=Lax; Secure`;
     
     // Sayfayı yenile ki çeviri kesin olarak uygulansın
     window.location.reload();
