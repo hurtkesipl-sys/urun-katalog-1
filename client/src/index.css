@@ -177,3 +177,71 @@
     }
   }
 }
+/* Google Translate Custom Styling */
+.goog-te-gadget {
+  font-family: var(--font-sans) !important;
+}
+
+.goog-te-gadget-simple {
+  background-color: transparent !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 4px 8px !important;
+  font-size: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.goog-te-gadget-simple:hover {
+  background-color: var(--secondary) !important;
+}
+
+.goog-te-gadget-icon {
+  display: none !important; /* Google logosunu gizle */
+}
+
+.goog-te-gadget-simple .goog-te-menu-value {
+  color: var(--foreground) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+.goog-te-gadget-simple .goog-te-menu-value span {
+  color: var(--foreground) !important;
+  text-decoration: none !important;
+  border-left: none !important;
+}
+
+/* "Select Language" metnini gizle, sadece seçili dili göster */
+.goog-te-gadget-simple .goog-te-menu-value span:first-child {
+  display: none !important;
+}
+
+.goog-te-gadget-simple .goog-te-menu-value span:nth-child(2) {
+  display: inline-block !important;
+}
+
+/* Üstteki Google Translate barını gizle */
+.goog-te-banner-frame {
+  display: none !important;
+}
+
+body {
+  top: 0 !important; /* Bar gizlendiğinde sayfanın aşağı kaymasını engelle */
+}
+
+/* Tooltip'leri gizle */
+.goog-tooltip {
+  display: none !important;
+}
+.goog-tooltip:hover {
+  display: none !important;
+}
+.goog-text-highlight {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
