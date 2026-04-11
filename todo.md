@@ -15,3 +15,5 @@
 - [x] Admin girişini e-posta+şifre sistemine geçir (Manus OAuth kaldır)
 - [x] Nginx + PM2 kurulum scriptleri hazırla
 - [x] Türkçe kurulum rehberi yaz
+- [x] Admin ürün girişinde video URL alanı sorunu düzelt
+- [x] Ürün tıklandığında sayfa ortasına gitmesi sorununu düzelt (scroll to top)
