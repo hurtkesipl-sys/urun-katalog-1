@@ -200,14 +200,32 @@ export default function Navbar() {
               <span className="text-muted-foreground text-[10px] font-medium truncate">Toptan</span>
             </Link>
           </div>
-          <Link href="/favorites" className="relative text-muted-foreground hover:text-foreground transition-colors p-1">
-            <Heart className="w-6 h-6" />
-            {favorites.length > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">
-                {favorites.length}
-              </span>
+          <div className="flex items-center gap-1">
+            {isTranslationEnabled && (
+              <div className="flex items-center gap-1 mr-1">
+                <button onClick={() => changeLanguage('tr')} className="w-5 h-5 hover:scale-110 transition-transform cursor-pointer flex items-center justify-center" title="Türkçe">
+                  <img src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/1f1f9-1f1f7.svg" alt="Türkçe" className="w-full h-full object-contain drop-shadow-sm" />
+                </button>
+                <button onClick={() => changeLanguage('en')} className="w-5 h-5 hover:scale-110 transition-transform cursor-pointer flex items-center justify-center" title="English">
+                  <img src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/1f1ec-1f1e7.svg" alt="English" className="w-full h-full object-contain drop-shadow-sm" />
+                </button>
+                <button onClick={() => changeLanguage('ar')} className="w-5 h-5 hover:scale-110 transition-transform cursor-pointer flex items-center justify-center" title="العربية">
+                  <img src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/1f1f8-1f1e6.svg" alt="العربية" className="w-full h-full object-contain drop-shadow-sm" />
+                </button>
+                <button onClick={() => changeLanguage('ru')} className="w-5 h-5 hover:scale-110 transition-transform cursor-pointer flex items-center justify-center" title="Русский">
+                  <img src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/1f1f7-1f1fa.svg" alt="Русский" className="w-full h-full object-contain drop-shadow-sm" />
+                </button>
+              </div>
             )}
-          </Link>
+            <Link href="/favorites" className="relative text-muted-foreground hover:text-foreground transition-colors p-1">
+              <Heart className="w-6 h-6" />
+              {favorites.length > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">
+                  {favorites.length}
+                </span>
+              )}
+            </Link>
+          </div>
         </div>
 
         {/* ALT KISIM: Kategori Menüsü (Masaüstü) — scroll sonrası ince çizgi olarak kalır */}

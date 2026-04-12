@@ -23,3 +23,4 @@
 - [x] Masaüstünde aşağı kaydırınca logo kaybolsun, sadece kategoriler+dil bayrakları ince çizgi kalsın
 - [x] Banner görsellerini URL yerine bilgisayardan S3'e yükleme özelliği ekle
 - [x] Navbar aşağıdan yukarıya gelirken titreme/flicker sorununu düzelt
+- [x] Mobilde dil bayraklarını menü içinden çıkar, her zaman görünür yap
