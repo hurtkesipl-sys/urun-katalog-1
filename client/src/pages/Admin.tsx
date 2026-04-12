@@ -52,6 +52,43 @@ export default function Admin() {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [isImageUploading, setIsImageUploading] = useState(false);
   const [isVideoUploading, setIsVideoUploading] = useState(false);
+  const [isBannerUploading, setIsBannerUploading] = useState(false);
+  const [bannerPreview, setBannerPreview] = useState<string>("");
+
+  const handleBannerFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("Sadece görsel dosyaları yüklenebilir.");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("Görsel boyutu 10 MB'dan büyük olamaz.");
+      return;
+    }
+    setIsBannerUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("images", file);
+      const res = await fetch("/api/upload/image", { method: "POST", body: fd, credentials: "include" });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Yükleme başarısız");
+      }
+      const data = await res.json();
+      const url = data.urls?.[0];
+      if (url) {
+        setBannerData((prev) => ({ ...prev, imageUrl: url }));
+        setBannerPreview(url);
+        toast.success("Banner görseli yüklendi!");
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Bilinmeyen hata";
+      toast.error(`Görsel yüklenemedi: ${msg}`);
+    } finally {
+      setIsBannerUploading(false);
+    }
+  };
 
   const handleVideoFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -329,6 +366,7 @@ export default function Admin() {
         title: bannerData.title || undefined,
       });
       setBannerData({ imageUrl: "", title: "" });
+      setBannerPreview("");
       setIsAddingBanner(false);
       toast.success("Banner başarıyla eklendi!");
     } catch (err) {
@@ -586,14 +624,46 @@ export default function Admin() {
                 <h3 className="font-medium">Yeni Banner Ekle</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="bannerImage">Görsel URL</Label>
-                    <Input
-                      id="bannerImage"
-                      value={bannerData.imageUrl}
-                      onChange={(e) => setBannerData({ ...bannerData, imageUrl: e.target.value })}
-                      placeholder="https://example.com/image.jpg"
-                      required
-                    />
+                    <Label>Banner Görseli *</Label>
+                    {/* Dosya Yükleme Alanı */}
+                    <label
+                      htmlFor="bannerFileInput"
+                      className={`flex flex-col items-center justify-center w-full h-36 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
+                        isBannerUploading
+                          ? "border-muted bg-muted/30 cursor-not-allowed"
+                          : bannerPreview
+                          ? "border-green-400 bg-green-50"
+                          : "border-border hover:border-primary hover:bg-muted/30"
+                      }`}
+                    >
+                      {isBannerUploading ? (
+                        <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                          <Loader2 className="w-8 h-8 animate-spin" />
+                          <span className="text-sm">Yükleniyor...</span>
+                        </div>
+                      ) : bannerPreview ? (
+                        <div className="relative w-full h-full">
+                          <img src={bannerPreview} alt="Banner önizleme" className="w-full h-full object-cover rounded-lg" />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-lg opacity-0 hover:opacity-100 transition-opacity">
+                            <span className="text-white text-sm font-medium">Değiştirmek için tıkla</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                          <Upload className="w-8 h-8" />
+                          <span className="text-sm font-medium">Görsel seçmek için tıkla</span>
+                          <span className="text-xs">JPG, PNG, WEBP — Maks. 10 MB</span>
+                        </div>
+                      )}
+                      <input
+                        id="bannerFileInput"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleBannerFileUpload}
+                        disabled={isBannerUploading}
+                      />
+                    </label>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="bannerTitle">Başlık (İsteğe Bağlı)</Label>
@@ -605,7 +675,11 @@ export default function Admin() {
                     />
                   </div>
                 </div>
-                <Button type="submit">Banner Ekle</Button>
+                <Button type="submit" disabled={!bannerData.imageUrl || isBannerUploading}>
+                  {isBannerUploading ? (
+                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Yükleniyor...</>
+                  ) : "Banner Ekle"}
+                </Button>
               </form>
             )}
           </div>

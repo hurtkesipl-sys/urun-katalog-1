@@ -21,3 +21,4 @@
 - [x] Navbar masaüstünde çok geniş, yüksekliği ve boşlukları küçült
 - [x] Ürün görsellerini base64 yerine S3'e yükle (veritabanı boyut hatası düzelt)
 - [x] Masaüstünde aşağı kaydırınca logo kaybolsun, sadece kategoriler+dil bayrakları ince çizgi kalsın
+- [x] Banner görsellerini URL yerine bilgisayardan S3'e yükleme özelliği ekle
