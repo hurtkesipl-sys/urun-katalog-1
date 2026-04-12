@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useProductStore } from "@/hooks/useStore";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Link } from "wouter";
@@ -12,7 +12,7 @@ export default function Navbar() {
   const isAdmin = user?.role === "admin";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollYRef = useRef(0);
   // Masaüstünde aşağı kaydırınca logo kısmı kaybolur
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -72,10 +72,11 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
+      const lastY = lastScrollYRef.current;
+
       if (window.innerWidth < 768) {
         // Mobilde: aşağı kaydırınca navbar tamamen gizlenir
-        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        if (currentScrollY > lastY && currentScrollY > 100) {
           setIsVisible(false);
           setIsMobileMenuOpen(false);
         } else {
@@ -83,17 +84,21 @@ export default function Navbar() {
         }
         setIsScrolled(false);
       } else {
-        // Masaüstünde: 80px'den sonra logo kısmı kaybolur, sadece menü çubuğu kalır
+        // Masaüstünde: titreme önlemek için histerezis (aşağı 90px, yukarı 60px)
         setIsVisible(true);
-        setIsScrolled(currentScrollY > 80);
+        setIsScrolled(prev => {
+          if (!prev && currentScrollY > 90) return true;  // Küçül
+          if (prev && currentScrollY < 60) return false;  // Büyü
+          return prev; // Değiştirme
+        });
       }
-      
-      setLastScrollY(currentScrollY);
+
+      lastScrollYRef.current = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []); // Boş bağımlılık — sadece bir kez kaydedilir, ref ile son değeri okur
 
   return (
     <nav className={`border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
