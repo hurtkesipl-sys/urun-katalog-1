@@ -17,3 +17,4 @@
 - [x] Türkçe kurulum rehberi yaz
 - [x] Admin ürün girişinde video URL alanı sorunu düzelt
 - [x] Ürün tıklandığında sayfa ortasına gitmesi sorununu düzelt (scroll to top)
+- [x] Bilgisayardan video yükleme özelliğini S3 ile çalışır hale getir

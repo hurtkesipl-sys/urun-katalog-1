@@ -5,6 +5,7 @@ import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
 import { registerLocalAuthRoutes } from "./localAuth";
+import { registerUploadRoutes } from "../uploadRoute";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
@@ -38,6 +39,8 @@ async function startServer() {
   registerOAuthRoutes(app);
   // Local auth routes under /api/auth/* (self-hosted)
   registerLocalAuthRoutes(app);
+  // File upload routes under /api/upload/*
+  registerUploadRoutes(app);
   // tRPC API
   app.use(
     "/api/trpc",

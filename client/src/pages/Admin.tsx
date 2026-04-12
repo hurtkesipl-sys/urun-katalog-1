@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { PlusCircle, Trash2 } from "lucide-react";
+import { PlusCircle, Trash2, Upload, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Admin() {
@@ -50,6 +50,50 @@ export default function Admin() {
     title: "",
   });
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [isVideoUploading, setIsVideoUploading] = useState(false);
+
+  const handleVideoFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("video/")) {
+      toast.error("Lütfen geçerli bir video dosyası seçin.");
+      return;
+    }
+
+    if (file.size > 200 * 1024 * 1024) {
+      toast.error("Video boyutu 200MB'dan küçük olmalıdır.");
+      return;
+    }
+
+    setIsVideoUploading(true);
+    try {
+      const formDataUpload = new FormData();
+      formDataUpload.append("video", file);
+
+      const response = await fetch("/api/upload/video", {
+        method: "POST",
+        credentials: "include",
+        body: formDataUpload,
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({ error: response.statusText }));
+        throw new Error(err.error || "Yükleme başarısız");
+      }
+
+      const { url } = await response.json();
+      setFormData(prev => ({ ...prev, videoUrl: url }));
+      toast.success("Video başarıyla yüklendi!");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Bilinmeyen hata";
+      toast.error(`Video yüklenemedi: ${message}`);
+    } finally {
+      setIsVideoUploading(false);
+      // Input'u sıfırla
+      e.target.value = "";
+    }
+  };
 
   const [aboutData, setAboutData] = useState(aboutInfo);
   const [contactData, setContactData] = useState(contactInfo);
@@ -690,16 +734,59 @@ export default function Admin() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="videoUrl">Video URL (İsteğe Bağlı)</Label>
-                <Input
-                  id="videoUrl"
-                  value={formData.videoUrl || ""}
-                  onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
-                  placeholder="Örn: https://youtube.com/watch?v=... veya https://vimeo.com/..."
-                />
-                <p className="text-xs text-muted-foreground">
-                  YouTube, Vimeo veya doğrudan video linkini yapıştırın. Bilgisayardan video yükleme desteklenmemektedir.
-                </p>
+                <Label>Video (İsteğe Bağlı)</Label>
+                <div className="flex flex-col gap-3">
+                  {/* Bilgisayardan Yükleme */}
+                  <div className="border-2 border-dashed border-border rounded-lg p-4 text-center">
+                    <label htmlFor="videoFile" className="cursor-pointer flex flex-col items-center gap-2">
+                      {isVideoUploading ? (
+                        <>
+                          <Loader2 className="w-8 h-8 text-muted-foreground animate-spin" />
+                          <span className="text-sm text-muted-foreground">Video yükleniyor...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="w-8 h-8 text-muted-foreground" />
+                          <span className="text-sm font-medium">Bilgisayardan Video Yükle</span>
+                          <span className="text-xs text-muted-foreground">MP4, MOV, AVI — Maks. 200MB</span>
+                        </>
+                      )}
+                    </label>
+                    <input
+                      id="videoFile"
+                      type="file"
+                      accept="video/*"
+                      className="hidden"
+                      disabled={isVideoUploading}
+                      onChange={handleVideoFileUpload}
+                    />
+                  </div>
+
+                  {/* URL ile Ekleme */}
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-px bg-border" />
+                    <span className="text-xs text-muted-foreground">veya URL ile ekle</span>
+                    <div className="flex-1 h-px bg-border" />
+                  </div>
+                  <Input
+                    id="videoUrl"
+                    value={formData.videoUrl || ""}
+                    onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
+                    placeholder="https://youtube.com/watch?v=... veya https://vimeo.com/..."
+                  />
+
+                  {/* Mevcut video gösterimi */}
+                  {formData.videoUrl && !formData.videoUrl.startsWith("data:") && (
+                    <div className="flex items-center gap-2 p-2 bg-green-50 border border-green-200 rounded text-sm text-green-700">
+                      <span className="flex-1 truncate">✓ Video eklendi: {formData.videoUrl.length > 60 ? formData.videoUrl.slice(0, 60) + "..." : formData.videoUrl}</span>
+                      <button
+                        type="button"
+                        onClick={() => setFormData(prev => ({ ...prev, videoUrl: "" }))}
+                        className="text-green-700 hover:text-red-600 font-bold ml-1"
+                      >×</button>
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="description">Açıklama</Label>
