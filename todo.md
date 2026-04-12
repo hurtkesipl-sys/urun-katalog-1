@@ -19,3 +19,4 @@
 - [x] Ürün tıklandığında sayfa ortasına gitmesi sorununu düzelt (scroll to top)
 - [x] Bilgisayardan video yükleme özelliğini S3 ile çalışır hale getir
 - [x] Navbar masaüstünde çok geniş, yüksekliği ve boşlukları küçült
+- [x] Ürün görsellerini base64 yerine S3'e yükle (veritabanı boyut hatası düzelt)

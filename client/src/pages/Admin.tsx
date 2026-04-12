@@ -50,6 +50,7 @@ export default function Admin() {
     title: "",
   });
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [isImageUploading, setIsImageUploading] = useState(false);
   const [isVideoUploading, setIsVideoUploading] = useState(false);
 
   const handleVideoFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -141,7 +142,7 @@ export default function Admin() {
     }
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
@@ -151,34 +152,46 @@ export default function Admin() {
       return;
     }
 
-    const newPreviews: string[] = [];
-    let processedCount = 0;
-
-    files.forEach(file => {
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error(`${file.name} boyutu 5MB'dan küçük olmalıdır.`);
-        processedCount++;
+    // Boyut kontrolü
+    for (const file of files) {
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error(`${file.name} boyutu 10MB'dan küçük olmalıdır.`);
         return;
       }
-      
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
-        newPreviews.push(base64String);
-        processedCount++;
+    }
 
-        if (processedCount === files.length) {
-          const updatedPreviews = [...imagePreviews, ...newPreviews];
-          setImagePreviews(updatedPreviews);
-          setFormData({ 
-            ...formData, 
-            imageUrl: updatedPreviews[0] || "", // İlk görsel ana görsel
-            imageUrls: updatedPreviews.slice(1) // Geri kalanlar ek görseller
-          });
-        }
-      };
-      reader.readAsDataURL(file);
-    });
+    setIsImageUploading(true);
+    try {
+      const formDataUpload = new FormData();
+      files.forEach(file => formDataUpload.append("images", file));
+
+      const response = await fetch("/api/upload/image", {
+        method: "POST",
+        credentials: "include",
+        body: formDataUpload,
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({ error: response.statusText }));
+        throw new Error(err.error || "Yükleme başarısız");
+      }
+
+      const { urls } = await response.json() as { urls: string[] };
+      const updatedPreviews = [...imagePreviews, ...urls];
+      setImagePreviews(updatedPreviews);
+      setFormData(prev => ({
+        ...prev,
+        imageUrl: updatedPreviews[0] || "",
+        imageUrls: updatedPreviews.slice(1),
+      }));
+      toast.success(`${urls.length} görsel başarıyla yüklendi!`);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Bilinmeyen hata";
+      toast.error(`Görsel yüklenemedi: ${message}`);
+    } finally {
+      setIsImageUploading(false);
+      e.target.value = "";
+    }
   };
 
   const removeImage = (index: number) => {
@@ -635,6 +648,12 @@ export default function Admin() {
                 <div className="space-y-2">
                   <Label htmlFor="imageFile">Ürün Görselleri (Maksimum 4) *</Label>
                   <div className="flex flex-col gap-4">
+                    {isImageUploading && (
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Görseller yükleniyor, lütfen bekleyin...</span>
+                      </div>
+                    )}
                     <Input
                       id="imageFile"
                       type="file"
@@ -642,7 +661,7 @@ export default function Admin() {
                       multiple
                       onChange={handleImageChange}
                       className="cursor-pointer"
-                      disabled={imagePreviews.length >= 4}
+                      disabled={imagePreviews.length >= 4 || isImageUploading}
                     />
                     {imagePreviews.length > 0 && (
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
