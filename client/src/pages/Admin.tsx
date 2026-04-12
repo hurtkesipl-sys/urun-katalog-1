@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { PlusCircle, Trash2, Upload, Loader2 } from "lucide-react";
+import { PlusCircle, Trash2, Upload, Loader2, KeyRound } from "lucide-react";
 import { toast } from "sonner";
+import { trpc } from "@/lib/trpc";
 
 export default function Admin() {
   const { products, mainCategories, subCategories, addProduct, updateProduct, removeProduct, addSubCategory, removeSubCategory, banners, addBanner, removeBanner, aboutInfo, contactInfo, updateAboutInfo, updateContactInfo, isTranslationEnabled, toggleTranslation } = useProductStore();
@@ -54,6 +55,34 @@ export default function Admin() {
   const [isVideoUploading, setIsVideoUploading] = useState(false);
   const [isBannerUploading, setIsBannerUploading] = useState(false);
   const [bannerPreview, setBannerPreview] = useState<string>("");
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const setPasswordMutation = trpc.auth.setAdminPassword.useMutation({
+    onSuccess: () => {
+      toast.success("Şifre başarıyla güncellendi!");
+      setNewPassword("");
+      setConfirmPassword("");
+      setIsChangingPassword(false);
+    },
+    onError: (err) => {
+      toast.error(err.message || "Şifre güncellenirken hata oluştu.");
+    },
+  });
+
+  const handlePasswordChange = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newPassword.length < 6) {
+      toast.error("Şifre en az 6 karakter olmalıdır.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.error("Şifreler eşleşmiyor.");
+      return;
+    }
+    setPasswordMutation.mutate({ newPassword });
+  };
 
   const handleBannerFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -399,6 +428,10 @@ export default function Admin() {
             <Button variant="outline" onClick={() => setIsManagingCategories(!isManagingCategories)} className="text-xs md:text-sm">
               {isManagingCategories ? "İptal" : "Kategori Yönetimi"}
             </Button>
+            <Button variant="outline" onClick={() => setIsChangingPassword(!isChangingPassword)} className="text-xs md:text-sm">
+              <KeyRound className="mr-1 md:mr-2 h-4 w-4" />
+              {isChangingPassword ? "İptal" : "Şifre Değiştir"}
+            </Button>
             <Button variant="outline" onClick={() => setIsAddingBanner(!isAddingBanner)} className="text-xs md:text-sm">
               <PlusCircle className="mr-1 md:mr-2 h-4 w-4" />
               {isAddingBanner ? "İptal" : "Banner Yönetimi"}
@@ -471,6 +504,44 @@ export default function Admin() {
                 </div>
               </div>
             </div>
+          </div>
+        )}
+
+        {isChangingPassword && (
+          <div className="bg-card border border-border rounded-xl p-6 mb-8 shadow-sm">
+            <h2 className="font-serif text-xl font-semibold mb-2">Şifre Değiştir</h2>
+            <p className="text-muted-foreground text-sm mb-6">Admin hesabınız için yeni bir şifre belirleyin. Şifre en az 6 karakter olmalıdır.</p>
+            <form onSubmit={handlePasswordChange} className="space-y-4 max-w-md">
+              <div className="space-y-2">
+                <Label htmlFor="newPassword">Yeni Şifre</Label>
+                <Input
+                  id="newPassword"
+                  type="password"
+                  placeholder="En az 6 karakter"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  disabled={setPasswordMutation.isPending}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Şifre Tekrar</Label>
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="Şifreyi tekrar girin"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  disabled={setPasswordMutation.isPending}
+                />
+              </div>
+              <Button type="submit" disabled={setPasswordMutation.isPending}>
+                {setPasswordMutation.isPending ? (
+                  <><Loader2 className="w-4 h-4 mr-2 animate-spin" />İşleniyor...</>
+                ) : (
+                  <><KeyRound className="w-4 h-4 mr-2" />Şifreyi Kaydet</>
+                )}
+              </Button>
+            </form>
           </div>
         )}
 

@@ -173,12 +173,12 @@ export default function Navbar() {
             </div>
             <div className="flex justify-end w-full">
               {isAdmin ? (
-                <div className="flex items-center gap-2 opacity-0 hover:opacity-100 transition-opacity text-[10px] text-muted-foreground">
+                <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
                   <Link href="/admin" className="hover:text-foreground transition-colors">Yönetim</Link>
                   <button onClick={() => logout()} className="hover:text-destructive transition-colors">Çıkış</button>
                 </div>
               ) : (
-                <Link href="/login" className="opacity-0 hover:opacity-100 transition-opacity text-[10px] text-muted-foreground">Admin</Link>
+                <Link href="/login" className="text-[10px] text-muted-foreground hover:text-foreground transition-colors">Admin</Link>
               )}
             </div>
           </div>
@@ -295,12 +295,12 @@ export default function Navbar() {
                 <Link href="/contact" onClick={toggleMobileMenu} className="hover:text-primary transition-colors">İletişim</Link>
                 <div className="absolute right-4 top-1/2 -translate-y-1/2">
                   {isAdmin ? (
-                    <div className="flex items-center gap-4 opacity-0 hover:opacity-100 transition-opacity">
+                    <div className="flex items-center gap-4 text-sm">
                       <Link href="/admin" onClick={toggleMobileMenu} className="hover:text-primary transition-colors">Yönetim</Link>
-                      <button onClick={() => { logout(); toggleMobileMenu(); }} className="hover:text-destructive transition-colors">Çıkış</button>
+                      <button onClick={() => { logout(); toggleMobileMenu(); }} className="hover:text-destructive transition-colors text-muted-foreground">Çıkış</button>
                     </div>
                   ) : (
-                    <Link href="/login" onClick={toggleMobileMenu} className="opacity-0 hover:opacity-100 transition-opacity">Admin</Link>
+                    <Link href="/login" onClick={toggleMobileMenu} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Admin</Link>
                   )}
                 </div>
               </div>

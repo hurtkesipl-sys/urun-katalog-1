@@ -1,4 +1,9 @@
 import { COOKIE_NAME } from "@shared/const";
+import { signLocalSession } from "./_core/localAuth";
+import { getDb } from "./db";
+import { users } from "../drizzle/schema";
+import { eq } from "drizzle-orm";
+import bcrypt from "bcryptjs";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, adminProcedure } from "./_core/trpc";
@@ -69,6 +74,48 @@ export const appRouter = router({
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
       return { success: true } as const;
     }),
+
+    login: publicProcedure
+      .input(z.object({ email: z.string().min(1), password: z.string().min(1) }))
+      .mutation(async ({ input, ctx }) => {
+        const db = await getDb();
+        if (!db) throw new Error("Veritabanı bağlantısı kurulamadı.");
+
+        const result = await db
+          .select()
+          .from(users)
+          .where(eq(users.email, input.email.toLowerCase().trim()))
+          .limit(1);
+
+        const user = result[0];
+        if (!user || !user.passwordHash) {
+          throw new Error("E-posta veya şifre hatalı.");
+        }
+
+        const match = await bcrypt.compare(input.password, user.passwordHash);
+        if (!match) throw new Error("E-posta veya şifre hatalı.");
+
+        if (user.role !== "admin") {
+          throw new Error("Bu hesabın yönetici yetkisi bulunmuyor.");
+        }
+
+        const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
+        const token = await signLocalSession(user.openId, user.name ?? user.email ?? "");
+        const cookieOptions = getSessionCookieOptions(ctx.req);
+        ctx.res.cookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+
+        return { success: true, user: { id: user.id, name: user.name, email: user.email, role: user.role } };
+      }),
+
+    setAdminPassword: adminProcedure
+      .input(z.object({ newPassword: z.string().min(6) }))
+      .mutation(async ({ input, ctx }) => {
+        const db = await getDb();
+        if (!db) throw new Error("Veritabanı bağlantısı kurulamadı.");
+        const hash = await bcrypt.hash(input.newPassword, 12);
+        await db.update(users).set({ passwordHash: hash }).where(eq(users.id, ctx.user.id));
+        return { success: true };
+      }),
   }),
 
   // ─── Products ─────────────────────────────────────────────────────────────

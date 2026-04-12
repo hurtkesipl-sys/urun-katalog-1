@@ -24,3 +24,7 @@
 - [x] Banner görsellerini URL yerine bilgisayardan S3'e yükleme özelliği ekle
 - [x] Navbar aşağıdan yukarıya gelirken titreme/flicker sorununu düzelt
 - [x] Mobilde dil bayraklarını menü içinden çıkar, her zaman görünür yap
+- [x] Login sayfasını e-posta+şifre formuna dönüştür (Manus OAuth kaldır)
+- [x] useAuth hook'una yerel /api/auth/login desteği ekle
+- [x] Navbar'daki Admin/Yönetim linkini mobilde görünür yap (opacity-0 kaldır)
+- [x] Admin şifresini veritabanında oluşturmak için tRPC endpoint ekle
